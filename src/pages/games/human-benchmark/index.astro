@@ -1,0 +1,67 @@
+---
+import { ArrowLeft, ArrowUpRight, Check, ExternalLink, Gamepad2, RotateCcw } from 'lucide-astro';
+import Layout from '@/layouts/Layout.astro';
+import { benchmarkTests } from '@/data/benchmark';
+
+const playableTests = benchmarkTests.filter((test) => test.playable);
+const plannedTests = benchmarkTests.filter((test) => !test.playable);
+---
+<Layout title="人类基准测试 · Bai / 白" description="在 Bai 的个人网站里体验一组自托管的人类基准测试。">
+  <main class="benchmark-page section-wrap">
+    <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
+    <header class="benchmark-header">
+      <div>
+        <p class="eyebrow">GAME LAB / SELF-HOSTED</p>
+        <h1>人类基准测试</h1>
+        <p class="benchmark-lede">通过几组短小的脑力游戏，记录反应、记忆、注意力与手眼协调。成绩只保存在你的浏览器里。</p>
+      </div>
+      <div class="benchmark-header-mark"><Gamepad2 /><span>LOCAL<br />SESSION</span></div>
+    </header>
+
+    <div class="benchmark-layout">
+      <aside class="benchmark-sidebar" aria-label="测试列表">
+        <div class="benchmark-sidebar-label">可玩的测试</div>
+        <div class="benchmark-test-list">
+          {playableTests.map((test, index) => <button class:list={{ 'benchmark-test-tab': true, selected: index === 0 }} data-test={test.id} type="button"><span class={`benchmark-dot dot-${test.color}`}></span><span><strong>{test.title}</strong><small>{test.intro}</small></span><span class="tab-score" data-best-for={test.id}>—</span></button>)}
+        </div>
+        <div class="benchmark-sidebar-label planned-label">计划加入</div>
+        <div class="planned-test-list">
+          {plannedTests.map((test) => <div class="planned-test"><span class={`benchmark-dot dot-${test.color}`}></span><span><strong>{test.title}</strong><small>{test.intro}</small></span><span class="planned-badge">SOON</span></div>)}
+        </div>
+        <a class="source-link" href="https://gitee.com/aring1998/human-benchmark" target="_blank" rel="noreferrer"><ExternalLink /> 参考开源项目 <ArrowUpRight /></a>
+      </aside>
+
+      <section class="benchmark-stage" aria-live="polite">
+        <div class="benchmark-stage-top"><span id="benchmark-category">01 / REACTION</span><span id="benchmark-best">最佳：—</span></div>
+        <div class="benchmark-game" id="benchmark-game">
+          <div class="benchmark-welcome" data-screen="welcome">
+            <div class="benchmark-game-icon"><Gamepad2 /></div>
+            <p class="eyebrow">READY WHEN YOU ARE</p>
+            <h2 id="benchmark-title">反应测试</h2>
+            <p id="benchmark-instruction">等待绿色出现后，尽快点击测试区域。每次测试共 3 轮，最后取平均值。</p>
+            <button class="benchmark-primary" id="benchmark-start" type="button">开始测试 <ArrowUpRight /></button>
+          </div>
+          <div class="benchmark-play-screen" data-screen="play" hidden>
+            <div class="play-status" id="play-status">准备</div>
+            <div class="play-prompt" id="play-prompt">点击开始</div>
+            <div class="play-controls" id="play-controls"></div>
+          </div>
+          <div class="benchmark-result-screen" data-screen="result" hidden>
+            <p class="eyebrow">SESSION COMPLETE</p>
+            <div class="result-score" id="result-score">—</div>
+            <div class="result-unit" id="result-unit">平均成绩</div>
+            <p class="result-message" id="result-message"></p>
+            <div class="result-actions"><button class="benchmark-primary" id="benchmark-retry" type="button"><RotateCcw /> 再测一次</button><button class="benchmark-secondary" id="benchmark-next" type="button">下一个测试 <ArrowUpRight /></button></div>
+          </div>
+        </div>
+        <div class="benchmark-footnote"><Check /> 仅在本地记录成绩，不上传任何个人数据</div>
+      </section>
+    </div>
+
+    <section class="benchmark-about">
+      <div><p class="eyebrow">ABOUT THIS VERSION</p><h2>这是一个正在生长的<br /><em>本地化测试工具。</em></h2></div>
+      <div class="benchmark-about-copy"><p>当前版本先实现反应、数字记忆、视觉记忆、打字、瞄准和斯特鲁普六项测试，其余测试会随着时间逐步加入。</p><p>项目参考了开源项目的测试分类和交互思路，并在本站用 Astro + TypeScript 独立重写。参考来源与许可证信息见页面左侧。</p></div>
+    </section>
+  </main>
+</Layout>
+<script src="../../../scripts/benchmark.ts"></script>

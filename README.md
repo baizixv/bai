@@ -20,7 +20,9 @@ npm run preview # 预览构建产物
 ## 目录结构
 
 - `src/content/entries/`：文章、项目、工具、游戏、收藏的 Markdown 内容。新增文件即可进入页面。
-- `src/pages/games/`：游戏项目列表与详情页。
+- `src/pages/games/`：游戏项目列表、游戏详情页和自托管人类基准测试。
+- `src/data/benchmark.ts`：人类基准测试的测试项配置。
+- `src/scripts/benchmark.ts`：人类基准测试客户端交互逻辑。
 - `src/data/about.ts`：作者介绍、开发进度和版本说明的集中数据。
 - `src/content/config.ts`：统一定义 frontmatter 字段和类型校验。
 - `src/components/`：首页各内容区块。
@@ -39,6 +41,14 @@ python3 scripts/generate_assets.py
 ```
 
 修改脚本中的配色或绘制逻辑后重新执行即可，生成结果会写入 `public/assets/`。
+
+## 人类基准测试
+
+本站的 `/games/human-benchmark/` 是基于公开参考项目独立重写的本地版，首版包含反应、数字记忆、视觉记忆、打字、瞄准和斯特鲁普六项测试。成绩只保存在浏览器 localStorage，不需要后端。
+
+参考项目：<https://gitee.com/aring1998/human-benchmark>
+
+参考项目采用 GNU GPL v3。本站实现使用独立代码，不直接复制参考项目文件；如继续改编或分发参考项目代码，请遵守其许可证要求。
 
 ## 部署
 
