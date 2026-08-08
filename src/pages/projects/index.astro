@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { ArrowLeft, ArrowUpRight } from 'lucide-astro';
 import Layout from '@/layouts/Layout.astro';
 
-const projects = (await getCollection('entries', ({ data }) => data.kind === 'project' || data.kind === 'tool')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const projects = (await getCollection('entries', ({ data }) => data.kind === 'project')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 <Layout title="项目 · Bai / 白">
   <main class="archive-page section-wrap">

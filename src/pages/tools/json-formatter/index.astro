@@ -1,0 +1,13 @@
+---
+import { ArrowLeft, Clipboard, Eraser, ExternalLink, Sparkles } from 'lucide-astro';
+import Layout from '@/layouts/Layout.astro';
+---
+<Layout title="JSON 格式化器 · Bai / 白" description="一个在浏览器本地运行的 JSON 格式化和语法检查工具。">
+  <main class="tools-page section-wrap standalone-tool-page">
+    <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
+    <header class="tools-page-header"><div><p class="eyebrow">STANDALONE TOOL / JSON</p><h1>JSON 格式化器</h1><p>把压缩的 JSON 整理成易读结构，或者快速检查一段数据是否有效。</p></div><div class="tools-page-mark"><Sparkles /></div></header>
+    <section class="json-workbench"><div class="json-column"><label for="json-input">输入 JSON</label><textarea id="json-input" placeholder='{"name":"Bai","tools":true}'></textarea></div><div class="json-column"><label for="json-output">格式化结果</label><textarea id="json-output" readonly></textarea></div><div class="json-actions"><button class="benchmark-primary" id="json-format" type="button">格式化 <Sparkles /></button><button class="benchmark-secondary" id="json-copy" type="button"><Clipboard /> 复制结果</button><button class="tool-clear" id="json-clear" type="button"><Eraser /> 清空</button></div><p class="json-status" id="json-status">输入内容只在本地处理。</p></section>
+    <a class="standalone-back-link" href="/tools/tiny-tools/"><ExternalLink /> 也可以在 Tiny Tools 中使用 JSON 格式化</a>
+  </main>
+</Layout>
+<script src="../../../scripts/json-formatter.ts"></script>

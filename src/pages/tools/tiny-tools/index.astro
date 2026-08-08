@@ -1,0 +1,20 @@
+---
+import { ArrowLeft, Clipboard, Eraser, RotateCcw, Sparkles } from 'lucide-astro';
+import Layout from '@/layouts/Layout.astro';
+---
+<Layout title="Tiny Tools · Bai / 白" description="一组在浏览器本地运行的轻量在线工具。">
+  <main class="tools-page section-wrap">
+    <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
+    <header class="tools-page-header"><div><p class="eyebrow">TINY TOOLS / LOCAL FIRST</p><h1>小工具集合</h1><p>解决那些不值得安装软件、却总要花几分钟的小问题。输入只留在你的浏览器里。</p></div><div class="tools-page-mark"><Sparkles /></div></header>
+    <section class="tool-workbench">
+      <aside class="tool-nav" aria-label="工具选择"><p class="eyebrow">TOOLS</p><button class="tool-tab active" data-tool="timestamp" type="button">时间戳转换 <small>timestamp</small></button><button class="tool-tab" data-tool="base64" type="button">Base64 编解码 <small>base64</small></button><button class="tool-tab" data-tool="hash" type="button">MD5 摘要 <small>md5</small></button><button class="tool-tab" data-tool="color" type="button">颜色值转换 <small>color</small></button><button class="tool-tab" data-tool="json" type="button">JSON 格式化 <small>json</small></button></aside>
+      <div class="tool-panel">
+        <div class="tool-panel-heading"><div><span class="eyebrow" id="tool-kicker">TIME UTILITY</span><h2 id="tool-title">时间戳转换</h2></div><button class="tool-clear" id="tool-clear" type="button"><Eraser /> 清空</button></div>
+        <div class="tool-fields"><label><span id="tool-input-label">输入时间戳（毫秒）</span><textarea id="tool-input" rows="5" placeholder="例如：1713600000000"></textarea></label><label><span id="tool-output-label">转换结果</span><textarea id="tool-output" rows="5" readonly></textarea></label></div>
+        <div class="tool-panel-actions"><button class="benchmark-primary" id="tool-run" type="button">转换 <Sparkles /></button><button class="benchmark-secondary" id="tool-copy" type="button"><Clipboard /> 复制结果</button></div><p class="tool-note" id="tool-note">支持毫秒时间戳，也会显示当前时间。</p>
+      </div>
+    </section>
+    <section class="tools-page-foot"><RotateCcw /><p>这些工具不请求服务器、不写入数据库。关闭页面后，输入内容也不会被保留。</p></section>
+  </main>
+</Layout>
+<script src="../../../scripts/tiny-tools.ts"></script>

@@ -21,6 +21,9 @@ npm run preview # 预览构建产物
 
 - `src/content/entries/`：文章、项目、工具、游戏、收藏的 Markdown 内容。新增文件即可进入页面。
 - `src/pages/games/`：游戏项目列表、游戏详情页和自托管人类基准测试。
+
+- `src/pages/tools/`：Tiny Tools 集合、在线工具目录和独立工具页面。
+- `src/scripts/tiny-tools.ts`：Tiny Tools 的时间戳、Base64、MD5、颜色值和 JSON 工具逻辑。
 - `src/data/benchmark.ts`：人类基准测试的测试项配置。
 - `src/scripts/benchmark.ts`：人类基准测试客户端交互逻辑。
 - `src/data/about.ts`：作者介绍、开发进度和版本说明的集中数据。
@@ -49,6 +52,17 @@ python3 scripts/generate_assets.py
 参考项目：<https://gitee.com/aring1998/human-benchmark>
 
 参考项目采用 GNU GPL v3。本站实现使用独立代码，不直接复制参考项目文件；如继续改编或分发参考项目代码，请遵守其许可证要求。
+
+
+## 页面约定
+
+- 详情页中的外部链接必须放在页面开头区域：位于标题、简介和封面之后，正文内容之前，避免用户翻页寻找。
+- 同一详情页的操作按钮统一放在 `.detail-actions` 中，外部链接排在最前；按钮使用统一高度并保持顶部对齐。
+- 外部链接需要使用明显的视觉样式（颜色、下划线或外链图标），并在新标签页打开。
+- 首页项目展示区使用等宽网格，不为首个项目设置额外跨列或放大宽度；移动端按响应式规则降为单列。
+
+- 在线工具统一使用 `kind: tool`，通过 `area: tiny` 放入 Tiny Tools 集合，或通过 `area: standalone` 使用独立工具入口；工具应优先提供本站 `demoUrl`，不再混入项目档案。
+- 参考 baizixv.com 的工具分类思路，但所有工具在本站独立实现；默认采用浏览器本地处理，不上传或保存用户输入。
 
 ## 部署
 

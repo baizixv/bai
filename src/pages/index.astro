@@ -4,6 +4,7 @@ import Layout from '@/layouts/Layout.astro';
 import Hero from '@/components/Hero.astro';
 import WritingSection from '@/components/WritingSection.astro';
 import ProjectsSection from '@/components/ProjectsSection.astro';
+import ToolsSection from '@/components/ToolsSection.astro';
 import GamesSection from '@/components/GamesSection.astro';
 import LibrarySection from '@/components/LibrarySection.astro';
 import AboutSection from '@/components/AboutSection.astro';
@@ -11,7 +12,8 @@ import Footer from '@/components/Footer.astro';
 
 const entries = await getCollection('entries');
 const articles = entries.filter((entry) => entry.data.kind === 'article').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const projects = entries.filter((entry) => entry.data.kind === 'project' || entry.data.kind === 'tool').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const projects = entries.filter((entry) => entry.data.kind === 'project').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const tools = entries.filter((entry) => entry.data.kind === 'tool').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const games = entries.filter((entry) => entry.data.kind === 'game').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const bookmarks = entries.filter((entry) => entry.data.kind === 'bookmark').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
@@ -20,6 +22,7 @@ const bookmarks = entries.filter((entry) => entry.data.kind === 'bookmark').sort
     <Hero />
     <WritingSection articles={articles} />
     <ProjectsSection projects={projects} />
+    <ToolsSection tools={tools} />
     <GamesSection games={games} />
     <LibrarySection bookmarks={bookmarks} />
     <AboutSection />

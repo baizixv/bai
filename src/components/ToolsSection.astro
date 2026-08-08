@@ -1,0 +1,30 @@
+---
+import { ArrowUpRight, Braces, Code2, Wrench } from 'lucide-astro';
+import type { CollectionEntry } from 'astro:content';
+
+type Entry = CollectionEntry<'entries'>;
+interface Props { tools: Entry[]; }
+const { tools } = Astro.props;
+const tinyTools = tools.filter((tool) => tool.data.area === 'tiny' && tool.id !== 'tiny-tools');
+const standaloneTools = tools.filter((tool) => tool.data.area === 'standalone');
+---
+<section class="content-section tools-section" id="tools">
+  <div class="section-wrap">
+    <div class="section-heading">
+      <div><p class="eyebrow">03 / ONLINE TOOLS</p><h2>在线工具</h2></div>
+      <a class="view-all" href="/tools/">打开工具区 <ArrowUpRight /></a>
+    </div>
+    <div class="tools-intro"><div class="tools-symbol"><Wrench /></div><p>把常用的小动作做成打开即用的工具。不上传内容，不保存输入，尽量让每一次使用都保持轻量。</p></div>
+    {tinyTools.length > 0 && <div class="tools-group">
+      <div class="tools-group-heading"><div><span class="eyebrow">TINY TOOLS</span><h3>小工具集合</h3></div><a href="/tools/tiny-tools/">查看全部 <ArrowUpRight /></a></div>
+      <div class="tiny-tools-grid searchable-group">
+        {tinyTools.map((tool) => <a class="tiny-tool-card searchable-item" data-search={`${tool.data.title} ${tool.data.description}`} href={tool.data.demoUrl ?? `/projects/${tool.id.replace(/\.md$/, '')}/`}>
+          <span class="tiny-tool-icon"><Braces /></span><span class="project-type">{tool.data.label}</span><h4>{tool.data.title}</h4><p>{tool.data.description}</p><ArrowUpRight />
+        </a>)}
+      </div>
+    </div>}
+    {standaloneTools.length > 0 && <div class="standalone-tools-row">
+      {standaloneTools.map((tool) => <a class="standalone-tool-card searchable-item" data-search={`${tool.data.title} ${tool.data.description}`} href={tool.data.demoUrl ?? `/projects/${tool.id.replace(/\.md$/, '')}/`}><span class="standalone-tool-icon"><Code2 /></span><div><span class="eyebrow">STANDALONE TOOL</span><h3>{tool.data.title}</h3><p>{tool.data.description}</p></div><ArrowUpRight /></a>)}
+    </div>}
+  </div>
+</section>
