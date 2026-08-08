@@ -18,6 +18,7 @@ const { projects } = Astro.props;
           {project.data.visual === 'xiaoman' && <><span class="visual-glyph">小<br />满</span><span class="visual-note">A QUIET<br />READING APP</span></>}
           {project.data.visual === 'tiny' && <><span class="tiny-label">tiny<br />tools</span><span class="tiny-grid">▦</span></>}
           {project.data.visual === 'rain' && <><span class="rain-title">RAINY<br /><i>DAY</i></span><span class="rain-window">▥</span></>}
+          {project.data.visual === 'extension' && <><span class="extension-mark">⌘</span><span class="extension-code">CHROME<br />EXTENSION</span><span class="extension-tabs">● ● ●</span></>}
         </div>
         <div class="project-info"><div><span class="project-type">{project.data.label}</span><h3>{project.data.title}</h3><p>{project.data.description}</p></div><ArrowUpRight /></div>
       </a>)}

@@ -14,7 +14,7 @@ const entries = defineCollection({
     label: z.string().optional(),
     url: z.string().optional(),
     icon: z.enum(['layers', 'type', 'github', 'book-open']).optional(),
-    visual: z.enum(['xiaoman', 'tiny', 'rain']).optional()
+    visual: z.enum(['xiaoman', 'tiny', 'rain', 'extension']).optional()
   })
 });
 
