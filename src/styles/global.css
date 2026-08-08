@@ -70,7 +70,7 @@ h1 em, .closing em { color: var(--blue); font-style: normal; }
 .now-note { color: #a8aba8; font-size: 11px; line-height: 1.7; margin: 9px 0 17px; }
 .progress { height: 2px; background: #5a5e5c; }.progress span { display: block; height: 100%; background: var(--yellow); }
 .progress-meta { display: flex; justify-content: space-between; color: #909491; font: 9px 'DM Mono', monospace; margin-top: 7px; }
-.ticker-band { background: var(--blue); color: #f5f1e9; overflow: hidden; transform: rotate(-1.1deg) scale(1.02); margin: 0 -20px; }
+.ticker-band { background: var(--blue); color: #f5f1e9; overflow: hidden; transform: none; margin: 0; }
 .ticker-track { height: 52px; display: flex; align-items: center; justify-content: space-around; min-width: 1150px; font: 11px 'DM Mono', monospace; letter-spacing: .17em; }
 .ticker-track b { color: var(--yellow); font-size: 18px; font-weight: 400; }
 .content-section { padding-top: 110px; padding-bottom: 108px; }
