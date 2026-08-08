@@ -1,11 +1,11 @@
 ---
-import { ArrowUpRight, Braces, Code2, Wrench } from 'lucide-astro';
+import { ArrowUpRight, Braces, Calculator, Wrench } from 'lucide-astro';
 import type { CollectionEntry } from 'astro:content';
 
 type Entry = CollectionEntry<'entries'>;
 interface Props { tools: Entry[]; }
 const { tools } = Astro.props;
-const tinyTools = tools.filter((tool) => tool.data.area === 'tiny' && tool.id !== 'tiny-tools');
+const toolCards = tools.filter((tool) => tool.data.area === 'tiny' && tool.id !== 'tiny-tools');
 const standaloneTools = tools.filter((tool) => tool.data.area === 'standalone');
 ---
 <section class="content-section tools-section" id="tools">
@@ -15,16 +15,17 @@ const standaloneTools = tools.filter((tool) => tool.data.area === 'standalone');
       <a class="view-all" href="/tools/">打开工具区 <ArrowUpRight /></a>
     </div>
     <div class="tools-intro"><div class="tools-symbol"><Wrench /></div><p>把常用的小动作做成打开即用的工具。不上传内容，不保存输入，尽量让每一次使用都保持轻量。</p></div>
-    {tinyTools.length > 0 && <div class="tools-group">
-      <div class="tools-group-heading"><div><span class="eyebrow">TINY TOOLS</span><h3>小工具集合</h3></div><a href="/tools/tiny-tools/">查看全部 <ArrowUpRight /></a></div>
+    <div class="tools-group">
+      <div class="tools-group-heading"><div><span class="eyebrow">QUICK UTILITIES</span><h3>常用小工具</h3></div></div>
       <div class="tiny-tools-grid searchable-group">
-        {tinyTools.map((tool) => <a class="tiny-tool-card searchable-item" data-search={`${tool.data.title} ${tool.data.description}`} href={tool.data.demoUrl ?? `/projects/${tool.id.replace(/\.md$/, '')}/`}>
+        {toolCards.map((tool) => <a class="tiny-tool-card searchable-item" data-search={`${tool.data.title} ${tool.data.description}`} href={tool.data.demoUrl ?? '/tools/'}>
           <span class="tiny-tool-icon"><Braces /></span><span class="project-type">{tool.data.label}</span><h4>{tool.data.title}</h4><p>{tool.data.description}</p><ArrowUpRight />
         </a>)}
+        <a class="tiny-tool-card more-tool-card searchable-item" data-search="更多工具 在线工具 Tiny Tools" href="/tools/tiny-tools/"><span class="tiny-tool-icon"><Wrench /></span><span class="project-type">MORE TOOLS</span><h4>更多工具</h4><p>打开工具集合，继续探索更多可以直接使用的小工具。</p><ArrowUpRight /></a>
       </div>
-    </div>}
+    </div>
     {standaloneTools.length > 0 && <div class="standalone-tools-row">
-      {standaloneTools.map((tool) => <a class="standalone-tool-card searchable-item" data-search={`${tool.data.title} ${tool.data.description}`} href={tool.data.demoUrl ?? `/projects/${tool.id.replace(/\.md$/, '')}/`}><span class="standalone-tool-icon"><Code2 /></span><div><span class="eyebrow">STANDALONE TOOL</span><h3>{tool.data.title}</h3><p>{tool.data.description}</p></div><ArrowUpRight /></a>)}
+      {standaloneTools.map((tool) => <a class="standalone-tool-card searchable-item" data-search={`${tool.data.title} ${tool.data.description}`} href={tool.data.demoUrl ?? '/tools/'}><span class="standalone-tool-icon"><Calculator /></span><div><span class="eyebrow">STANDALONE TOOL</span><h3>{tool.data.title}</h3><p>{tool.data.description}</p></div><ArrowUpRight /></a>)}
     </div>}
   </div>
 </section>

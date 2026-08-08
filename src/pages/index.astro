@@ -16,10 +16,15 @@ const projects = entries.filter((entry) => entry.data.kind === 'project').sort((
 const tools = entries.filter((entry) => entry.data.kind === 'tool').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const games = entries.filter((entry) => entry.data.kind === 'game').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const bookmarks = entries.filter((entry) => entry.data.kind === 'bookmark').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const latestEntry = [...entries].sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
+const currentEntry = entries.find((entry) => entry.data.now) ?? latestEntry;
+const stats = { articles: articles.length, projects: projects.length, tools: tools.length, lastUpdated: latestEntry ? latestEntry.data.date.toISOString().slice(5, 10).replace('-', '.') : '—' };
+const years = [...new Set(entries.map((entry) => entry.data.date.getFullYear()))].sort((a, b) => a - b);
+const period = years.length > 1 ? `${years[0]}—${years[years.length - 1]}` : `${years[0] ?? new Date().getFullYear()}`;
 ---
 <Layout>
   <main id="top">
-    <Hero />
+    <Hero currentEntry={currentEntry} stats={stats} period={period} />
     <WritingSection articles={articles} />
     <ProjectsSection projects={projects} />
     <ToolsSection tools={tools} />

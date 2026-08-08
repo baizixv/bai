@@ -1,14 +1,14 @@
 ---
-import { ArrowLeft, ArrowUpRight, Braces, Code2, Sparkles, Wrench } from 'lucide-astro';
+import { ArrowLeft, ArrowUpRight, Braces, Calculator, Sparkles, Wrench } from 'lucide-astro';
 import Layout from '@/layouts/Layout.astro';
 ---
 <Layout title="在线工具 · Bai / 白" description="Bai 的在线工具：轻量、本地优先、打开即用。">
   <main class="tools-page section-wrap">
     <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
     <header class="tools-page-header"><div><p class="eyebrow">03 / ONLINE TOOLS</p><h1>在线工具</h1><p>从 baizixv.com 的工具思路出发，把常用的小功能重新实现为本站的本地工具。</p></div><div class="tools-page-mark"><Wrench /></div></header>
-    <div class="tools-directory">
-      <a class="tools-directory-card tiny-directory-card" href="/tools/tiny-tools/"><span class="tools-directory-icon"><Braces /></span><span class="eyebrow">TINY TOOLS</span><h2>小工具集合</h2><p>时间戳、Base64、MD5、颜色值和 JSON 格式化，适合快速处理一小段内容。</p><span class="tools-directory-link">打开工具集合 <ArrowUpRight /></span></a>
-      <a class="tools-directory-card standalone-directory-card" href="/tools/json-formatter/"><span class="tools-directory-icon"><Code2 /></span><span class="eyebrow">STANDALONE TOOL</span><h2>JSON 格式化器</h2><p>专注于 JSON 的格式化与语法检查，适合调试接口和阅读配置文件。</p><span class="tools-directory-link">立即使用 <ArrowUpRight /></span></a>
+    <div class="tools-directory more-tools-directory">
+      <a class="tools-directory-card tiny-directory-card" href="/tools/tiny-tools/"><span class="tools-directory-icon"><Braces /></span><span class="eyebrow">MORE TOOLS</span><h2>更多工具</h2><p>时间戳、Base64、MD5、颜色值、随机颜色、二维码和 JSON 格式化，都收在同一个本地工具箱里。</p><span class="tools-directory-link">打开工具集合 <ArrowUpRight /></span></a>
+      <a class="tools-directory-card finance-directory-card" href="/tools/finance/"><span class="tools-directory-icon"><Calculator /></span><span class="eyebrow">FINANCE</span><h2>财务计算</h2><p>借贷月供计算与投资回报测算。输入参数后立即得到透明的估算结果。</p><span class="tools-directory-link">开始计算 <ArrowUpRight /></span></a>
     </div>
     <div class="tools-page-foot"><Sparkles /><p>所有当前工具都在浏览器本地运行，输入内容不会上传或保存。</p></div>
   </main>

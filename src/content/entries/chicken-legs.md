@@ -3,6 +3,9 @@ kind: game
 title: 一百万只鸡 / Chicken Legs
 description: 每次从还有腿的鸡中随机抽取一只砍掉一条腿，看看最后还剩多少完好鸡。
 date: 2025-03-22
+now: true
+progress: 100
+status: 已上线
 label: 概率模拟 · 数学游戏
 visual: chicken
 image: /assets/game-chicken-legs.png
