@@ -27,6 +27,18 @@ npm run preview # 预览构建产物
 - `src/pages/`：首页、文章列表、项目列表、游戏列表、关于页和详情页路由。
 - `src/styles/global.css`：全局视觉系统和响应式规则。
 - `src/scripts/site.ts`：搜索、主题切换和滚动导航交互。
+- `public/assets/`：本地 Logo、favicon、首页插画和项目封面。
+- `scripts/generate_assets.py`：使用 Pillow 重新生成整套网站图形资源。
+
+## 图形资源
+
+网站图形由本地 Python/Pillow 脚本生成，不依赖在线图片服务：
+
+```bash
+python3 scripts/generate_assets.py
+```
+
+修改脚本中的配色或绘制逻辑后重新执行即可，生成结果会写入 `public/assets/`。
 
 ## 部署
 

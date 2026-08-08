@@ -13,6 +13,7 @@ const entries = defineCollection({
     featured: z.boolean().default(false),
     label: z.string().optional(),
     url: z.string().optional(),
+    image: z.string().optional(),
     icon: z.enum(['layers', 'type', 'github', 'book-open']).optional(),
     visual: z.enum(['xiaoman', 'tiny', 'rain', 'extension']).optional()
   })

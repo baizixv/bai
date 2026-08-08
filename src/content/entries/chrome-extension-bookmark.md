@@ -5,6 +5,7 @@ description: 一个让当前页面快速保存到指定书签位置的 Chrome �
 date: 2025-03-20
 label: Chrome 扩展 · React / TypeScript
 visual: extension
+image: /assets/project-bookmark-extension.png
 url: https://github.com/baizixv/chrome-extension-bookmark
 ---
 

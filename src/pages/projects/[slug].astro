@@ -18,6 +18,7 @@ const { Content } = await render(project);
       <span class="project-type">{project.data.label}</span>
       <h1>{project.data.title}</h1>
       <p class="detail-lede">{project.data.description}</p>
+      {project.data.image && <img class="detail-cover" src={project.data.image} alt={`${project.data.title} 项目封面`} width="900" height="600" />}
       <div class="detail-body"><Content /></div>
       {project.data.url?.startsWith('http') && <a class="external-project-link" href={project.data.url} target="_blank" rel="noreferrer"><ExternalLink /><span>访问外部项目</span><ArrowUpRight /></a>}
     </article>

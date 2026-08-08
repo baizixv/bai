@@ -18,6 +18,7 @@ const { Content } = await render(game);
       <div class="game-detail-label"><Gamepad2 /> <span>{game.data.label}</span></div>
       <h1>{game.data.title}</h1>
       <p class="detail-lede">{game.data.description}</p>
+      {game.data.image && <img class="detail-cover" src={game.data.image} alt={`${game.data.title} 游戏封面`} width="900" height="600" />}
       <div class="detail-body"><Content /></div>
       <a class="game-launch" href={game.data.url ?? '#'}><Gamepad2 /> 开始游戏 <ArrowUpRight /></a>
     </article>

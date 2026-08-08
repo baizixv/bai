@@ -19,8 +19,7 @@ const { games } = Astro.props;
     <div class="game-grid searchable-group">
       {games.map((game) => <a class="game-card searchable-item" data-search={`${game.data.title} ${game.data.description} ${game.data.label ?? ''}`} href={`/games/${game.id.replace(/\.md$/, '')}/`}>
         <div class={`project-visual visual-${game.data.visual}`}>
-          {game.data.visual === 'rain' && <><span class="rain-title">RAINY<br /><i>DAY</i></span><span class="rain-window">▥</span></>}
-          {game.data.visual !== 'rain' && <span class="game-fallback-mark">PLAY</span>}
+          {game.data.image ? <img src={game.data.image} alt={`${game.data.title} 游戏封面`} loading="lazy" width="900" height="600" /> : <span class="game-fallback-mark">PLAY</span>}
           <span class="game-play"><Gamepad2 /> 开始探索 <ArrowUpRight /></span>
         </div>
         <div class="game-info"><div><span class="project-type">{game.data.label}</span><h3>{game.data.title}</h3><p>{game.data.description}</p></div><ArrowUpRight /></div>
