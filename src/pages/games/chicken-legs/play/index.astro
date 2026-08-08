@@ -14,8 +14,10 @@ import Layout from '@/layouts/Layout.astro';
         <label for="chicken-count">鸡的数量</label>
         <div class="chicken-input-row"><input id="chicken-count" type="number" min="10" max="1000000" step="1000" value="100000" /><span>只</span></div>
         <p>浏览器版使用 O(N) 状态模拟。可以输入最多 1,000,000 只，结果会在几百毫秒内完成。</p>
-        <button class="benchmark-primary" id="chicken-run" type="button">运行模拟 <ArrowUpRight /></button>
-        <button class="benchmark-secondary" id="chicken-reset" type="button"><RotateCcw /> 重置</button>
+        <div class="chicken-actions">
+          <button class="benchmark-primary" id="chicken-run" type="button">运行模拟 <ArrowUpRight /></button>
+          <button class="benchmark-secondary" id="chicken-reset" type="button"><RotateCcw /> 重置</button>
+        </div>
       </div>
       <div class="chicken-visual" id="chicken-visual">
         <div class="chicken-visual-top"><span id="chicken-progress-label">等待开始</span><span id="chicken-progress-value">0%</span></div>
