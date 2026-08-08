@@ -52,6 +52,26 @@
   background: var(--green);
   color: var(--ink);
 }
+.media-tone-blue .media-card-mark,
+.media-tone-blue .library-catalog-icon {
+  background: var(--blue);
+  color: var(--paper);
+}
+.media-tone-yellow .media-card-mark,
+.media-tone-yellow .library-catalog-icon {
+  background: var(--yellow);
+  color: var(--ink);
+}
+.media-tone-pink .media-card-mark,
+.media-tone-pink .library-catalog-icon {
+  background: var(--pink);
+  color: var(--ink);
+}
+.media-tone-green .media-card-mark,
+.media-tone-green .library-catalog-icon {
+  background: var(--green);
+  color: var(--ink);
+}
 .media-card-copy {
   margin-top: 25px;
 }
@@ -62,9 +82,22 @@
     monospace;
 }
 .media-card h3 {
-  margin: 7px 0 5px;
-  font-size: 18px;
-  letter-spacing: -0.04em;
+  margin: 8px 0 8px;
+  color: var(--ink);
+  font-size: clamp(21px, 2.3vw, 29px);
+  font-family: "Cormorant Garamond", "Noto Sans SC", serif;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.15;
+}
+.media-card h3::after {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 2px;
+  margin-top: 10px;
+  background: currentColor;
+  opacity: 0.35;
 }
 .media-card p {
   max-width: 210px;
@@ -168,13 +201,39 @@
   padding: 16px 0;
 }
 .library-catalog-item h3 {
-  font-size: 15px;
-  margin: 0 0 5px;
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 20px;
+  font-family: "Cormorant Garamond", "Noto Sans SC", serif;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+.library-catalog-item h3::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 1.05em;
+  margin-right: 9px;
+  vertical-align: -0.12em;
+  background: var(--blue);
+}
+.library-catalog-item.media-tone-yellow h3::before {
+  background: #c99500;
+}
+.library-catalog-item.media-tone-pink h3::before {
+  background: #d96d75;
+}
+.library-catalog-item.media-tone-green h3::before {
+  background: #5da878;
 }
 .library-catalog-item p {
   color: var(--muted);
   font-size: 11px;
   margin: 0;
+}
+.library-catalog-item.media-tone-blue h3::before {
+  background: var(--blue);
 }
 .library-item-meta {
   display: flex;

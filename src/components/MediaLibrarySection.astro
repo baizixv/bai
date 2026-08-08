@@ -1,12 +1,14 @@
 ---
 import { ArrowUpRight, BookOpen, Film, Gamepad2 } from 'lucide-astro';
 import type { CollectionEntry } from 'astro:content';
+import { formatMediaTitle, getMediaTone, type MediaTone } from '@/lib/media';
 
 type Entry = CollectionEntry<'entries'>;
 interface Props { media: Entry[]; }
 const { media } = Astro.props;
 const iconMap = { book: BookOpen, film: Film, game: Gamepad2 };
 const typeLabels = { book: '书籍', film: '电影', game: '游戏' };
+const tones: MediaTone[] = ['blue', 'yellow', 'pink', 'green'];
 ---
 <section class="content-section media-library-section" id="library">
   <div class="section-wrap">
@@ -16,8 +18,8 @@ const typeLabels = { book: '书籍', film: '电影', game: '游戏' };
     </div>
     <p class="media-library-lede">收藏看过的书、电影和游戏。不是评分榜，而是给未来的自己留一份可回看的记录。</p>
     {media.length > 0 ? <div class="media-library-grid searchable-group">
-      {media.slice(0, 6).map((item) => { const type = item.data.mediaType ?? 'book'; const Icon = iconMap[type]; return <a class={`media-card media-${type} searchable-item`} data-search={`${item.data.title} ${item.data.description} ${item.data.creator ?? ''}`} href={item.data.url ?? '/library/'} target={item.data.url ? '_blank' : undefined} rel={item.data.url ? 'noreferrer' : undefined}>
-        <div class="media-card-mark"><Icon /></div><div class="media-card-copy"><span class="media-type">{typeLabels[type]}{item.data.status ? ` · ${item.data.status}` : ''}</span><h3>{item.data.title}</h3><p>{item.data.description}</p>{item.data.creator && <small class="media-creator">{item.data.creator}</small>}</div>{item.data.rating !== undefined && <span class="media-rating">{'★'.repeat(Math.round(item.data.rating))}</span>}<ArrowUpRight />
+      {media.slice(0, 6).map((item, index) => { const type = item.data.mediaType ?? 'book'; const Icon = iconMap[type]; const tone = getMediaTone(item.data.color ?? tones[index % tones.length]); return <a class={`media-card media-${type} media-tone-${tone} searchable-item`} data-search={`${item.data.title} ${item.data.description} ${item.data.creator ?? ''}`} href={item.data.url ?? '/library/'} target={item.data.url ? '_blank' : undefined} rel={item.data.url ? 'noreferrer' : undefined}>
+        <div class="media-card-mark"><Icon /></div><div class="media-card-copy"><span class="media-type">{typeLabels[type]}{item.data.status ? ` · ${item.data.status}` : ''}</span><h3>{formatMediaTitle(item.data.title, type)}</h3><p>{item.data.description}</p>{item.data.creator && <small class="media-creator">{item.data.creator}</small>}</div>{item.data.rating !== undefined && <span class="media-rating">{'★'.repeat(Math.round(item.data.rating))}</span>}<ArrowUpRight />
       </a>; })}
     </div> : <a class="media-empty" href="/library/"><span class="media-card-mark"><BookOpen /></span><div><span class="eyebrow">YOUR LIBRARY</span><h3>从第一本书开始记录</h3><p>在图书馆里添加你看过的书、电影或游戏，它们会出现在这里。</p></div><ArrowUpRight /></a>}
   </div>
