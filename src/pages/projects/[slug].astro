@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
-import { ArrowLeft, ArrowUpRight } from 'lucide-astro';
+import { ArrowLeft, ArrowUpRight, ExternalLink } from 'lucide-astro';
 import Layout from '@/layouts/Layout.astro';
 
 export async function getStaticPaths() {
@@ -19,6 +19,7 @@ const { Content } = await render(project);
       <h1>{project.data.title}</h1>
       <p class="detail-lede">{project.data.description}</p>
       <div class="detail-body"><Content /></div>
+      {project.data.url?.startsWith('http') && <a class="external-project-link" href={project.data.url} target="_blank" rel="noreferrer"><ExternalLink /><span>访问外部项目</span><ArrowUpRight /></a>}
     </article>
     <a class="next-link" href="/#projects">更多项目 <ArrowUpRight /></a>
   </main>

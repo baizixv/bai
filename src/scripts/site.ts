@@ -45,3 +45,14 @@ const observer = new IntersectionObserver((entries) => {
   navLinks.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === `/#${visible.target.id}`));
 }, { rootMargin: '-25% 0px -65% 0px', threshold: [0, 0.25, 0.6] });
 sections.forEach((section) => observer.observe(section));
+
+document.querySelectorAll<HTMLAnchorElement>('a[href^="http"]').forEach((link) => {
+  try {
+    if (new URL(link.href).origin !== window.location.origin) {
+      link.target = '_blank';
+      link.rel = 'noreferrer';
+    }
+  } catch {
+    // Ignore malformed URLs and leave them as regular links.
+  }
+});
