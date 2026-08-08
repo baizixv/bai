@@ -6,7 +6,7 @@ import Layout from '@/layouts/Layout.astro';
 const articles = (await getCollection('entries', ({ data }) => data.kind === 'article')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const formatDate = (date: Date) => date.toISOString().slice(0, 10);
 ---
-<Layout title="文章 · Bai / 白">
+<Layout title="文章 · 白子诩">
   <main class="archive-page section-wrap">
     <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
     <div class="archive-heading"><p class="eyebrow">01 / WORDS</p><h1>文章集</h1><p>记录产品、开发、阅读和那些暂时没有结论的想法。</p></div>

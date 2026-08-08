@@ -5,7 +5,7 @@ import Layout from '@/layouts/Layout.astro';
 
 const games = (await getCollection('entries', ({ data }) => data.kind === 'game')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
-<Layout title="游戏项目 · Bai / 白">
+<Layout title="游戏项目 · 白子诩">
   <main class="archive-page section-wrap">
     <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
     <div class="archive-heading"><p class="eyebrow">03 / GAME LAB</p><h1>游戏项目区</h1><p>小游戏、交互实验和正在迭代的游戏原型。</p></div>

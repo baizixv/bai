@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 const { game } = Astro.props;
 const { Content } = await render(game);
 ---
-<Layout title={`${game.data.title} · Bai / 白`} description={game.data.description}>
+<Layout title={`${game.data.title} · 白子诩`} description={game.data.description}>
   <main class="detail-page section-wrap game-detail-page">
     <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
     <article class="detail-article">

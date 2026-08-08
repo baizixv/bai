@@ -5,7 +5,7 @@ import Layout from '@/layouts/Layout.astro';
 
 const projects = (await getCollection('entries', ({ data }) => data.kind === 'project')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
-<Layout title="项目 · Bai / 白">
+<Layout title="项目 · 白子诩">
   <main class="archive-page section-wrap">
     <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
     <div class="archive-heading"><p class="eyebrow">02 / WORKS</p><h1>项目档案</h1><p>把想法做成可以被使用、被打开、被玩一下的东西。</p></div>
