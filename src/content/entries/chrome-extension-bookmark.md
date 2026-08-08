@@ -29,4 +29,3 @@ url: https://github.com/baizixv/chrome-extension-bookmark
 
 React · TypeScript · Vite · Chrome Extension Manifest V3
 
-[查看 GitHub 仓库](https://github.com/baizixv/chrome-extension-bookmark)
