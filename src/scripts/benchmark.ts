@@ -6,6 +6,11 @@ const title = document.querySelector<HTMLElement>('#benchmark-title');
 const instruction = document.querySelector<HTMLElement>('#benchmark-instruction');
 const category = document.querySelector<HTMLElement>('#benchmark-category');
 const best = document.querySelector<HTMLElement>('#benchmark-best');
+const normalReference = document.querySelector<HTMLElement>('#benchmark-normal');
+const averageReference = document.querySelector<HTMLElement>('#benchmark-average');
+const professionalReference = document.querySelector<HTMLElement>('#benchmark-professional');
+const humanBestReference = document.querySelector<HTMLElement>('#benchmark-human-best');
+const positionReference = document.querySelector<HTMLElement>('#benchmark-position');
 const resultScore = document.querySelector<HTMLElement>('#result-score');
 const resultUnit = document.querySelector<HTMLElement>('#result-unit');
 const resultMessage = document.querySelector<HTMLElement>('#result-message');
@@ -38,6 +43,29 @@ const setBest = (id: string, value: number) => {
   } catch { /* private browsing may disable storage */ }
 };
 const formatBest = (value: string) => value === '—' ? value : `${value} ${current.unit}`;
+const formatReference = (value: number) => `${value} ${current.unit}`;
+const updateReferences = () => {
+  const [low, high] = current.normalRange;
+  if (normalReference) normalReference.textContent = `${formatReference(low)} — ${formatReference(high)}`;
+  if (averageReference) averageReference.textContent = formatReference(current.average);
+  if (professionalReference) professionalReference.textContent = formatReference(current.professional);
+  if (humanBestReference) humanBestReference.textContent = formatReference(current.humanBest);
+  if (positionReference) positionReference.hidden = true;
+};
+const getPosition = (value: number) => {
+  const [low, high] = current.normalRange;
+  if (value >= low && value <= high) return '正常范围';
+  if (current.higherIsBetter) {
+    if (value >= current.humanBest) return '接近人类最高水平';
+    if (value >= current.professional) return '职业水平';
+    if (value > high) return '高于正常范围';
+    return '低于正常范围';
+  }
+  if (value <= current.humanBest) return '接近人类最高水平';
+  if (value <= current.professional) return '职业水平';
+  if (value < low) return '高于正常范围';
+  return '低于正常范围';
+};
 const showScreen = (screen: 'welcome' | 'play' | 'result') => {
   if (welcome) welcome.hidden = screen !== 'welcome';
   if (playScreen) playScreen.hidden = screen !== 'play';
@@ -56,6 +84,7 @@ const selectTest = (id: string) => {
   if (instruction) instruction.textContent = selected.intro;
   if (category) category.textContent = `${String(tests.indexOf(selected) + 1).padStart(2, '0')} / ${categoryName(selected.id)}`;
   if (best) best.textContent = `最佳：${formatBest(getBest(selected.id))}`;
+  updateReferences();
   clearControls(); showScreen('welcome');
 };
 
@@ -64,6 +93,7 @@ const finish = (value: number, message: string) => {
   if (resultScore) resultScore.textContent = String(value);
   if (resultUnit) resultUnit.textContent = current.unit;
   if (resultMessage) resultMessage.textContent = message;
+  if (positionReference) { positionReference.textContent = `你的定位：${getPosition(value)}（${formatReference(value)}）`; positionReference.hidden = false; }
   if (best) best.textContent = `最佳：${formatBest(getBest(current.id))}`;
   showScreen('result');
 };
