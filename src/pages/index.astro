@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import Hero from '@/components/Hero.astro';
+import WritingSection from '@/components/WritingSection.astro';
+import ProjectsSection from '@/components/ProjectsSection.astro';
+import LibrarySection from '@/components/LibrarySection.astro';
+import Footer from '@/components/Footer.astro';
+
+const entries = await getCollection('entries');
+const articles = entries.filter((entry) => entry.data.kind === 'article').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const projects = entries.filter((entry) => entry.data.kind === 'project' || entry.data.kind === 'tool').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const bookmarks = entries.filter((entry) => entry.data.kind === 'bookmark').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<Layout>
+  <main id="top">
+    <Hero />
+    <WritingSection articles={articles} />
+    <ProjectsSection projects={projects} />
+    <LibrarySection bookmarks={bookmarks} />
+    <Footer />
+  </main>
+</Layout>

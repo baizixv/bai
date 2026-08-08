@@ -1,0 +1,26 @@
+---
+import { ArrowUpRight } from 'lucide-astro';
+import type { CollectionEntry } from 'astro:content';
+
+type Entry = CollectionEntry<'entries'>;
+interface Props { projects: Entry[]; }
+const { projects } = Astro.props;
+---
+<section class="content-section projects-section" id="projects">
+  <div class="section-wrap">
+    <div class="section-heading light-heading">
+      <div><p class="eyebrow">02 / WORKS</p><h2>做过一些东西</h2></div>
+      <a class="view-all" href="/projects/">项目档案 <ArrowUpRight /></a>
+    </div>
+    <div class="project-grid searchable-group">
+      {projects.map((project, index) => <a class={`project-card ${index === 0 ? 'project-main' : ''} searchable-item`} data-search={`${project.data.title} ${project.data.description} ${project.data.label ?? ''}`} href={`/projects/${project.id.replace(/\.md$/, '')}/`}>
+        <div class={`project-visual visual-${project.data.visual}`}>
+          {project.data.visual === 'xiaoman' && <><span class="visual-glyph">小<br />满</span><span class="visual-note">A QUIET<br />READING APP</span></>}
+          {project.data.visual === 'tiny' && <><span class="tiny-label">tiny<br />tools</span><span class="tiny-grid">▦</span></>}
+          {project.data.visual === 'rain' && <><span class="rain-title">RAINY<br /><i>DAY</i></span><span class="rain-window">▥</span></>}
+        </div>
+        <div class="project-info"><div><span class="project-type">{project.data.label}</span><h3>{project.data.title}</h3><p>{project.data.description}</p></div><ArrowUpRight /></div>
+      </a>)}
+    </div>
+  </div>
+</section>

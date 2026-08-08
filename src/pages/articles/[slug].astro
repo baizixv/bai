@@ -1,0 +1,25 @@
+---
+import { getCollection, render } from 'astro:content';
+import { ArrowLeft, ArrowUpRight } from 'lucide-astro';
+import Layout from '@/layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('entries', ({ data }) => data.kind === 'article');
+  return articles.map((article) => ({ params: { slug: article.id.replace(/\.md$/, '') }, props: { article } }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+---
+<Layout title={`${article.data.title} · Bai / 白`} description={article.data.description}>
+  <main class="detail-page section-wrap">
+    <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
+    <article class="detail-article">
+      <div class="article-meta"><span class={`tag tag-${article.data.color ?? 'blue'}`}>{article.data.tag}</span><span class="mono">{article.data.date.toISOString().slice(0, 10)} · {article.data.minutes}</span></div>
+      <h1>{article.data.title}</h1>
+      <p class="detail-lede">{article.data.description}</p>
+      <div class="detail-body"><Content /></div>
+    </article>
+    <a class="next-link" href="/#writing">更多文章 <ArrowUpRight /></a>
+  </main>
+</Layout>

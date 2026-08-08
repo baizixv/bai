@@ -1,0 +1,53 @@
+---
+import { Moon, Search, Sun } from 'lucide-astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = 'Bai / 白 · 数字花园', description = 'Bai 的个人数字花园：文章、工具、项目、游戏与收藏。' } = Astro.props;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="返回首页">
+          <span class="brand-mark">B</span>
+          <span class="brand-copy"><strong>Bai / 白</strong><small>digital garden</small></span>
+        </a>
+        <nav class="main-nav" aria-label="主导航">
+          <a class="active" href="/#now">现在</a>
+          <a href="/#writing">文章</a>
+          <a href="/#projects">项目</a>
+          <a href="/#library">收藏</a>
+        </nav>
+        <div class="top-actions">
+          <label class="search-box" for="site-search">
+            <Search aria-hidden="true" />
+            <input id="site-search" type="search" placeholder="搜索内容" autocomplete="off" />
+            <kbd>/</kbd>
+          </label>
+          <button class="icon-button" id="theme-toggle" type="button" aria-label="切换深色模式" title="切换深色模式">
+            <Sun class="theme-sun" aria-hidden="true" />
+            <Moon class="theme-moon" aria-hidden="true" />
+          </button>
+        </div>
+      </header>
+      <slot />
+    </div>
+    <div class="no-results" id="no-results" hidden>没有找到匹配的内容。换个关键词试试。</div>
+    <script src="../scripts/site.ts"></script>
+  </body>
+</html>
