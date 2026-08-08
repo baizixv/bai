@@ -7,7 +7,6 @@ label: 在线测试 · 认知训练
 visual: benchmark
 image: /assets/project-human-benchmark.png
 demoUrl: /games/human-benchmark/
-url: https://gitee.com/aring1998/human-benchmark
 ---
 
 ## 项目简介

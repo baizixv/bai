@@ -1,5 +1,5 @@
 ---
-import { ArrowLeft, ArrowUpRight, Check, ExternalLink, Gamepad2, RotateCcw } from 'lucide-astro';
+import { ArrowLeft, ArrowUpRight, Check, Gamepad2, RotateCcw } from 'lucide-astro';
 import Layout from '@/layouts/Layout.astro';
 import { benchmarkTests } from '@/data/benchmark';
 
@@ -28,7 +28,6 @@ const plannedTests = benchmarkTests.filter((test) => !test.playable);
         <div class="planned-test-list">
           {plannedTests.map((test) => <div class="planned-test"><span class={`benchmark-dot dot-${test.color}`}></span><span><strong>{test.title}</strong><small>{test.intro}</small></span><span class="planned-badge">SOON</span></div>)}
         </div>
-        <a class="source-link" href="https://gitee.com/aring1998/human-benchmark" target="_blank" rel="noreferrer"><ExternalLink /> 参考开源项目 <ArrowUpRight /></a>
       </aside>
 
       <section class="benchmark-stage" aria-live="polite">

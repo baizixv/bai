@@ -69,22 +69,84 @@ const finish = (value: number, message: string) => {
 const nextTest = () => { const index = tests.findIndex((test) => test.id === current.id); selectTest(tests[(index + 1) % tests.length].id); };
 
 const startReaction = () => {
-  let round = 0; const times: number[] = []; let timer: number | undefined;
-  const onClick = () => {
-    if (!busy) return;
-    if (!game?.classList.contains('reaction-ready')) { window.clearTimeout(timer); finish(0, '太快了。等待绿色出现后再点击。'); return; }
-    times.push(performance.now() - (Number(game.dataset.startedAt) || performance.now())); round += 1;
-    if (round >= 3) finish(Math.round(times.reduce((a, b) => a + b, 0) / times.length), '三轮平均反应时间。');
+  const surface = playScreen;
+  let round = 0;
+  const times: number[] = [];
+  let timer: number | undefined;
+  let startedAt = 0;
+  let state: 'waiting' | 'ready' = 'waiting';
+  const onPointerDown = (event: PointerEvent) => {
+    if (!busy || event.target instanceof HTMLButtonElement || event.target instanceof HTMLInputElement) return;
+    event.preventDefault();
+    if (state === 'waiting') {
+      window.clearTimeout(timer);
+      finish(0, '太快了。等待绿色出现后再点击。');
+      return;
+    }
+    times.push(Math.round(performance.now() - startedAt));
+    round += 1;
+    if (round >= 3) finish(Math.round(times.reduce((total, value) => total + value, 0) / times.length), '三轮平均反应时间。');
     else runRound();
   };
-  const runRound = () => { busy = true; game?.classList.remove('reaction-ready'); setPrompt(`第 ${round + 1} / 3 轮`, '等待绿色出现…'); timer = window.setTimeout(() => { if (!busy) return; game?.classList.add('reaction-ready'); if (game) game.dataset.startedAt = String(performance.now()); setPrompt(`第 ${round + 1} / 3 轮`, '点击！'); }, 1500 + Math.random() * 2500); };
-  game?.addEventListener('click', onClick); cleanup = () => { game?.removeEventListener('click', onClick); window.clearTimeout(timer); }; runRound();
+  const runRound = () => {
+    busy = true;
+    state = 'waiting';
+    game?.classList.remove('reaction-ready');
+    setPrompt(`第 ${round + 1} / 3 轮`, '等待绿色出现…');
+    timer = window.setTimeout(() => {
+      if (!busy) return;
+      state = 'ready';
+      startedAt = performance.now();
+      game?.classList.add('reaction-ready');
+      setPrompt(`第 ${round + 1} / 3 轮`, '点击测试区域！');
+    }, 1500 + Math.random() * 2500);
+  };
+  surface?.addEventListener('pointerdown', onPointerDown);
+  cleanup = () => { surface?.removeEventListener('pointerdown', onPointerDown); window.clearTimeout(timer); game?.classList.remove('reaction-ready'); };
+  runRound();
 };
 
 const startNumber = () => {
-  let level = 3; let timer: number | undefined;
-  const run = () => { busy = true; const value = Array.from({ length: level }, () => Math.floor(Math.random() * 10)).join(''); setPrompt(`第 ${level - 2} 级`, value); timer = window.setTimeout(() => { if (!busy) return; setPrompt(`第 ${level - 2} 级`, '输入你记住的数字'); clearControls(); const input = document.createElement('input'); input.className = 'benchmark-input'; input.inputMode = 'numeric'; input.autocomplete = 'off'; const button = document.createElement('button'); button.className = 'benchmark-secondary'; button.textContent = '确认'; controls?.append(input, button); input.focus(); const submit = () => { if (input.value === value) { level += 1; run(); } else finish(level - 3, `你成功记住了 ${level - 3} 位数字。`); }; button.addEventListener('click', submit); input.addEventListener('keydown', (event) => { if (event.key === 'Enter') submit(); }); }, 1400); };
-  cleanup = () => { window.clearTimeout(timer); }; run();
+  let level = 1;
+  let timer: number | undefined;
+  let submitted = false;
+  const run = () => {
+    busy = true;
+    submitted = false;
+    clearControls();
+    const digits = Math.min(2 + level, 30);
+    const value = Array.from({ length: digits }, () => Math.floor(Math.random() * 10)).join('');
+    setPrompt(`第 ${level} 级 · ${digits} 位`, value);
+    clearControls();
+    timer = window.setTimeout(() => {
+      if (!busy) return;
+      setPrompt(`第 ${level} 级 · ${digits} 位`, '输入你记住的数字');
+      const input = document.createElement('input');
+      input.className = 'benchmark-input';
+      input.inputMode = 'numeric';
+      input.autocomplete = 'off';
+      input.maxLength = digits;
+      const button = document.createElement('button');
+      button.className = 'benchmark-secondary';
+      button.textContent = '确认答案';
+      controls?.append(input, button);
+      input.focus();
+      const submit = () => {
+        if (submitted) return;
+        submitted = true;
+        if (input.value === value) {
+          level += 1;
+          run();
+        } else {
+          finish(level - 1, `你完成了第 ${level - 1} 级，记住了 ${digits - 1} 位数字。`);
+        }
+      };
+      button.addEventListener('click', submit);
+      input.addEventListener('keydown', (event) => { if (event.key === 'Enter') submit(); });
+    }, Math.max(1600, 2400 - level * 20));
+  };
+  cleanup = () => { window.clearTimeout(timer); };
+  run();
 };
 
 const startVisual = () => {
