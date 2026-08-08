@@ -1,0 +1,42 @@
+---
+import { ArrowLeft, ArrowUpRight, BarChart3, Check, RotateCcw } from 'lucide-astro';
+import Layout from '@/layouts/Layout.astro';
+---
+<Layout title="一百万只鸡 · Bai / 白" description="一个关于随机过程、期望和大数规律的互动数学游戏。">
+  <main class="chicken-page section-wrap">
+    <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
+    <header class="chicken-header">
+      <div><p class="eyebrow">GAME LAB / PROBABILITY</p><h1>一百万只鸡</h1><p>每次从还有腿的鸡中随机抽一只，砍掉一条腿。运行一次模拟，看看最后会剩下什么。</p></div>
+      <div class="chicken-formula">N → N 次<br /><em>随机操作</em></div>
+    </header>
+    <section class="chicken-simulator">
+      <div class="chicken-controls">
+        <label for="chicken-count">鸡的数量</label>
+        <div class="chicken-input-row"><input id="chicken-count" type="number" min="10" max="1000000" step="1000" value="100000" /><span>只</span></div>
+        <p>浏览器版使用 O(N) 状态模拟。可以输入最多 1,000,000 只，结果会在几百毫秒内完成。</p>
+        <button class="benchmark-primary" id="chicken-run" type="button">运行模拟 <ArrowUpRight /></button>
+        <button class="benchmark-secondary" id="chicken-reset" type="button"><RotateCcw /> 重置</button>
+      </div>
+      <div class="chicken-visual" id="chicken-visual">
+        <div class="chicken-visual-top"><span id="chicken-progress-label">等待开始</span><span id="chicken-progress-value">0%</span></div>
+        <div class="chicken-progress"><span id="chicken-progress-bar"></span></div>
+        <div class="chicken-orbit"><span class="chicken-orbit-dot"></span><span class="chicken-orbit-dot"></span><span class="chicken-orbit-dot"></span></div>
+        <p id="chicken-status">设置数量后运行一次模拟</p>
+      </div>
+    </section>
+    <section class="chicken-results" id="chicken-results" hidden>
+      <div class="chicken-result-header"><div><p class="eyebrow">SIMULATION COMPLETE</p><h2>最后的状态</h2></div><BarChart3 /></div>
+      <div class="chicken-result-grid">
+        <div class="chicken-result-card intact"><span>两条腿 · 完好鸡</span><strong id="chicken-two">—</strong><small id="chicken-two-pct">—</small></div>
+        <div class="chicken-result-card one-leg"><span>一条腿 · 瘸鸡</span><strong id="chicken-one">—</strong><small id="chicken-one-pct">—</small></div>
+        <div class="chicken-result-card no-leg"><span>零条腿 · 退出</span><strong id="chicken-zero">—</strong><small id="chicken-zero-pct">—</small></div>
+      </div>
+      <div class="chicken-insight"><Check /><p id="chicken-insight-text">—</p></div>
+    </section>
+    <section class="chicken-explanation">
+      <div><p class="eyebrow">HOW IT WORKS</p><h2>一个关于<br /><em>随机过程的小游戏。</em></h2></div>
+      <div><p>每次操作只需要记录两种状态：两条腿的鸡数量，以及还有一条或两条腿的鸡数量。随机抽取后，鸡会从两条腿变成一条腿，或从一条腿变成零条腿并退出。</p><p>当 N 足够大、操作次数等于 N 时，完好鸡的比例会接近 <strong>0.317844</strong>。实际模拟会围绕这个结果产生小幅波动。</p></div>
+    </section>
+  </main>
+</Layout>
+<script src="../../../../scripts/chicken-legs.ts"></script>

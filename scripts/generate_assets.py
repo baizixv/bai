@@ -147,6 +147,17 @@ def project_artworks():
             rect(draw, (x, y, x + 48, y + 48), COLORS["paper"], outline=COLORS["ink"], width=2, radius=5)
     save(tiny, "project-tiny-tools.png")
 
+    chicken = project_art("chicken", "#f2e4d1", "#e87971", "一百万只鸡", "A probability simulation", "05")
+    draw = ImageDraw.Draw(chicken)
+    for x, y in [(350, 205), (450, 170), (550, 205)]:
+        draw.ellipse((x * SCALE, y * SCALE, (x + 70) * SCALE, (y + 70) * SCALE), fill="#fffaf0", outline="#e87971", width=3 * SCALE)
+        draw.ellipse(((x + 47) * SCALE, (y + 18) * SCALE, (x + 58) * SCALE, (y + 29) * SCALE), fill="#253a40")
+        line(draw, [(x + 12, y + 62), (x + 5, y + 92)], "#e87971", 4)
+        line(draw, [(x + 48, y + 62), (x + 55, y + 92)], "#e87971", 4)
+    line(draw, [(345, 300), (605, 300)], "#e87971", 3)
+    draw_text(draw, (450, 350), "N → N 次随机操作", 17, COLORS["ink"], bold=True, anchor="mm")
+    save(chicken, "game-chicken-legs.png")
+
     rain = project_art("rain", COLORS["mint"], "#e87971", "Rainy Day", "A five minute game", "04")
     draw = ImageDraw.Draw(rain)
     rect(draw, (340, 165, 560, 355), "#253a40", radius=8)

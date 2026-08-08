@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
-import { ArrowLeft, ArrowUpRight, Gamepad2 } from 'lucide-astro';
+import { ArrowLeft, ArrowUpRight, ExternalLink, Gamepad2 } from 'lucide-astro';
 import Layout from '@/layouts/Layout.astro';
 
 export async function getStaticPaths() {
@@ -20,7 +20,10 @@ const { Content } = await render(game);
       <p class="detail-lede">{game.data.description}</p>
       {game.data.image && <img class="detail-cover" src={game.data.image} alt={`${game.data.title} 游戏封面`} width="900" height="600" />}
       <div class="detail-body"><Content /></div>
-      <a class="game-launch" href={game.data.url ?? '#'}><Gamepad2 /> 开始游戏 <ArrowUpRight /></a>
+      <div class="detail-actions">
+        {game.data.demoUrl && <a class="internal-demo-link" href={game.data.demoUrl}><Gamepad2 /> 在本站体验 <ArrowUpRight /></a>}
+        {game.data.url?.startsWith('http') && <a class="external-project-link" href={game.data.url} target="_blank" rel="noreferrer"><ExternalLink /> 阅读知乎原回答 <ArrowUpRight /></a>}
+      </div>
     </article>
     <a class="next-link" href="/#games">更多游戏项目 <ArrowUpRight /></a>
   </main>

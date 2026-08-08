@@ -16,7 +16,7 @@ const entries = defineCollection({
     demoUrl: z.string().optional(),
     image: z.string().optional(),
     icon: z.enum(['layers', 'type', 'github', 'book-open']).optional(),
-    visual: z.enum(['xiaoman', 'tiny', 'rain', 'extension', 'benchmark']).optional()
+    visual: z.enum(['xiaoman', 'tiny', 'rain', 'extension', 'benchmark', 'chicken']).optional()
   })
 });
 
