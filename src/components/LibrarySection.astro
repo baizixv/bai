@@ -9,7 +9,7 @@ const iconMap = { layers: Layers, type: Type, github: Github, 'book-open': BookO
 ---
 <section class="content-section section-wrap library-section" id="library">
   <div class="library-layout">
-    <div class="section-heading library-heading"><div><p class="eyebrow">03 / LIBRARY</p><h2>我常去的地方</h2></div><p class="heading-note">收藏不是囤积链接，<br />是给未来的自己留路标。</p></div>
+    <div class="section-heading library-heading"><div><p class="eyebrow">04 / LIBRARY</p><h2>我常去的地方</h2></div><p class="heading-note">收藏不是囤积链接，<br />是给未来的自己留路标。</p></div>
     <div class="library-list searchable-group">
       {bookmarks.map((bookmark, index) => { const Icon = iconMap[bookmark.data.icon ?? 'layers']; return <a class="library-row searchable-item" data-search={`${bookmark.data.title} ${bookmark.data.description} ${bookmark.data.label ?? ''}`} href={bookmark.data.url} target="_blank" rel="noreferrer">
         <span class="library-index">{String(index + 1).padStart(2, '0')}</span><span class={`library-icon ${bookmark.data.color}-icon`}><Icon /></span><span class="library-name"><strong>{bookmark.data.title}</strong><small>{bookmark.data.description}</small></span><span class="library-kind">{bookmark.data.label}</span><ArrowUpRight />

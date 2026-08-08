@@ -1,0 +1,30 @@
+---
+import { ArrowUpRight, Gamepad2 } from 'lucide-astro';
+import type { CollectionEntry } from 'astro:content';
+
+type Entry = CollectionEntry<'entries'>;
+interface Props { games: Entry[]; }
+const { games } = Astro.props;
+---
+<section class="content-section games-section" id="games">
+  <div class="section-wrap">
+    <div class="section-heading games-heading">
+      <div><p class="eyebrow">03 / GAME LAB</p><h2>游戏项目区</h2></div>
+      <a class="view-all" href="/games/">查看全部游戏 <ArrowUpRight /></a>
+    </div>
+    <div class="games-intro">
+      <div class="games-symbol"><Gamepad2 /></div>
+      <p>把规则、反馈和一点点快乐做成可以玩的东西。这里放小游戏、交互实验和正在迭代的游戏原型。</p>
+    </div>
+    <div class="game-grid searchable-group">
+      {games.map((game) => <a class="game-card searchable-item" data-search={`${game.data.title} ${game.data.description} ${game.data.label ?? ''}`} href={`/games/${game.id.replace(/\.md$/, '')}/`}>
+        <div class={`project-visual visual-${game.data.visual}`}>
+          {game.data.visual === 'rain' && <><span class="rain-title">RAINY<br /><i>DAY</i></span><span class="rain-window">▥</span></>}
+          {game.data.visual !== 'rain' && <span class="game-fallback-mark">PLAY</span>}
+          <span class="game-play"><Gamepad2 /> 开始探索 <ArrowUpRight /></span>
+        </div>
+        <div class="game-info"><div><span class="project-type">{game.data.label}</span><h3>{game.data.title}</h3><p>{game.data.description}</p></div><ArrowUpRight /></div>
+      </a>)}
+    </div>
+  </div>
+</section>

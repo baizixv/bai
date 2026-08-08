@@ -1,5 +1,5 @@
 ---
-kind: project
+kind: game
 title: Rainy Day
 description: 一个适合下雨天玩的五分钟小游戏。
 date: 2024-08-20

@@ -9,8 +9,8 @@ const { projects } = Astro.props;
 <section class="content-section projects-section" id="projects">
   <div class="section-wrap">
     <div class="section-heading light-heading">
-      <div><p class="eyebrow">02 / WORKS</p><h2>做过一些东西</h2></div>
-      <a class="view-all" href="/projects/">项目档案 <ArrowUpRight /></a>
+      <div><p class="eyebrow">02 / PROJECTS</p><h2>项目区</h2></div>
+      <a class="view-all" href="/projects/">查看全部项目 <ArrowUpRight /></a>
     </div>
     <div class="project-grid searchable-group">
       {projects.map((project, index) => <a class={`project-card ${index === 0 ? 'project-main' : ''} searchable-item`} data-search={`${project.data.title} ${project.data.description} ${project.data.label ?? ''}`} href={`/projects/${project.id.replace(/\.md$/, '')}/`}>

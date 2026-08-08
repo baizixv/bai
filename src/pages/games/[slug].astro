@@ -1,0 +1,26 @@
+---
+import { getCollection, render } from 'astro:content';
+import { ArrowLeft, ArrowUpRight, Gamepad2 } from 'lucide-astro';
+import Layout from '@/layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const games = await getCollection('entries', ({ data }) => data.kind === 'game');
+  return games.map((game) => ({ params: { slug: game.id.replace(/\.md$/, '') }, props: { game } }));
+}
+
+const { game } = Astro.props;
+const { Content } = await render(game);
+---
+<Layout title={`${game.data.title} · Bai / 白`} description={game.data.description}>
+  <main class="detail-page section-wrap game-detail-page">
+    <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
+    <article class="detail-article">
+      <div class="game-detail-label"><Gamepad2 /> <span>{game.data.label}</span></div>
+      <h1>{game.data.title}</h1>
+      <p class="detail-lede">{game.data.description}</p>
+      <div class="detail-body"><Content /></div>
+      <a class="game-launch" href={game.data.url ?? '#'}><Gamepad2 /> 开始游戏 <ArrowUpRight /></a>
+    </article>
+    <a class="next-link" href="/#games">更多游戏项目 <ArrowUpRight /></a>
+  </main>
+</Layout>

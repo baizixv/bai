@@ -19,7 +19,8 @@ npm run preview # 预览构建产物
 
 ## 目录结构
 
-- `src/content/entries/`：文章、项目、工具、收藏的 Markdown 内容。新增文件即可进入页面。
+- `src/content/entries/`：文章、项目、工具、游戏、收藏的 Markdown 内容。新增文件即可进入页面。
+- `src/pages/games/`：游戏项目列表与详情页。
 - `src/content/config.ts`：统一定义 frontmatter 字段和类型校验。
 - `src/components/`：首页各内容区块。
 - `src/pages/`：首页、文章列表、项目列表和详情页路由。
