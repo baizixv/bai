@@ -28,11 +28,12 @@ const { title = 'Bai / 白 · 数字花园', description = 'Bai 的个人数字�
           <span class="brand-copy"><strong>Bai / 白</strong><small>digital garden</small></span>
         </a>
         <nav class="main-nav" aria-label="主导航">
-          <a class="active" href="/#now">现在</a>
+          <a class:list={{ active: Astro.url.pathname === '/' }} href="/#now">现在</a>
           <a href="/#writing">文章</a>
           <a href="/#projects">项目</a>
           <a href="/#games">游戏</a>
           <a href="/#library">收藏</a>
+          <a class:list={{ active: Astro.url.pathname.startsWith('/about') }} href="/about/">关于</a>
         </nav>
         <div class="top-actions">
           <label class="search-box" for="site-search">

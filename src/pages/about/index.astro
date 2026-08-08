@@ -1,0 +1,39 @@
+---
+import { ArrowUpRight, Check, Clock3, Compass, Mail, Sparkles } from 'lucide-astro';
+import Layout from '@/layouts/Layout.astro';
+import { about } from '@/data/about';
+---
+<Layout title="关于 · Bai / 白" description="了解 Bai、当前开发进度和网站版本说明。">
+  <main class="about-page section-wrap">
+    <div class="about-page-head">
+      <div><p class="eyebrow">05 / ABOUT</p><h1>关于这个<br /><em>正在生长的地方。</em></h1></div>
+      <p class="about-page-lede">这里不只是一个个人主页，也是我用来记录、试错和分享的工作台。内容会慢慢长出来，结构也会随着使用继续调整。</p>
+    </div>
+
+    <section class="about-author-block">
+      <div class="about-author-mark">B</div>
+      <div class="about-author-copy"><p class="eyebrow">THE PERSON BEHIND IT</p><h2>{about.name}</h2><p>{about.intro}</p><div class="about-meta"><span><Compass /> {about.location}</span><span><Sparkles /> {about.availability}</span></div></div>
+      <a class="mail-button" href={`mailto:${about.email}`}><Mail /><span>{about.email}</span><ArrowUpRight /></a>
+    </section>
+
+    <section class="about-stats">
+      {about.stats.map((stat) => <div><span>{stat.value}</span><small>{stat.label}</small></div>)}
+    </section>
+
+    <section class="about-progress">
+      <div class="about-section-heading"><div><p class="eyebrow">01 / IN PROGRESS</p><h2>开发进度</h2></div><p>公开记录正在发生的事，<br />也给未来的自己留一个检查点。</p></div>
+      <div class="progress-list">
+        {about.progress.map((item) => <article class="progress-item"><div class="progress-item-head"><div><h3>{item.name}</h3><p>{item.detail}</p></div><span class={`progress-status progress-${item.color}`}><Clock3 /> {item.status}</span></div><div class="about-progress-bar"><span class={`bar-${item.color}`} style={`width: ${item.percent}%`}></span></div><div class="progress-percent"><span>进度</span><b>{item.percent}%</b></div></article>)}
+      </div>
+    </section>
+
+    <section class="about-releases">
+      <div class="about-section-heading"><div><p class="eyebrow">02 / CHANGELOG</p><h2>版本说明</h2></div><p>每一个版本，<br />都是一次重新整理。</p></div>
+      <div class="release-list">
+        {about.releases.map((release, index) => <article class="release-item"><div class="release-version"><strong>{release.version}</strong><small>{release.date}</small></div><div class="release-copy"><h3>{release.title} {index === 0 && <span class="current-release"><Check /> 当前</span>}</h3><p>{release.description}</p></div></article>)}
+      </div>
+    </section>
+
+    <a class="back-link about-back" href="/"><ArrowUpRight /> 返回首页</a>
+  </main>
+</Layout>

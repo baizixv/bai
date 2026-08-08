@@ -1,0 +1,17 @@
+---
+import { ArrowUpRight, Mail } from 'lucide-astro';
+import { about } from '@/data/about';
+---
+<section class="about-preview content-section section-wrap" id="about">
+  <div class="about-preview-copy">
+    <p class="eyebrow">05 / ABOUT</p>
+    <h2>关于这个<br /><em>正在生长的地方</em></h2>
+    <p>{about.intro}</p>
+    <a class="view-all" href="/about/">认识 Bai <ArrowUpRight /></a>
+  </div>
+  <div class="about-preview-card">
+    <div class="about-avatar">B</div>
+    <div class="about-preview-info"><span class="project-type">{about.role}</span><strong>{about.location}</strong><small>{about.availability}</small></div>
+    <a class="about-contact" href={`mailto:${about.email}`} aria-label="发送邮件"><Mail /></a>
+  </div>
+</section>
