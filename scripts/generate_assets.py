@@ -129,6 +129,17 @@ def project_artworks():
     line(draw, [(360, 312), (530, 312)], "#a69ec8", 6)
     save(extension, "project-bookmark-extension.png")
 
+    benchmark = project_art("benchmark", "#e5e2f4", COLORS["blue"], "人类基准测试", "Cognitive games / online benchmark", "05")
+    draw = ImageDraw.Draw(benchmark)
+    rect(draw, (228, 158, 672, 370), COLORS["paper"], outline=COLORS["blue"], width=3, radius=10)
+    draw_text(draw, (450, 190), "HUMAN", 18, COLORS["blue"], bold=True, anchor="mm")
+    draw_text(draw, (450, 218), "BENCHMARK", 18, COLORS["ink"], bold=True, anchor="mm")
+    tiles = [(278, 270, COLORS["blue"]), (354, 270, COLORS["yellow"]), (430, 270, COLORS["pink"]), (506, 270, COLORS["green"]), (582, 270, "#9a8ed0")]
+    for x, y, color in tiles:
+        rect(draw, (x, y, x + 48, y + 48), color, radius=7)
+    line(draw, [(278, 350), (622, 350)], "#c5c1d8", 3)
+    save(benchmark, "project-human-benchmark.png")
+
     tiny = project_art("tiny", COLORS["yellow"], COLORS["ink"], "Tiny Tools", "Small tools, low friction", "03")
     draw = ImageDraw.Draw(tiny)
     for x in [350, 425, 500]:
