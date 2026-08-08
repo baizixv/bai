@@ -14,6 +14,7 @@ const entries = defineCollection({
     now: z.boolean().default(false),
     progress: z.number().min(0).max(100).optional(),
     status: z.string().optional(),
+    wordCount: z.number().int().positive().optional(),
     mediaType: z.enum(["book", "film", "game"]).optional(),
     creator: z.string().optional(),
     year: z.number().int().optional(),
