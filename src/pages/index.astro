@@ -7,6 +7,7 @@ import ProjectsSection from '@/components/ProjectsSection.astro';
 import ToolsSection from '@/components/ToolsSection.astro';
 import GamesSection from '@/components/GamesSection.astro';
 import LibrarySection from '@/components/LibrarySection.astro';
+import MediaLibrarySection from '@/components/MediaLibrarySection.astro';
 import AboutSection from '@/components/AboutSection.astro';
 import Footer from '@/components/Footer.astro';
 
@@ -16,9 +17,12 @@ const projects = entries.filter((entry) => entry.data.kind === 'project').sort((
 const tools = entries.filter((entry) => entry.data.kind === 'tool').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const games = entries.filter((entry) => entry.data.kind === 'game').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const bookmarks = entries.filter((entry) => entry.data.kind === 'bookmark').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const media = entries.filter((entry) => entry.data.kind === 'media').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const latestEntry = [...entries].sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
 const currentEntry = entries.find((entry) => entry.data.now) ?? latestEntry;
-const stats = { articles: articles.length, projects: projects.length, tools: tools.length, lastUpdated: latestEntry ? latestEntry.data.date.toISOString().slice(5, 10).replace('-', '.') : '—' };
+const buildDate = new Date();
+const formatShortDate = (date: Date) => `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+const stats = { articles: articles.length, projects: projects.length, tools: tools.length, lastUpdated: formatShortDate(buildDate) };
 const years = [...new Set(entries.map((entry) => entry.data.date.getFullYear()))].sort((a, b) => a - b);
 const period = years.length > 1 ? `${years[0]}—${years[years.length - 1]}` : `${years[0] ?? new Date().getFullYear()}`;
 ---
@@ -30,6 +34,7 @@ const period = years.length > 1 ? `${years[0]}—${years[years.length - 1]}` : `
     <ToolsSection tools={tools} />
     <GamesSection games={games} />
     <LibrarySection bookmarks={bookmarks} />
+    <MediaLibrarySection media={media} />
     <AboutSection />
     <Footer />
   </main>
