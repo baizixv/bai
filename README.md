@@ -66,6 +66,8 @@ python3 scripts/generate_assets.py
 
 - `kind: media` 用于图书馆条目，通过 `mediaType: book | film | game` 区分书籍、电影和游戏，可补充作者/导演、年份、评分和外部链接。
 
+- Ogden 850 是独立实现的英语学习项目，数据放在 `public/data/ogden850.json`，学习进度和收藏只保存在浏览器 `localStorage`。
+
 
 ## 部署
 

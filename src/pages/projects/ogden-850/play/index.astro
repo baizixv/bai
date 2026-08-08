@@ -1,0 +1,16 @@
+---
+import { ArrowLeft, ArrowUpRight, BookOpen, Check, Search } from 'lucide-astro';
+import Layout from '@/layouts/Layout.astro';
+---
+<Layout title="Ogden 850 · Bai / 白" description="用 850 个基础英语词汇练习理解、记忆和表达。">
+  <main class="ogden-page section-wrap">
+    <a class="back-link" href="/projects/ogden-850/"><ArrowLeft /> 返回项目</a>
+    <header class="ogden-header"><div><p class="eyebrow">OGDEN 850 / BASIC ENGLISH</p><h1>用更少的词，<br /><em>说更多的事。</em></h1><p>一个在浏览器本地运行的基础英语词汇和表达训练器。</p></div><div class="ogden-count"><strong>850</strong><span>WORDS<br />TO BUILD WITH</span></div></header>
+    <section class="ogden-app">
+      <div class="ogden-toolbar"><div class="ogden-search"><Search /><input id="ogden-search" type="search" placeholder="搜索英文、中文或音标" /></div><div class="ogden-mode-tabs"><button class="ogden-mode active" data-mode="browse" type="button">浏览</button><button class="ogden-mode" data-mode="flashcard" type="button">闪卡</button><button class="ogden-mode" data-mode="choice" type="button">选择</button><button class="ogden-mode" data-mode="spelling" type="button">拼词</button><button class="ogden-mode" data-mode="expression" type="button">表达</button></div></div>
+      <div class="ogden-layout"><aside class="ogden-sidebar"><p class="eyebrow">CATEGORIES</p><button class="ogden-category active" data-category="all" type="button">全部单词 <span>850</span></button><button class="ogden-category" data-category="operations" type="button">操作词 <span>—</span></button><button class="ogden-category" data-category="thingsGeneral" type="button">一般事物 <span>—</span></button><button class="ogden-category" data-category="thingsPicturable" type="button">可描述事物 <span>—</span></button><button class="ogden-category" data-category="qualitiesGeneral" type="button">一般性质 <span>—</span></button><button class="ogden-category" data-category="qualitiesOpposite" type="button">反义性质 <span>—</span></button><p class="ogden-local-note"><Check /> 进度只保存在当前浏览器</p></aside><section class="ogden-stage" id="ogden-stage"><div class="ogden-stage-head"><span id="ogden-stage-label">850 WORDS</span><span id="ogden-stage-count">—</span></div><div id="ogden-content"></div></section></div>
+    </section>
+    <section class="ogden-foot"><BookOpen /><p>Ogden Basic English 通过有限的基础词汇和组合表达覆盖日常沟通。本页面是独立实现的学习实验。</p><a href="/projects/ogden-850/">项目说明 <ArrowUpRight /></a></section>
+  </main>
+</Layout>
+<script src="../../../../scripts/ogden850.ts"></script>

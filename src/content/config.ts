@@ -24,7 +24,7 @@ const entries = defineCollection({
     area: z.enum(['tiny', 'standalone']).optional(),
     image: z.string().optional(),
     icon: z.enum(['layers', 'type', 'github', 'book-open']).optional(),
-    visual: z.enum(['xiaoman', 'tiny', 'rain', 'extension', 'benchmark', 'chicken']).optional()
+    visual: z.enum(['xiaoman', 'tiny', 'rain', 'extension', 'benchmark', 'chicken', 'ogden']).optional()
   })
 });
 
