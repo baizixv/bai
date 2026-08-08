@@ -73,6 +73,12 @@
   line-height: 1.7;
   margin: 0;
 }
+.media-creator {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font: 9px "DM Mono", monospace;
+}
 .media-card > svg,
 .media-empty > svg {
   position: absolute;
