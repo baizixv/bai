@@ -1,0 +1,297 @@
+/* 21 Responsive Mobile */
+
+@media (max-width: 560px) {
+  .ogden-page {
+    padding-top: 48px;
+  }
+  .ogden-header h1 {
+    font-size: 42px;
+  }
+  .ogden-count {
+    width: 100%;
+  }
+  .ogden-sidebar {
+    display: block;
+  }
+  .ogden-local-note {
+    margin-top: 22px;
+  }
+  .ogden-word-grid {
+    grid-template-columns: 1fr;
+  }
+  .ogden-word-card {
+    min-height: 250px;
+  }
+  .ogden-practice-card {
+    min-height: 390px;
+    padding: 22px 15px;
+  }
+  .ogden-practice-word strong {
+    font-size: 52px;
+  }
+  .ogden-choice-grid {
+    grid-template-columns: 1fr;
+  }
+  .ogden-foot {
+    align-items: start;
+    flex-wrap: wrap;
+  }
+  .ogden-foot a {
+    margin-left: 25px;
+  }
+  .media-library-grid {
+    grid-template-columns: 1fr;
+  }
+  .media-library-lede {
+    margin-top: 0;
+  }
+  .media-empty {
+    align-items: start;
+    padding: 17px;
+  }
+  .media-empty .media-card-mark {
+    flex: 0 0 36px;
+  }
+  .library-page .archive-heading {
+    margin-bottom: 42px;
+  }
+  .library-catalog-heading {
+    grid-template-columns: 36px 1fr auto;
+    gap: 11px;
+  }
+  .library-catalog-icon {
+    width: 34px;
+    height: 34px;
+  }
+  .library-catalog-list {
+    margin-left: 0;
+  }
+  .library-catalog-item {
+    align-items: start;
+  }
+  .library-item-meta {
+    flex-direction: column;
+    align-items: end;
+    gap: 7px;
+  }
+  .library-catalog-empty {
+    margin-left: 0;
+  }
+  .finance-card {
+    padding: 20px 15px;
+  }
+  .finance-fields {
+    grid-template-columns: 1fr;
+  }
+  .finance-card-head h2 {
+    font-size: 25px;
+  }
+  .finance-result strong {
+    font-size: 26px;
+  }
+  .chicken-page {
+    padding-top: 48px;
+  }
+  .chicken-header {
+    padding-bottom: 45px;
+  }
+  .chicken-header h1 {
+    font-size: 42px;
+  }
+  .chicken-simulator {
+    padding-top: 20px;
+  }
+  .chicken-visual {
+    min-height: 280px;
+    padding: 20px 15px;
+  }
+  .chicken-result-grid {
+    grid-template-columns: 1fr;
+  }
+  .chicken-result-header h2 {
+    font-size: 28px;
+  }
+  .chicken-explanation {
+    display: block;
+    margin-top: 78px;
+    padding-top: 55px;
+  }
+  .chicken-explanation > div:last-child {
+    margin-top: 25px;
+  }
+  .card-options {
+    gap: 7px;
+  }
+  .luck-card {
+    width: 62px;
+    height: 85px;
+  }
+  .benchmark-game {
+    min-height: 470px;
+  }
+  .topbar {
+    height: 68px;
+  }
+  .brand {
+    min-width: auto;
+  }
+  .brand-copy small {
+    display: none;
+  }
+  .main-nav {
+    display: none;
+  }
+  .top-actions {
+    margin-left: auto;
+  }
+  .hero {
+    padding-top: 52px;
+    min-height: auto;
+  }
+  .hero-lede {
+    font-size: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 9.5vw, 43px);
+    line-height: 1.18;
+  }
+  .benchmark-page {
+    padding-top: 48px;
+  }
+  .benchmark-header {
+    align-items: start;
+    flex-direction: column;
+    padding-bottom: 45px;
+  }
+  .benchmark-header h1 {
+    font-size: 42px;
+  }
+  .benchmark-header-mark {
+    width: 75px;
+    height: 75px;
+  }
+  .benchmark-sidebar {
+    display: block;
+  }
+  .planned-test-list {
+    grid-template-columns: 1fr;
+  }
+  .reference-grid {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 12px;
+  }
+  .benchmark-game {
+    min-height: 470px;
+    padding: 25px 15px;
+  }
+  .benchmark-welcome h2 {
+    font-size: 28px;
+  }
+  .result-actions {
+    flex-direction: column;
+  }
+  .result-actions button {
+    width: 100%;
+  }
+  .benchmark-about {
+    display: block;
+    margin-top: 78px;
+    padding-top: 55px;
+  }
+  .benchmark-about-copy {
+    margin-top: 25px;
+  }
+  .aim-arena {
+    height: 220px;
+  }
+  .typing-sample {
+    font-size: 14px;
+  }
+  .stats {
+    gap: 21px;
+    margin-top: 48px;
+  }
+  .stats dd {
+    font-size: 17px;
+  }
+  .now-panel {
+    transform: none;
+    box-shadow: 10px 11px 0 var(--paper-deep);
+  }
+  .now-image-wrap {
+    height: 200px;
+  }
+  .content-section {
+    padding-top: 78px;
+    padding-bottom: 76px;
+  }
+  .section-heading {
+    align-items: start;
+    gap: 20px;
+  }
+  .section-heading h2 {
+    font-size: 30px;
+  }
+  .section-heading .view-all {
+    margin-top: 25px;
+    white-space: nowrap;
+  }
+  .writing-feature h3 {
+    font-size: 24px;
+  }
+  .article-row {
+    grid-template-columns: 1fr 15px;
+    gap: 10px;
+  }
+  .article-row > .mono {
+    display: none;
+  }
+  .projects-section .section-heading {
+    align-items: end;
+  }
+  .project-grid {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+  .project-visual {
+    height: 230px;
+  }
+  .library-section {
+    padding-top: 78px;
+  }
+  .library-heading {
+    display: block;
+  }
+  .heading-note {
+    margin-top: 22px;
+  }
+  .library-row {
+    grid-template-columns: 24px 38px 1fr 15px;
+    gap: 10px;
+  }
+  .library-kind,
+  .external-label {
+    display: none;
+  }
+  .closing {
+    padding-top: 55px;
+    padding-bottom: 75px;
+  }
+  .closing h2 {
+    font-size: 34px;
+  }
+  .mail-button {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .mail-button svg:last-child {
+    margin-left: 0;
+  }
+  .footer {
+    height: auto;
+    min-height: 82px;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px 0;
+  }
+}

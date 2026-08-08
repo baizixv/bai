@@ -1,0 +1,225 @@
+/* 14 Benchmark Shell */
+
+.benchmark-page {
+  padding-top: 70px;
+  padding-bottom: 110px;
+}
+.benchmark-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 40px;
+  padding-bottom: 60px;
+}
+.benchmark-header h1 {
+  font-size: clamp(42px, 6vw, 70px);
+  margin: 0 0 20px;
+}
+.benchmark-lede {
+  max-width: 520px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.9;
+  margin: 0;
+}
+.benchmark-header-mark {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  background: var(--blue);
+  color: var(--paper);
+}
+.benchmark-header-mark svg {
+  width: 26px;
+}
+.benchmark-header-mark span {
+  font:
+    9px/1.35 "DM Mono",
+    monospace;
+  text-align: center;
+}
+.benchmark-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 40px;
+  border-top: 1px solid var(--ink);
+  padding-top: 25px;
+}
+.benchmark-sidebar-label {
+  color: var(--muted);
+  font:
+    10px "DM Mono",
+    monospace;
+  letter-spacing: 0.1em;
+  margin: 0 0 10px;
+}
+.planned-label {
+  margin-top: 35px;
+}
+.benchmark-test-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.benchmark-test-tab,
+.planned-test {
+  width: 100%;
+  min-height: 59px;
+  display: grid;
+  grid-template-columns: 8px 1fr auto;
+  align-items: center;
+  gap: 11px;
+  border: 1px solid transparent;
+  padding: 9px 10px;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+}
+.benchmark-test-tab {
+  cursor: pointer;
+}
+.benchmark-test-tab:hover,
+.benchmark-test-tab.selected {
+  background: var(--paper-deep);
+  border-color: var(--line);
+}
+.benchmark-test-tab strong,
+.planned-test strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+}
+.benchmark-test-tab small,
+.planned-test small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 3px;
+}
+.benchmark-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.dot-blue {
+  background: var(--blue);
+}
+.dot-yellow {
+  background: var(--yellow);
+}
+.dot-pink {
+  background: var(--pink);
+}
+.dot-green {
+  background: var(--green);
+}
+.tab-score {
+  color: var(--muted);
+  font:
+    9px "DM Mono",
+    monospace;
+}
+.planned-test {
+  opacity: 0.6;
+}
+.planned-badge {
+  color: var(--muted);
+  font:
+    8px "DM Mono",
+    monospace;
+}
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--blue);
+  font-size: 10px;
+  margin-top: 35px;
+  border-bottom: 1px solid var(--blue);
+  padding-bottom: 5px;
+}
+.source-link svg {
+  width: 13px;
+}
+.source-link svg:last-child {
+  margin-left: 6px;
+}
+.benchmark-stage {
+  min-width: 0;
+}
+.benchmark-reference {
+  background: var(--paper-deep);
+  border: 1px solid var(--line);
+  margin-bottom: 14px;
+  padding: 13px 15px;
+}
+.reference-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.reference-heading span {
+  font-size: 11px;
+  font-weight: 700;
+}
+.reference-heading small {
+  color: var(--muted);
+  font:
+    9px "DM Mono",
+    monospace;
+}
+.reference-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.reference-grid div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-left: 2px solid var(--line);
+  padding-left: 9px;
+}
+.reference-grid div:first-child {
+  border-color: var(--green);
+}
+.reference-grid div:nth-child(2) {
+  border-color: var(--blue);
+}
+.reference-grid div:nth-child(3) {
+  border-color: var(--yellow);
+}
+.reference-grid div:last-child {
+  border-color: var(--pink);
+}
+.reference-grid span {
+  color: var(--muted);
+  font-size: 9px;
+}
+.reference-grid strong {
+  font:
+    11px "DM Mono",
+    monospace;
+}
+.benchmark-position {
+  margin-top: 11px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 700;
+}
+.benchmark-stage-top {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font:
+    10px "DM Mono",
+    monospace;
+  margin-bottom: 12px;
+}

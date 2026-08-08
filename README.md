@@ -2,6 +2,8 @@
 
 当前版本使用 Astro + TypeScript + Markdown Content Collections，适合长期维护文章、项目、工具和收藏内容。
 
+> 工程维护规则、目录职责、模块化约定和验证流程统一记录在 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)。
+
 ## 本地开发
 
 ```bash
@@ -12,9 +14,10 @@ npm run dev
 然后访问终端显示的本地地址。常用命令：
 
 ```bash
-npm run check   # Astro 类型检查
-npm run build   # 生成 dist/ 静态文件
-npm run preview # 预览构建产物
+npm run check             # Astro 类型检查
+npm run check:structure   # 检查源文件是否超过 300 行
+npm run build             # 结构检查 + 类型检查 + 生成 dist/ 静态文件
+npm run preview           # 预览构建产物
 ```
 
 ## 目录结构
@@ -25,12 +28,19 @@ npm run preview # 预览构建产物
 - `src/pages/tools/`：Tiny Tools 集合、在线工具目录和独立工具页面。
 - `src/scripts/tiny-tools.ts`：Tiny Tools 的时间戳、Base64、MD5、颜色值和 JSON 工具逻辑。
 - `src/data/benchmark.ts`：人类基准测试的测试项配置。
-- `src/scripts/benchmark.ts`：人类基准测试客户端交互逻辑。
+- `src/scripts/benchmark.ts`：人类基准测试状态、页面控制和成绩逻辑。
+- `src/scripts/benchmark/`：按记忆、速度和逻辑分组的人类基准测试实现。
+- `src/types/`：跨模块共享的 TypeScript 类型。
 - `src/data/about.ts`：作者介绍、开发进度和版本说明的集中数据。
 - `src/content/config.ts`：统一定义 frontmatter 字段和类型校验。
+
 - `src/components/`：首页各内容区块。
 - `src/pages/`：首页、文章列表、项目列表、游戏列表、关于页和详情页路由。
-- `src/styles/global.css`：全局视觉系统和响应式规则。
+- `src/styles/global.css`：全局样式入口，只负责按顺序导入 CSS 模块。
+
+- `src/styles/modules/`：按基础层、首页区块、独立工具、游戏和响应式规则拆分的 CSS 模块；每个文件不超过 300 行。
+- `src/lib/`：跨功能复用的浏览器工具，例如防御性 localStorage 读写。
+- `scripts/check-file-limits.mjs`：构建前执行的源文件行数检查。
 - `src/scripts/site.ts`：搜索、主题切换和滚动导航交互。
 - `public/assets/`：本地 Logo、favicon、首页插画和项目封面。
 - `scripts/generate_assets.py`：使用 Pillow 重新生成整套网站图形资源。
@@ -57,7 +67,8 @@ python3 scripts/generate_assets.py
 ## 页面约定
 
 - 详情页中的外部链接必须放在页面开头区域：位于标题、简介和封面之后，正文内容之前，避免用户翻页寻找。
-- 同一详情页的操作按钮统一放在 `.detail-actions` 中，外部链接排在最前；按钮使用统一高度并保持顶部对齐。
+- 同一详情页的操作按钮统一放在 `.detail-actions` 中，本站体验按钮排在前面，外部链接排在后面；按钮使用统一高度并保持顶部对齐。
+
 - 外部链接需要使用明显的视觉样式（颜色、下划线或外链图标），并在新标签页打开。
 - 首页项目展示区使用等宽网格，不为首个项目设置额外跨列或放大宽度；移动端按响应式规则降为单列。
 

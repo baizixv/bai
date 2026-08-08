@@ -1,0 +1,142 @@
+/* 18 Responsive Core */
+
+@media (max-width: 900px) {
+  .about-preview {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+  .about-page-head {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .about-author-block {
+    grid-template-columns: 74px 1fr;
+  }
+  .about-author-block .mail-button {
+    grid-column: 2;
+    justify-self: start;
+  }
+  .progress-list,
+  .release-list {
+    margin-left: 0;
+  }
+}
+@media (max-width: 560px) {
+  .about-preview {
+    gap: 26px;
+  }
+  .about-preview-copy h2 {
+    font-size: 30px;
+  }
+  .about-preview-card {
+    padding: 17px;
+    gap: 12px;
+  }
+  .about-page {
+    padding-top: 50px;
+  }
+  .about-page-head {
+    padding-bottom: 55px;
+  }
+  .about-page h1 {
+    font-size: 42px;
+  }
+  .about-author-block {
+    grid-template-columns: 56px 1fr;
+    gap: 15px;
+    padding: 22px 0;
+  }
+  .about-author-mark {
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+  }
+  .about-author-copy h2 {
+    font-size: 20px;
+  }
+  .about-author-copy > p:not(.eyebrow) {
+    font-size: 11px;
+  }
+  .about-meta {
+    flex-direction: column;
+    gap: 7px;
+  }
+  .about-author-block .mail-button {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .about-stats {
+    margin: 42px 0 78px;
+  }
+  .about-stats div {
+    padding-left: 10px;
+  }
+  .about-stats span {
+    font-size: 21px;
+  }
+  .about-section-heading {
+    display: block;
+  }
+  .about-section-heading > p {
+    margin-top: 20px;
+  }
+  .about-section-heading h2 {
+    font-size: 30px;
+  }
+  .about-progress {
+    padding-top: 55px;
+  }
+  .progress-item-head {
+    flex-direction: column;
+  }
+  .about-releases {
+    margin-top: 78px;
+    padding-top: 55px;
+  }
+  .release-item {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .release-copy h3 {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 560px) {
+  .detail-page,
+  .archive-page {
+    padding-top: 48px;
+  }
+  .back-link {
+    margin-bottom: 55px;
+  }
+  .detail-article h1,
+  .archive-heading h1 {
+    font-size: 40px;
+  }
+  .archive-row {
+    grid-template-columns: 1fr 15px;
+    gap: 12px;
+  }
+  .archive-row .tag,
+  .archive-row > .mono {
+    grid-column: 1;
+  }
+  .archive-row > .mono {
+    display: none;
+  }
+  .archive-row > svg {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+  .archive-project-row {
+    grid-template-columns: 100px 1fr 15px;
+    gap: 12px;
+  }
+  .archive-project-visual {
+    height: 88px;
+  }
+  .archive-project-visual span {
+    font-size: 16px;
+  }
+}

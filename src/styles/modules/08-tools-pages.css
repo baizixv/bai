@@ -1,0 +1,205 @@
+/* 08 Tools Pages */
+
+.tools-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 40px;
+  padding-bottom: 65px;
+}
+.tools-page-header h1 {
+  font-size: clamp(42px, 6vw, 70px);
+  margin: 0 0 18px;
+  letter-spacing: -0.06em;
+}
+.tools-page-header p:not(.eyebrow) {
+  max-width: 540px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.9;
+  margin: 0;
+}
+.tools-page-mark {
+  width: 90px;
+  height: 90px;
+  display: grid;
+  place-items: center;
+  background: var(--green);
+}
+.tools-page-mark svg {
+  width: 27px;
+}
+.tools-directory {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  border-top: 1px solid var(--ink);
+  padding-top: 25px;
+}
+.tools-directory-card {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  border: 1px solid var(--line);
+}
+.tools-directory-card:hover {
+  border-color: var(--blue);
+  transform: translateY(-3px);
+}
+.tiny-directory-card {
+  background: var(--yellow);
+}
+.standalone-directory-card {
+  background: var(--blue);
+  color: var(--paper);
+}
+.tools-directory-icon {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 38px;
+  background: #ffffff88;
+}
+.tools-directory-icon svg {
+  width: 21px;
+}
+.tools-directory-card .eyebrow {
+  margin-bottom: 11px;
+}
+.tools-directory-card h2 {
+  font-size: 28px;
+  letter-spacing: -0.05em;
+  margin: 0 0 12px;
+}
+.tools-directory-card p {
+  max-width: 390px;
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 0;
+}
+.tools-directory-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 28px;
+  font:
+    10px "DM Mono",
+    monospace;
+}
+.tools-directory-link svg {
+  width: 14px;
+}
+.standalone-directory-card .eyebrow,
+.standalone-directory-card p {
+  color: #d1d5d1;
+}
+.tools-page-foot {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border-top: 1px solid var(--line);
+  margin-top: 80px;
+  padding-top: 17px;
+  color: var(--muted);
+  font:
+    10px "DM Mono",
+    monospace;
+}
+.tools-page-foot svg {
+  width: 14px;
+  color: var(--blue);
+}
+.finance-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  border-top: 1px solid var(--ink);
+  padding-top: 25px;
+}
+.finance-card {
+  padding: 25px;
+  border: 1px solid var(--line);
+  background: var(--paper-deep);
+}
+.finance-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 25px;
+}
+.finance-card-head h2 {
+  margin: 8px 0 0;
+  font-size: 27px;
+  letter-spacing: -0.05em;
+}
+.finance-card-head > svg {
+  width: 23px;
+  color: var(--blue);
+}
+.finance-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.finance-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: var(--muted);
+  font:
+    10px "DM Mono",
+    monospace;
+}
+.finance-fields input,
+.finance-fields select {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  padding: 11px;
+  outline: none;
+  font:
+    13px "DM Mono",
+    monospace;
+}
+.finance-fields input:focus,
+.finance-fields select:focus {
+  border-color: var(--blue);
+}
+.finance-run {
+  margin-top: 22px;
+}
+.finance-result {
+  min-height: 105px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top: 1px solid var(--line);
+  margin-top: 22px;
+  padding-top: 16px;
+}
+.finance-result span,
+.finance-result small {
+  color: var(--muted);
+  font:
+    10px "DM Mono",
+    monospace;
+}
+.finance-result strong {
+  margin: 8px 0 5px;
+  color: var(--blue);
+  font-size: 30px;
+  letter-spacing: -0.05em;
+}
+.finance-disclaimer {
+  border-top: 1px solid var(--line);
+  margin: 35px 0 0;
+  padding-top: 15px;
+  color: var(--muted);
+  font:
+    10px/1.8 "DM Mono",
+    monospace;
+}

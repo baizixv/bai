@@ -1,0 +1,175 @@
+/* 01 Foundations */
+
+:root {
+  --paper: #f4f1eb;
+  --paper-deep: #e9e5dc;
+  --ink: #17191c;
+  --muted: #6c6d69;
+  --line: #d3d0c9;
+  --blue: #4264f5;
+  --yellow: #f3ca51;
+  --pink: #ed9b9f;
+  --green: #9ec7ae;
+  --dark: #202428;
+  --white: #fbfaf7;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Manrope", "Noto Sans SC", sans-serif;
+}
+body.dark {
+  --paper: #17191b;
+  --paper-deep: #232629;
+  --ink: #f4f1eb;
+  --muted: #a5a6a2;
+  --line: #3e4244;
+  --dark: #f4f1eb;
+  --white: #202428;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button,
+input {
+  font: inherit;
+}
+.site-shell {
+  overflow: hidden;
+}
+.section-wrap {
+  width: min(1180px, calc(100% - 80px));
+  margin: 0 auto;
+}
+.topbar {
+  height: 82px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  position: relative;
+  z-index: 5;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 180px;
+}
+.brand-mark {
+  width: 35px;
+  height: 35px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 35px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.brand-copy strong {
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+.brand-copy small,
+.mono,
+.section-label,
+.project-type,
+.library-kind,
+.eyebrow {
+  font-family: "DM Mono", monospace;
+}
+.brand-copy small {
+  color: var(--muted);
+  font-size: 9px;
+  margin-top: 4px;
+}
+.main-nav {
+  display: flex;
+  gap: 33px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.main-nav a {
+  padding: 8px 0;
+  border-bottom: 1px solid transparent;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+.main-nav a:hover,
+.main-nav a.active {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 280px;
+  justify-content: flex-end;
+}
+.search-box {
+  height: 36px;
+  width: 210px;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 8px;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--paper) 80%, transparent);
+}
+.search-box svg {
+  width: 15px;
+}
+.search-box input {
+  border: 0;
+  outline: 0;
+  width: 100%;
+  color: var(--ink);
+  background: transparent;
+  font-size: 12px;
+}
+.search-box input::placeholder {
+  color: var(--muted);
+}
+kbd {
+  border: 1px solid var(--line);
+  font:
+    10px "DM Mono",
+    monospace;
+  padding: 2px 5px;
+  color: var(--muted);
+}
+.icon-button {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+}
+.icon-button svg {
+  width: 17px;
+}

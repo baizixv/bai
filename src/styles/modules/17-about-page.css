@@ -1,0 +1,268 @@
+/* 17 About Page */
+
+.about-page {
+  padding-top: 75px;
+  padding-bottom: 110px;
+}
+.about-page-head {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 100px;
+  align-items: end;
+  padding-bottom: 75px;
+}
+.about-page h1 {
+  font-size: clamp(46px, 6vw, 75px);
+  line-height: 1.08;
+  letter-spacing: -0.06em;
+  margin: 0;
+}
+.about-page-lede {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.9;
+  margin: 0 0 5px;
+}
+.about-author-block {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 28px;
+  align-items: center;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding: 30px 0;
+}
+.about-author-mark {
+  width: 74px;
+  height: 74px;
+  font-size: 38px;
+}
+.about-author-copy .eyebrow {
+  margin-bottom: 12px;
+}
+.about-author-copy h2 {
+  margin: 0 0 8px;
+  font-size: 25px;
+  letter-spacing: -0.04em;
+}
+.about-author-copy > p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+  max-width: 530px;
+  margin: 0 0 13px;
+}
+.about-meta {
+  display: flex;
+  gap: 18px;
+  color: var(--muted);
+  font:
+    10px "DM Mono",
+    monospace;
+}
+.about-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.about-meta svg {
+  width: 13px;
+}
+.about-author-block .mail-button {
+  white-space: nowrap;
+}
+.about-stats {
+  display: flex;
+  gap: 0;
+  margin: 52px 0 110px;
+  max-width: 600px;
+}
+.about-stats div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  border-left: 1px solid var(--line);
+  padding-left: 18px;
+}
+.about-stats span {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+.about-stats small {
+  color: var(--muted);
+  font:
+    10px "DM Mono",
+    monospace;
+}
+.about-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 32px;
+}
+.about-section-heading .eyebrow {
+  margin-bottom: 12px;
+}
+.about-section-heading h2 {
+  margin: 0;
+  font-size: 35px;
+  letter-spacing: -0.05em;
+}
+.about-section-heading > p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 0;
+}
+.about-progress {
+  border-top: 1px solid var(--line);
+  padding-top: 75px;
+}
+.progress-list {
+  max-width: 760px;
+  margin-left: auto;
+}
+.progress-item {
+  border-top: 1px solid var(--line);
+  padding: 20px 0 24px;
+}
+.progress-item:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.progress-item-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 15px;
+}
+.progress-item h3 {
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+.progress-item p {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 0;
+}
+.progress-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 7px;
+  color: var(--ink);
+  font:
+    9px "DM Mono",
+    monospace;
+}
+.progress-status svg {
+  width: 12px;
+}
+.progress-blue {
+  background: #aebaff;
+}
+.progress-yellow {
+  background: var(--yellow);
+}
+.progress-pink {
+  background: var(--pink);
+}
+.about-progress-bar {
+  height: 3px;
+  background: var(--paper-deep);
+  margin-top: 20px;
+}
+.about-progress-bar span {
+  display: block;
+  height: 100%;
+}
+.bar-blue {
+  background: var(--blue);
+}
+.bar-yellow {
+  background: #d3a900;
+}
+.bar-pink {
+  background: #dc777d;
+}
+.progress-percent {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font:
+    9px "DM Mono",
+    monospace;
+  margin-top: 7px;
+}
+.progress-percent b {
+  color: var(--ink);
+  font-weight: 400;
+}
+.about-releases {
+  border-top: 1px solid var(--line);
+  margin-top: 110px;
+  padding-top: 75px;
+}
+.release-list {
+  max-width: 760px;
+  margin-left: auto;
+}
+.release-item {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 25px;
+  border-top: 1px solid var(--line);
+  padding: 22px 0;
+}
+.release-item:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.release-version {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.release-version strong {
+  font:
+    13px "DM Mono",
+    monospace;
+}
+.release-version small {
+  color: var(--muted);
+  font:
+    9px "DM Mono",
+    monospace;
+}
+.release-copy h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  margin: 0 0 7px;
+}
+.release-copy p {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0;
+  line-height: 1.8;
+}
+.current-release {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  background: var(--green);
+  color: var(--ink);
+  font:
+    9px "DM Mono",
+    monospace;
+  font-weight: 400;
+}
+.current-release svg {
+  width: 11px;
+}
+.about-back {
+  margin-top: 65px;
+  margin-bottom: 0;
+}

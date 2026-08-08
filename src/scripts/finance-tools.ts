@@ -1,6 +1,53 @@
 export {};
-const number = (selector: string) => Number(document.querySelector<HTMLInputElement>(selector)?.value ?? 0);
-const money = (value: number) => new Intl.NumberFormat('zh-CN', { maximumFractionDigits: 2 }).format(value);
-const loanRun = () => { const principal = number('#loan-principal'); const annualRate = number('#loan-rate') / 100; const months = number('#loan-years') * 12; if (!(principal > 0 && months > 0)) return; const monthlyRate = annualRate / 12; let payment = 0; let totalInterest = 0; if (document.querySelector<HTMLSelectElement>('#loan-method')?.value === 'equal-principal') { payment = principal / months + principal * monthlyRate; totalInterest = principal * monthlyRate * (months + 1) / 2; } else { payment = monthlyRate === 0 ? principal / months : principal * monthlyRate * (1 + monthlyRate) ** months / ((1 + monthlyRate) ** months - 1); totalInterest = payment * months - principal; } const result = document.querySelector<HTMLElement>('#loan-result'); if (result) result.innerHTML = `<span>首期月供约</span><strong>¥ ${money(payment)}</strong><small>总利息约 ¥ ${money(totalInterest)} · ${months} 期</small>`; };
-const investmentRun = () => { const initial = number('#invest-principal'); const monthly = number('#invest-monthly'); const annualRate = number('#invest-rate') / 100; const months = number('#invest-years') * 12; if (!(months > 0)) return; const monthlyRate = annualRate / 12; const futureInitial = initial * (1 + monthlyRate) ** months; const futureMonthly = monthlyRate === 0 ? monthly * months : monthly * ((1 + monthlyRate) ** months - 1) / monthlyRate; const future = futureInitial + futureMonthly; const contributed = initial + monthly * months; const result = document.querySelector<HTMLElement>('#invest-result'); if (result) result.innerHTML = `<span>预计终值</span><strong>¥ ${money(future)}</strong><small>本金 ¥ ${money(contributed)} · 预计收益 ¥ ${money(future - contributed)}</small>`; };
-document.querySelector('#loan-run')?.addEventListener('click', loanRun); document.querySelector('#invest-run')?.addEventListener('click', investmentRun); loanRun(); investmentRun();
+const number = (selector: string) =>
+  Number(document.querySelector<HTMLInputElement>(selector)?.value ?? 0);
+const money = (value: number) =>
+  new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 2 }).format(value);
+const loanRun = () => {
+  const principal = number("#loan-principal");
+  const annualRate = number("#loan-rate") / 100;
+  const months = number("#loan-years") * 12;
+  if (!(principal > 0 && months > 0)) return;
+  const monthlyRate = annualRate / 12;
+  let payment = 0;
+  let totalInterest = 0;
+  if (
+    document.querySelector<HTMLSelectElement>("#loan-method")?.value ===
+    "equal-principal"
+  ) {
+    payment = principal / months + principal * monthlyRate;
+    totalInterest = (principal * monthlyRate * (months + 1)) / 2;
+  } else {
+    payment =
+      monthlyRate === 0
+        ? principal / months
+        : (principal * monthlyRate * (1 + monthlyRate) ** months) /
+          ((1 + monthlyRate) ** months - 1);
+    totalInterest = payment * months - principal;
+  }
+  const result = document.querySelector<HTMLElement>("#loan-result");
+  if (result)
+    result.innerHTML = `<span>首期月供约</span><strong>¥ ${money(payment)}</strong><small>总利息约 ¥ ${money(totalInterest)} · ${months} 期</small>`;
+};
+const investmentRun = () => {
+  const initial = number("#invest-principal");
+  const monthly = number("#invest-monthly");
+  const annualRate = number("#invest-rate") / 100;
+  const months = number("#invest-years") * 12;
+  if (!(months > 0)) return;
+  const monthlyRate = annualRate / 12;
+  const futureInitial = initial * (1 + monthlyRate) ** months;
+  const futureMonthly =
+    monthlyRate === 0
+      ? monthly * months
+      : (monthly * ((1 + monthlyRate) ** months - 1)) / monthlyRate;
+  const future = futureInitial + futureMonthly;
+  const contributed = initial + monthly * months;
+  const result = document.querySelector<HTMLElement>("#invest-result");
+  if (result)
+    result.innerHTML = `<span>预计终值</span><strong>¥ ${money(future)}</strong><small>本金 ¥ ${money(contributed)} · 预计收益 ¥ ${money(future - contributed)}</small>`;
+};
+document.querySelector("#loan-run")?.addEventListener("click", loanRun);
+document.querySelector("#invest-run")?.addEventListener("click", investmentRun);
+loanRun();
+investmentRun();

@@ -1,0 +1,58 @@
+/* 15 Benchmark Result */
+
+.benchmark-footnote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: var(--muted);
+  font:
+    10px "DM Mono",
+    monospace;
+  margin-top: 15px;
+}
+.benchmark-footnote svg {
+  width: 13px;
+  color: #5da878;
+}
+.benchmark-about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  border-top: 1px solid var(--line);
+  padding-top: 75px;
+  margin-top: 110px;
+}
+.benchmark-about h2 {
+  font-size: 32px;
+  line-height: 1.18;
+  letter-spacing: -0.05em;
+  margin: 0;
+}
+.benchmark-about h2 em {
+  color: var(--blue);
+  font-style: normal;
+}
+.benchmark-about-copy {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.9;
+}
+.benchmark-about-copy::after {
+  content: "参考范围来自公开资料与产品经验，用于帮助定位，不代表严格统计结论。";
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 15px;
+}
+.benchmark-about-copy a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.benchmark-about-copy a::after {
+  content: " ↗";
+  font:
+    11px "DM Mono",
+    monospace;
+}

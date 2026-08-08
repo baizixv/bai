@@ -1,0 +1,262 @@
+/* 02 Home Hero */
+
+.hero {
+  min-height: 580px;
+  display: grid;
+  grid-template-columns: 1fr 410px;
+  gap: 100px;
+  align-items: center;
+  padding-top: 55px;
+  padding-bottom: 66px;
+}
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.11em;
+  color: var(--muted);
+  margin: 0 0 22px;
+}
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: #5da878;
+  border-radius: 50%;
+  margin-right: 7px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, #5da878 15%, transparent);
+}
+.eyebrow .mono {
+  margin-left: 14px;
+  color: #999a96;
+}
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+h1 {
+  font-size: clamp(43px, 5.3vw, 72px);
+  line-height: 1.07;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.hero h1 {
+  max-width: 600px;
+  font-size: clamp(38px, 4.2vw, 58px);
+  line-height: 1.14;
+  letter-spacing: -0.045em;
+}
+h1 em,
+.closing em {
+  color: var(--blue);
+  font-style: normal;
+}
+.hero-lede {
+  max-width: 460px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.9;
+  margin-bottom: 32px;
+}
+.hero-links {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  height: 45px;
+  padding: 0 18px;
+  font-size: 12px;
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+.button:hover,
+.mail-button:hover {
+  transform: translateY(-2px);
+}
+.button-dark {
+  background: var(--ink);
+  color: var(--paper);
+}
+.button svg,
+.text-link svg {
+  width: 14px;
+}
+.text-link {
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 4px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.stats {
+  display: flex;
+  gap: 42px;
+  border-top: 1px solid var(--line);
+  margin-top: 62px;
+  padding-top: 19px;
+  max-width: 600px;
+}
+.stats div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 5px;
+}
+.stats dt {
+  color: var(--muted);
+  font:
+    10px "DM Mono",
+    monospace;
+}
+.stats dd {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+.now-panel {
+  background: var(--dark);
+  color: #f4f1eb;
+  padding: 18px 18px 20px;
+  transform: none;
+  box-shadow: 16px 18px 0 var(--paper-deep);
+}
+.now-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.section-label {
+  color: #a8aba8;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+}
+.pulse-line {
+  height: 5px;
+  width: 45px;
+  border-top: 1px solid #686c6a;
+  border-bottom: 1px solid #686c6a;
+}
+.now-image-wrap {
+  height: 226px;
+  position: relative;
+  overflow: hidden;
+}
+.now-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.78);
+  display: block;
+}
+.now-image-fallback {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 25px;
+  background: var(--blue);
+  color: var(--paper);
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+}
+.image-tag {
+  position: absolute;
+  bottom: 11px;
+  left: 12px;
+  background: var(--yellow);
+  color: var(--ink);
+  padding: 5px 8px;
+  font:
+    9px "DM Mono",
+    monospace;
+}
+.now-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  padding: 19px 0 8px;
+}
+.now-content:hover h2 {
+  color: var(--yellow);
+}
+.kicker,
+.project-type {
+  color: #9ea19e;
+  font:
+    10px "DM Mono",
+    monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.now-content h2 {
+  font-size: 25px;
+  line-height: 1.25;
+  margin: 8px 0 0;
+  letter-spacing: -0.04em;
+}
+.arrow-circle {
+  border: 1px solid #626663;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+}
+.arrow-circle svg {
+  width: 15px;
+}
+.now-note {
+  color: #a8aba8;
+  font-size: 11px;
+  line-height: 1.7;
+  margin: 9px 0 17px;
+}
+.progress {
+  height: 2px;
+  background: #5a5e5c;
+}
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--yellow);
+}
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  color: #909491;
+  font:
+    9px "DM Mono",
+    monospace;
+  margin-top: 7px;
+}
+.ticker-band {
+  background: var(--blue);
+  color: #f5f1e9;
+  overflow: hidden;
+  transform: none;
+  margin: 0;
+}
+.ticker-track {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  min-width: 1150px;
+  font:
+    11px "DM Mono",
+    monospace;
+  letter-spacing: 0.17em;
+}
+.ticker-track b {
+  color: var(--yellow);
+  font-size: 18px;
+  font-weight: 400;
+}

@@ -1,0 +1,131 @@
+/* 11 Ogden Practice */
+
+.ogden-practice-card {
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 35px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  text-align: center;
+}
+.ogden-practice-word {
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.ogden-practice-word strong {
+  font:
+    700 64px/1 "Cormorant Garamond",
+    serif;
+}
+.ogden-practice-word small {
+  color: var(--muted);
+  font:
+    11px "DM Mono",
+    monospace;
+  margin-top: 13px;
+}
+.ogden-practice-word p {
+  color: var(--blue);
+  font-size: 19px;
+  margin: 14px 0 0;
+}
+.ogden-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(130px, 1fr));
+  gap: 8px;
+  width: min(100%, 400px);
+  margin-bottom: 20px;
+}
+.ogden-choice {
+  border: 1px solid var(--line);
+  padding: 13px;
+  background: var(--paper-deep);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 12px;
+}
+.ogden-choice:hover {
+  border-color: var(--blue);
+}
+.ogden-spelling-input {
+  width: min(100%, 300px);
+  margin-bottom: 13px;
+  border: 1px solid var(--line);
+  background: var(--paper-deep);
+  color: var(--ink);
+  outline: none;
+  padding: 12px;
+  text-align: center;
+  font:
+    16px "DM Mono",
+    monospace;
+}
+.ogden-feedback {
+  min-height: 20px;
+  color: var(--blue);
+  font-size: 11px;
+}
+.ogden-expression-hint {
+  width: min(100%, 430px);
+  margin-bottom: 15px;
+  padding: 13px;
+  background: var(--paper-deep);
+  color: var(--muted);
+  font:
+    12px/1.7 "Cormorant Garamond",
+    serif;
+}
+.ogden-expression-input {
+  width: min(100%, 430px);
+  margin-bottom: 13px;
+  border: 1px solid var(--line);
+  background: var(--paper-deep);
+  color: var(--ink);
+  padding: 12px;
+  outline: none;
+  resize: vertical;
+  font:
+    13px/1.7 "DM Mono",
+    monospace;
+}
+.ogden-empty {
+  border: 1px solid var(--line);
+  padding: 60px 20px;
+  color: var(--muted);
+  text-align: center;
+}
+.ogden-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  margin-top: 80px;
+  padding-top: 17px;
+  color: var(--muted);
+  font:
+    10px "DM Mono",
+    monospace;
+}
+.ogden-foot svg {
+  width: 15px;
+  color: var(--blue);
+}
+.ogden-foot p {
+  margin: 0;
+}
+.ogden-foot a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  color: var(--blue);
+}
+.ogden-foot a svg {
+  width: 13px;
+}

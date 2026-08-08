@@ -1,0 +1,71 @@
+/* 19 Responsive Detail */
+
+@media (max-width: 900px) {
+  .detail-page,
+  .archive-page {
+    width: min(100% - 44px, 620px);
+  }
+}
+@media (max-width: 560px) {
+  .detail-body {
+    font-size: 14px;
+  }
+  .tools-page {
+    padding-top: 48px;
+  }
+  .tools-page-header {
+    align-items: start;
+    flex-direction: column;
+    padding-bottom: 45px;
+  }
+  .tools-page-header h1 {
+    font-size: 42px;
+  }
+  .tools-page-mark {
+    width: 70px;
+    height: 70px;
+  }
+  .tools-directory {
+    grid-template-columns: 1fr;
+  }
+  .tools-directory-card {
+    min-height: 260px;
+  }
+  .tool-workbench {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .tool-fields,
+  .json-workbench {
+    grid-template-columns: 1fr;
+  }
+  .tool-panel {
+    padding: 20px 15px;
+  }
+  .tool-panel-heading h2 {
+    font-size: 26px;
+  }
+  .tool-panel-actions,
+  .json-actions {
+    flex-wrap: wrap;
+  }
+  .json-column textarea {
+    min-height: 260px;
+  }
+  .tiny-tools-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .standalone-tools-row {
+    grid-template-columns: 1fr;
+  }
+  .tools-intro {
+    align-items: start;
+  }
+  .tools-section .section-heading {
+    display: flex;
+  }
+  .tools-section {
+    padding-top: 78px;
+  }
+}
+

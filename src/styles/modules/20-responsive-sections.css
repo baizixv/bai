@@ -1,0 +1,146 @@
+/* 20 Responsive Sections */
+
+@media (max-width: 900px) {
+  .ogden-header {
+    align-items: start;
+    flex-direction: column;
+  }
+  .ogden-count {
+    flex-basis: auto;
+  }
+  .ogden-toolbar {
+    align-items: start;
+    flex-direction: column;
+  }
+  .ogden-search {
+    width: 100%;
+  }
+  .ogden-mode-tabs {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .ogden-mode {
+    white-space: nowrap;
+  }
+  .ogden-layout {
+    grid-template-columns: 1fr;
+  }
+  .ogden-sidebar {
+    padding-right: 0;
+    border-right: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3px;
+  }
+  .ogden-sidebar > .eyebrow,
+  .ogden-local-note {
+    grid-column: 1 / -1;
+  }
+  .ogden-word-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .finance-grid {
+    grid-template-columns: 1fr;
+  }
+  .topbar {
+    padding: 0 22px;
+  }
+  .main-nav {
+    gap: 18px;
+  }
+  .top-actions {
+    min-width: auto;
+  }
+  .search-box {
+    width: 40px;
+    padding: 0 11px;
+  }
+  .search-box input,
+  .search-box kbd {
+    display: none;
+  }
+  .section-wrap {
+    width: min(100% - 44px, 620px);
+  }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding-top: 70px;
+  }
+  .now-panel {
+    width: min(100%, 410px);
+    justify-self: end;
+  }
+  .content-grid,
+  .library-layout {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+  .project-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .game-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .library-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  }
+  .heading-note {
+    margin: 0;
+  }
+  .chicken-header {
+    align-items: start;
+    flex-direction: column;
+  }
+  .chicken-formula {
+    flex-basis: auto;
+  }
+  .chicken-simulator {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .chicken-controls {
+    padding: 0;
+  }
+  .chicken-results {
+    margin-top: 60px;
+  }
+  .chicken-explanation {
+    gap: 45px;
+  }
+  .benchmark-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .benchmark-sidebar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 25px;
+  }
+  .benchmark-sidebar-label {
+    grid-column: 1 / -1;
+  }
+  .planned-label {
+    margin-top: 0;
+  }
+  .planned-test-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .source-link {
+    margin-top: 0;
+  }
+  .benchmark-about {
+    gap: 45px;
+  }
+  .closing {
+    align-items: start;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .closing h2 {
+    font-size: 40px;
+  }
+}

@@ -1,0 +1,165 @@
+/* 04 Projects */
+
+.projects-section {
+  background: var(--dark);
+  color: #f4f1eb;
+  width: 100%;
+}
+.light-heading .eyebrow,
+.light-heading .view-all {
+  color: #969b98;
+}
+.light-heading .view-all {
+  border-color: #4d5250;
+}
+.light-heading .view-all:hover {
+  color: #f4f1eb;
+  border-color: #f4f1eb;
+}
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.project-card {
+  min-width: 0;
+}
+.project-visual {
+  height: 260px;
+  position: relative;
+  overflow: hidden;
+}
+.project-visual > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+.project-card:hover .project-visual > img,
+.game-card:hover .project-visual > img {
+  transform: scale(1.025);
+}
+.visual-xiaoman {
+  background: #d9e3ee;
+  color: #222b33;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.visual-extension {
+  background: #d9d0f2;
+  color: #302c45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.extension-mark {
+  font:
+    800 100px/1 "Manrope",
+    sans-serif;
+  letter-spacing: -0.15em;
+  transform: rotate(-12deg);
+}
+.extension-code {
+  position: absolute;
+  left: 15px;
+  bottom: 14px;
+  font:
+    9px/1.5 "DM Mono",
+    monospace;
+  letter-spacing: 0.1em;
+}
+.extension-tabs {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font:
+    10px "DM Mono",
+    monospace;
+  letter-spacing: 3px;
+  color: #6c5f96;
+}
+.visual-glyph {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 76px;
+  line-height: 0.9;
+  font-weight: 900;
+  letter-spacing: -0.2em;
+  margin-left: -0.2em;
+}
+.visual-note {
+  position: absolute;
+  left: 15px;
+  bottom: 14px;
+  font:
+    9px/1.5 "DM Mono",
+    monospace;
+  letter-spacing: 0.1em;
+}
+.visual-tiny {
+  background: var(--yellow);
+  color: #25261f;
+  display: flex;
+  justify-content: space-between;
+  padding: 19px;
+}
+.tiny-label {
+  font-size: 31px;
+  font-weight: 800;
+  line-height: 0.84;
+  letter-spacing: -0.08em;
+}
+.tiny-grid {
+  position: absolute;
+  bottom: 10px;
+  right: 17px;
+  font-size: 52px;
+  line-height: 0.7;
+}
+.visual-rain {
+  background: #b8d1ce;
+  color: #253a40;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.rain-title {
+  font:
+    700 38px/1 "Manrope",
+    sans-serif;
+  letter-spacing: -0.06em;
+  transform: rotate(-8deg);
+}
+.rain-title i {
+  color: #e87971;
+  font-style: normal;
+}
+.rain-window {
+  position: absolute;
+  right: 18px;
+  top: 17px;
+  font-size: 67px;
+  opacity: 0.3;
+}
+.project-info {
+  border-bottom: 1px solid #4a4e4c;
+  padding: 16px 0 21px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.project-info h3 {
+  margin: 8px 0 5px;
+  font-size: 19px;
+}
+.project-info p {
+  color: #a3a6a3;
+  margin: 0;
+  font-size: 11px;
+}
+.project-info > svg {
+  color: #929793;
+  width: 15px;
+  margin-top: 9px;
+}

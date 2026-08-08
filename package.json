@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "npm run check:structure && astro check && astro build",
+    "build:astro": "astro check && astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "check:structure": "node scripts/check-file-limits.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
