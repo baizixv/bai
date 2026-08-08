@@ -44,7 +44,7 @@ python3 scripts/generate_assets.py
 
 ## 人类基准测试
 
-本站的 `/games/human-benchmark/` 是基于公开参考项目独立重写的本地版，首版包含反应、数字记忆、视觉记忆、打字、瞄准和斯特鲁普六项测试。成绩只保存在浏览器 localStorage，不需要后端。
+本站的 `/games/human-benchmark/` 是基于公开参考项目独立重写的本地版，现已包含 18 项测试。成绩只保存在浏览器 localStorage，不需要后端。
 
 参考项目：<https://gitee.com/aring1998/human-benchmark>
 

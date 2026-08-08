@@ -3,8 +3,7 @@ import { ArrowLeft, ArrowUpRight, Check, Gamepad2, RotateCcw } from 'lucide-astr
 import Layout from '@/layouts/Layout.astro';
 import { benchmarkTests } from '@/data/benchmark';
 
-const playableTests = benchmarkTests.filter((test) => test.playable);
-const plannedTests = benchmarkTests.filter((test) => !test.playable);
+const playableTests = benchmarkTests;
 ---
 <Layout title="人类基准测试 · Bai / 白" description="在 Bai 的个人网站里体验一组自托管的人类基准测试。">
   <main class="benchmark-page section-wrap">
@@ -20,14 +19,11 @@ const plannedTests = benchmarkTests.filter((test) => !test.playable);
 
     <div class="benchmark-layout">
       <aside class="benchmark-sidebar" aria-label="测试列表">
-        <div class="benchmark-sidebar-label">可玩的测试</div>
+        <div class="benchmark-sidebar-label">全部测试</div>
         <div class="benchmark-test-list">
           {playableTests.map((test, index) => <button class:list={{ 'benchmark-test-tab': true, selected: index === 0 }} data-test={test.id} type="button"><span class={`benchmark-dot dot-${test.color}`}></span><span><strong>{test.title}</strong><small>{test.intro}</small></span><span class="tab-score" data-best-for={test.id}>—</span></button>)}
         </div>
-        <div class="benchmark-sidebar-label planned-label">计划加入</div>
-        <div class="planned-test-list">
-          {plannedTests.map((test) => <div class="planned-test"><span class={`benchmark-dot dot-${test.color}`}></span><span><strong>{test.title}</strong><small>{test.intro}</small></span><span class="planned-badge">SOON</span></div>)}
-        </div>
+
       </aside>
 
       <section class="benchmark-stage" aria-live="polite">
@@ -59,7 +55,7 @@ const plannedTests = benchmarkTests.filter((test) => !test.playable);
 
     <section class="benchmark-about">
       <div><p class="eyebrow">ABOUT THIS VERSION</p><h2>这是一个正在生长的<br /><em>本地化测试工具。</em></h2></div>
-      <div class="benchmark-about-copy"><p>当前版本先实现反应、数字记忆、视觉记忆、打字、瞄准和斯特鲁普六项测试，其余测试会随着时间逐步加入。</p><p>项目参考了开源项目的测试分类和交互思路，并在本站用 Astro + TypeScript 独立重写。参考来源与许可证信息见页面左侧。</p></div>
+      <div class="benchmark-about-copy"><p>当前版本已经实现全部 18 项测试，覆盖反应、记忆、注意力、计算、速度和手眼协调等能力。</p><p>项目参考了开源项目的测试分类和交互思路，并在本站用 Astro + TypeScript 独立重写。成绩会保存在当前浏览器中，适合固定设备后重复记录。</p></div>
     </section>
   </main>
 </Layout>
