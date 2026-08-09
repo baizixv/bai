@@ -7,7 +7,7 @@ mediaType: screen
 color: pink
 creator: 迈克尔·艾普特
 originalTitle: 7 Up
-status: 将要看
+status: 已经看
 label: B站纪录片
 url: "https://www.bilibili.com/bangumi/play/ss48065"
 ---
