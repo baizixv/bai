@@ -114,6 +114,17 @@
   .archive-heading h1 {
     font-size: 40px;
   }
+  .detail-body table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  .detail-body th,
+  .detail-body td {
+    min-width: 130px;
+    padding: 10px 11px;
+  }
   .archive-row {
     grid-template-columns: 1fr 15px;
     gap: 12px;

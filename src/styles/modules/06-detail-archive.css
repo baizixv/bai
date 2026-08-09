@@ -90,6 +90,35 @@
 .detail-body p {
   margin-bottom: 20px;
 }
+.detail-body table {
+  width: 100%;
+  margin: 30px 0 36px;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.detail-body th,
+.detail-body td {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.detail-body th {
+  background: var(--paper-deep);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+.detail-body td {
+  color: var(--muted);
+}
+.detail-body tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--paper-deep) 42%, transparent);
+}
+.detail-body table code {
+  white-space: nowrap;
+}
 .detail-body a[href^="http"] {
   color: var(--blue);
   text-decoration: underline;
