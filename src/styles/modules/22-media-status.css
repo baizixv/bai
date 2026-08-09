@@ -1,5 +1,38 @@
 /* 22 Media Status */
 
+.media-card-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.media-type-badge {
+  display: inline-block;
+  padding: 5px 9px 4px;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font: 700 10px "Noto Sans SC", sans-serif;
+  letter-spacing: 0.04em;
+}
+.media-type-badge-book {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: var(--paper);
+}
+.media-type-badge-screen {
+  border-color: #d96d75;
+  background: #d96d75;
+  color: var(--ink);
+}
+.media-type-badge-music {
+  border-color: #5da878;
+  background: #5da878;
+  color: var(--ink);
+}
+.media-type-badge-game {
+  border-color: var(--green);
+  background: var(--green);
+  color: var(--ink);
+}
 .media-status {
   display: inline-block;
   margin-top: 10px;
