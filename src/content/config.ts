@@ -3,7 +3,7 @@ import { defineCollection, z } from "astro:content";
 const entries = defineCollection({
   type: "content",
   schema: z.object({
-    kind: z.enum(["article", "idea", "project", "tool", "game", "bookmark", "media"]),
+    kind: z.enum(["article", "idea", "idea-version", "project", "tool", "game", "bookmark", "media"]),
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
@@ -14,6 +14,9 @@ const entries = defineCollection({
     now: z.boolean().default(false),
     progress: z.number().min(0).max(100).optional(),
     status: z.string().optional(),
+    version: z.string().optional(),
+    versionLabel: z.string().optional(),
+    idea: z.string().optional(),
     wordCount: z.number().int().positive().optional(),
     mediaType: z.enum(["book", "screen", "music", "game"]).optional(),
     creator: z.string().optional(),

@@ -9,16 +9,19 @@ export async function getStaticPaths() {
 }
 
 const { idea } = Astro.props;
+const versions = (await getCollection('entries', ({ data }) => data.kind === 'idea-version' && data.idea === idea.id)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const { Content } = await render(idea);
+const versionSlug = (version: string) => version.toLowerCase().replaceAll('.', '-');
 ---
 <Layout title={`${idea.data.title} · 想法库 · 白子诩`} description={idea.data.description}>
   <main class="detail-page idea-detail-page section-wrap">
     <a class="back-link" href="/ideas/"><ArrowLeft /> 返回想法库</a>
     <article class="detail-article">
-      <div class="idea-detail-meta"><span class="idea-detail-icon"><Lightbulb /></span><span class="idea-status">{idea.data.status ?? '想法萌芽'}</span><span class="mono">{idea.data.date.toISOString().slice(0, 10)}</span></div>
+      <div class="idea-detail-meta"><span class="idea-detail-icon"><Lightbulb /></span><span class="idea-status">{idea.data.status ?? '想法萌芽'}</span>{idea.data.version && <span class="idea-version-current">当前 {idea.data.version}</span>}<span class="mono">{idea.data.date.toISOString().slice(0, 10)}</span></div>
       <h1>{idea.data.title}</h1><p class="detail-lede">{idea.data.description}</p>
       <div class="detail-body"><Content /></div>
     </article>
+    {versions.length > 0 && <section class="idea-history"><div class="idea-history-heading"><div><p class="eyebrow">VERSION HISTORY</p><h2>旧版记录</h2></div><span>{versions.length} 个版本</span></div><div class="idea-history-list">{versions.map((version) => <a href={`/ideas/${idea.id.replace(/\.md$/, '')}/versions/${versionSlug(version.data.version ?? version.id)}/`}><div><strong>{version.data.version ?? '未命名版本'}</strong><span>{version.data.versionLabel ?? version.data.status ?? '历史版本'}</span></div><p>{version.data.description}</p><ArrowUpRight /></a>)}</div></section>}
     <a class="next-link" href="/ideas/">更多想法 <ArrowUpRight /></a>
   </main>
 </Layout>
