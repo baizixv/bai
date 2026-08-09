@@ -8,7 +8,7 @@ const games = (await getCollection('entries', ({ data }) => data.kind === 'game'
 <Layout title="游戏项目 · 白子诩">
   <main class="archive-page section-wrap">
     <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
-    <div class="archive-heading"><p class="eyebrow">05 / GAME LAB</p><h1>游戏项目区</h1><p>小游戏、交互实验和正在迭代的游戏原型。</p></div>
+    <div class="archive-heading"><p class="eyebrow">02 / GAME LAB</p><h1>游戏项目区</h1><p>小游戏、交互实验和正在迭代的游戏原型。</p></div>
     <div class="archive-project-list">
       {games.map((game) => <a class="archive-project-row game-archive-row" href={`/games/${game.id.replace(/\.md$/, '')}/`}>
         <div class={`archive-project-visual visual-${game.data.visual}`}>{game.data.image ? <img src={game.data.image} alt="" loading="lazy" /> : <span>{game.data.title}</span>}</div><div><span class="project-type">{game.data.label}</span><h2>{game.data.title}</h2><p>{game.data.description}</p></div><ArrowUpRight />

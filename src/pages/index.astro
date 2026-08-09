@@ -31,13 +31,13 @@ const period = years.length > 1 ? `${years[0]}—${years[years.length - 1]}` : `
 <Layout>
   <main id="top">
     <Hero currentEntry={currentEntry} stats={stats} period={period} />
+    <ProjectsSection projects={projects} />
+    <GamesSection games={games} />
+    <MediaLibrarySection media={media} />
+    <ToolsSection tools={tools} />
+    <LibrarySection bookmarks={bookmarks} />
     <WritingSection articles={articles} />
     <IdeasSection ideas={ideas} />
-    <ProjectsSection projects={projects} />
-    <ToolsSection tools={tools} />
-    <GamesSection games={games} />
-    <LibrarySection bookmarks={bookmarks} />
-    <MediaLibrarySection media={media} />
     <AboutSection />
     <Footer />
   </main>

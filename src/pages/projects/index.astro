@@ -8,7 +8,7 @@ const projects = (await getCollection('entries', ({ data }) => data.kind === 'pr
 <Layout title="项目 · 白子诩">
   <main class="archive-page section-wrap">
     <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
-    <div class="archive-heading"><p class="eyebrow">03 / WORKS</p><h1>项目档案</h1><p>把想法做成可以被使用、被打开、被玩一下的东西。</p></div>
+    <div class="archive-heading"><p class="eyebrow">01 / WORKS</p><h1>项目档案</h1><p>把想法做成可以被使用、被打开、被玩一下的东西。</p></div>
     <div class="archive-project-list">
       {projects.map((project) => <a class="archive-project-row" href={`/projects/${project.id.replace(/\.md$/, '')}/`}>
         <div class={`archive-project-visual visual-${project.data.visual}`}>{project.data.image ? <img src={project.data.image} alt="" loading="lazy" /> : <span>{project.data.title}</span>}</div><div><span class="project-type">{project.data.label}</span><h2>{project.data.title}</h2><p>{project.data.description}</p></div><ArrowUpRight />

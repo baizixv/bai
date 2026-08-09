@@ -9,7 +9,7 @@ const formatDate = (date: Date) => date.toISOString().slice(0, 10);
 <Layout title="想法库 · 白子诩" description="保存尚未实现的想法，为未来的项目、文章和实验留下参考。">
   <main class="archive-page ideas-archive section-wrap">
     <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
-    <div class="archive-heading"><p class="eyebrow">02 / IDEAS</p><h1>想法库</h1><p>这里保存还没有成形、尚未验证或等待实现的念头。先记录，再让时间帮助筛选。</p></div>
+    <div class="archive-heading"><p class="eyebrow">07 / IDEAS</p><h1>想法库</h1><p>这里保存还没有成形、尚未验证或等待实现的念头。先记录，再让时间帮助筛选。</p></div>
     {ideas.length > 0 ? <div class="idea-archive-list">
       {ideas.map((idea, index) => <a class={`idea-archive-row idea-tone-${idea.data.color ?? 'yellow'}`} href={`/ideas/${idea.id.replace(/\.md$/, '')}/`}>
         <span class="idea-archive-index">{String(index + 1).padStart(2, '0')}</span><div><span class="idea-status">{idea.data.status ?? '想法萌芽'}</span><h2>{idea.data.title}</h2><p>{idea.data.description}</p></div><span class="mono">{formatDate(idea.data.date)}</span><ArrowUpRight />
