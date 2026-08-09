@@ -7,7 +7,7 @@ import { formatMediaTitle, formatWordCount, getMediaTone, type MediaTone } from 
 const media = (await getCollection('entries', ({ data }) => data.kind === 'media')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const tones: MediaTone[] = ['blue', 'yellow', 'pink', 'green'];
 const statusLabels = { '已经看': '已经看', '正在看': '正在看', '将要看': '将要看' };
-const statuses = ['已经看', '正在看', '将要看'] as const;
+const statuses = ['正在看', '将要看', '已经看'] as const;
 const groups = [
   { type: 'book' as const, label: '书籍', icon: BookOpen },
   { type: 'screen' as const, label: '影视剧', icon: Film },
