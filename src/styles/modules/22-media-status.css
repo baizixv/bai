@@ -17,8 +17,11 @@
   font: 12px "DM Mono", monospace;
 }
 .media-type-badge {
-  display: inline-block;
-  padding: 5px 9px 4px;
+  height: 36px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
   border: 1px solid var(--line);
   color: var(--ink);
   font: 700 10px "Noto Sans SC", sans-serif;
@@ -45,9 +48,12 @@
   color: var(--ink);
 }
 .media-status {
-  display: inline-block;
+  height: 36px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
   margin: 0;
-  padding: 4px 8px 3px;
+  padding: 0 10px;
   font: 700 10px "Noto Sans SC", sans-serif;
   letter-spacing: 0.04em;
 }
