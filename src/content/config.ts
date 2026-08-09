@@ -17,6 +17,7 @@ const entries = defineCollection({
     wordCount: z.number().int().positive().optional(),
     mediaType: z.enum(["book", "film", "game"]).optional(),
     creator: z.string().optional(),
+    originalTitle: z.string().optional(),
     year: z.number().int().optional(),
     rating: z.number().min(0).max(5).optional(),
     label: z.string().optional(),
