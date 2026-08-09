@@ -23,7 +23,7 @@ npm run preview           # 预览构建产物
 
 ## 目录结构
 
-- `src/content/entries/`：文章、项目、工具、游戏、收藏的 Markdown 内容。新增文件即可进入页面。
+- `src/content/entries/`：文章、想法、项目、工具、游戏、收藏的 Markdown 内容。新增文件即可进入页面。
 - `src/pages/games/`：游戏项目列表、游戏详情页和自托管人类基准测试。
 
 - `src/pages/tools/`：Tiny Tools 集合、在线工具目录和独立工具页面。

@@ -1,0 +1,32 @@
+---
+import { ArrowUpRight, Lightbulb, Sparkles } from 'lucide-astro';
+import type { CollectionEntry } from 'astro:content';
+
+type Entry = CollectionEntry<'entries'>;
+interface Props { ideas: Entry[]; }
+const { ideas } = Astro.props;
+const formatDate = (date: Date) => date.toISOString().slice(0, 10).replaceAll('-', '.');
+---
+<section class="content-section ideas-section" id="ideas">
+  <div class="section-wrap">
+    <div class="section-heading ideas-heading">
+      <div><p class="eyebrow">02 / IDEAS</p><h2>起一个想法</h2></div>
+      <a class="view-all" href="/ideas/">打开想法库 <ArrowUpRight /></a>
+    </div>
+    <div class="ideas-intro">
+      <Sparkles />
+      <p>先把一闪而过的念头留下来，不急着证明它是否可行。它们会成为将来做产品、写文章或开始新实验时的参考。</p>
+    </div>
+    {ideas.length > 0 ? <div class="ideas-grid searchable-group">
+      {ideas.slice(0, 4).map((idea, index) => <a class={`idea-card idea-tone-${idea.data.color ?? 'yellow'} searchable-item`} data-search={`${idea.data.title} ${idea.data.description} ${idea.data.status ?? ''}`} href={`/ideas/${idea.id.replace(/\.md$/, '')}/`}>
+        <div class="idea-card-top"><span>{String(index + 1).padStart(2, '0')}</span><span class="idea-status">{idea.data.status ?? '想法萌芽'}</span></div>
+        <h3>{idea.data.title}</h3><p>{idea.data.description}</p>
+        <div class="idea-card-foot"><span>{formatDate(idea.data.date)}</span><ArrowUpRight /></div>
+      </a>)}
+    </div> : <a class="ideas-empty" href="/ideas/">
+      <span class="ideas-empty-icon"><Lightbulb /></span>
+      <div><span class="eyebrow">IDEA SEED</span><h3>给还没成形的念头留一块空地</h3><p>下一次想到值得保存的东西时，就从这里写下第一条。</p></div>
+      <ArrowUpRight />
+    </a>}
+  </div>
+</section>

@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import Hero from '@/components/Hero.astro';
 import WritingSection from '@/components/WritingSection.astro';
+import IdeasSection from '@/components/IdeasSection.astro';
 import ProjectsSection from '@/components/ProjectsSection.astro';
 import ToolsSection from '@/components/ToolsSection.astro';
 import GamesSection from '@/components/GamesSection.astro';
@@ -13,6 +14,7 @@ import Footer from '@/components/Footer.astro';
 
 const entries = await getCollection('entries');
 const articles = entries.filter((entry) => entry.data.kind === 'article').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const ideas = entries.filter((entry) => entry.data.kind === 'idea').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const projects = entries.filter((entry) => entry.data.kind === 'project').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const tools = entries.filter((entry) => entry.data.kind === 'tool').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const games = entries.filter((entry) => entry.data.kind === 'game').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -30,6 +32,7 @@ const period = years.length > 1 ? `${years[0]}—${years[years.length - 1]}` : `
   <main id="top">
     <Hero currentEntry={currentEntry} stats={stats} period={period} />
     <WritingSection articles={articles} />
+    <IdeasSection ideas={ideas} />
     <ProjectsSection projects={projects} />
     <ToolsSection tools={tools} />
     <GamesSection games={games} />

@@ -4,7 +4,7 @@ export const about = {
   intro: '我喜欢把模糊的好奇心，慢慢做成可以访问的东西。写文章、做工具、收集链接，也在周末做一些不一定有用但很好玩的实验。',
   location: '中国 · 远程工作',
   availability: '目前接受有趣的小型合作',
-  email: 'hello@bai.page',
+  email: 'bai.zixu@qq.com',
   stats: [
     { label: '开始记录', value: '2021' },
     { label: '公开项目', value: '12' },

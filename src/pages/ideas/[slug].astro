@@ -1,0 +1,24 @@
+---
+import { getCollection, render } from 'astro:content';
+import { ArrowLeft, ArrowUpRight, Lightbulb } from 'lucide-astro';
+import Layout from '@/layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const ideas = await getCollection('entries', ({ data }) => data.kind === 'idea');
+  return ideas.map((idea) => ({ params: { slug: idea.id.replace(/\.md$/, '') }, props: { idea } }));
+}
+
+const { idea } = Astro.props;
+const { Content } = await render(idea);
+---
+<Layout title={`${idea.data.title} · 想法库 · 白子诩`} description={idea.data.description}>
+  <main class="detail-page idea-detail-page section-wrap">
+    <a class="back-link" href="/ideas/"><ArrowLeft /> 返回想法库</a>
+    <article class="detail-article">
+      <div class="idea-detail-meta"><span class="idea-detail-icon"><Lightbulb /></span><span class="idea-status">{idea.data.status ?? '想法萌芽'}</span><span class="mono">{idea.data.date.toISOString().slice(0, 10)}</span></div>
+      <h1>{idea.data.title}</h1><p class="detail-lede">{idea.data.description}</p>
+      <div class="detail-body"><Content /></div>
+    </article>
+    <a class="next-link" href="/ideas/">更多想法 <ArrowUpRight /></a>
+  </main>
+</Layout>

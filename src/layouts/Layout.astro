@@ -33,6 +33,7 @@ const { title = '白子诩 · 数字花园', description = '白子诩的个人�
         <nav class="main-nav" aria-label="主导航">
           <a class:list={{ active: Astro.url.pathname === '/' }} href="/#now">现在</a>
           <a href="/#writing">文章</a>
+          <a class:list={{ active: Astro.url.pathname.startsWith('/ideas') }} href="/#ideas">想法</a>
           <a href="/#projects">项目</a>
           <a href="/#tools">工具</a>
           <a href="/#games">游戏</a>

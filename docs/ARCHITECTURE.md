@@ -58,7 +58,8 @@ src/
 ## 4. 页面与内容约定
 
 - Markdown frontmatter 必须通过 `src/content/config.ts` 的 schema 校验。
-- 新增条目优先使用 Markdown，不在页面中硬编码项目、工具或收藏内容。
+- 新增条目优先使用 Markdown，不在页面中硬编码想法、项目、工具或收藏内容。
+- 想法使用 `kind: idea`，进入首页“起一个想法”、想法归档和详情页；可通过 `status` 记录想法萌芽、推敲中、准备实现、实现中或已实现。
 - 工具使用 `kind: tool`，通过 `area: tiny` 或 `area: standalone` 进入对应区域。
 - 媒体使用 `kind: media`，通过 `mediaType: book | screen | music | game` 分类；书名统一用中文书名号展示，书籍可填写 `wordCount`，并使用 `color` 为不同条目分配视觉主题。
 - 详情页按钮统一放入 `.detail-actions`，**本站体验在前，外部项目在后**。

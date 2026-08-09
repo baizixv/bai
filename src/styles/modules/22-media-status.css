@@ -1,9 +1,20 @@
 /* 22 Media Status */
 
 .media-card-head {
+  min-height: 36px;
   display: flex;
   align-items: center;
   gap: 9px;
+}
+.media-card-tags {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+.media-tag-separator {
+  color: var(--muted);
+  font: 12px "DM Mono", monospace;
 }
 .media-type-badge {
   display: inline-block;
@@ -35,7 +46,7 @@
 }
 .media-status {
   display: inline-block;
-  margin-top: 10px;
+  margin: 0;
   padding: 4px 8px 3px;
   font: 700 10px "Noto Sans SC", sans-serif;
   letter-spacing: 0.04em;
