@@ -76,7 +76,7 @@ python3 scripts/generate_assets.py
 - 在线工具统一使用 `kind: tool`，通过 `area: tiny` 放入“更多工具”集合，或通过 `area: standalone` 使用独立工具入口；工具应优先提供本站 `demoUrl`，不再混入项目档案。
 - 参考 baizixv.com 的工具分类思路，但所有工具在本站独立实现；当前包括时间、编码、颜色、二维码和财务计算工具。默认采用浏览器本地处理，不上传或保存用户输入。
 
-- `kind: media` 用于图书馆条目，通过 `mediaType: book | film | game` 区分书籍、电影和游戏，可补充作者/导演、年份、评分、书籍字数、`color` 区分视觉主题和外部链接；书名展示统一使用中文书名号。
+- `kind: media` 用于图书馆条目，通过 `mediaType: book | screen | music | game` 区分书籍、影视剧、音乐和游戏，可补充作者/导演、年份、评分、书籍字数、`color` 区分视觉主题和外部链接；书名展示统一使用中文书名号。
 
 
 

@@ -60,7 +60,7 @@ src/
 - Markdown frontmatter 必须通过 `src/content/config.ts` 的 schema 校验。
 - 新增条目优先使用 Markdown，不在页面中硬编码项目、工具或收藏内容。
 - 工具使用 `kind: tool`，通过 `area: tiny` 或 `area: standalone` 进入对应区域。
-- 媒体使用 `kind: media`，通过 `mediaType: book | film | game` 分类；书名统一用中文书名号展示，书籍可填写 `wordCount`，并使用 `color` 为不同条目分配视觉主题。
+- 媒体使用 `kind: media`，通过 `mediaType: book | screen | music | game` 分类；书名统一用中文书名号展示，书籍可填写 `wordCount`，并使用 `color` 为不同条目分配视觉主题。
 - 详情页按钮统一放入 `.detail-actions`，**本站体验在前，外部项目在后**。
 - 外部链接必须明显可识别，使用外链图标或颜色，并在新标签页打开。
 - 首页内容区使用集合数据计算统计，禁止恢复硬编码的项目数量或更新时间。

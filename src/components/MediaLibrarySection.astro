@@ -1,13 +1,14 @@
 ---
-import { ArrowUpRight, BookOpen, Film, Gamepad2 } from 'lucide-astro';
+import { ArrowUpRight, BookOpen, Film, Gamepad2, Music } from 'lucide-astro';
 import type { CollectionEntry } from 'astro:content';
 import { formatMediaTitle, formatWordCount, getMediaTone, type MediaTone } from '@/lib/media';
 
 type Entry = CollectionEntry<'entries'>;
 interface Props { media: Entry[]; }
 const { media } = Astro.props;
-const iconMap = { book: BookOpen, film: Film, game: Gamepad2 };
-const typeLabels = { book: '书籍', film: '电影', game: '游戏' };
+const iconMap = { book: BookOpen, screen: Film, music: Music, game: Gamepad2 };
+const typeLabels = { book: '书籍', screen: '影视剧', music: '音乐', game: '游戏' };
+const statusLabels = { '已经看': '已经看', '正在看': '正在看', '将要看': '将要看' };
 const tones: MediaTone[] = ['blue', 'yellow', 'pink', 'green'];
 ---
 <section class="content-section media-library-section" id="library">
@@ -16,11 +17,11 @@ const tones: MediaTone[] = ['blue', 'yellow', 'pink', 'green'];
       <div><p class="eyebrow">06 / LIBRARY</p><h2>图书馆</h2></div>
       <a class="view-all" href="/library/">查看图书馆 <ArrowUpRight /></a>
     </div>
-    <p class="media-library-lede">收藏看过的书、电影和游戏。不是评分榜，而是给未来的自己留一份可回看的记录。</p>
+    <p class="media-library-lede">收藏看过的书籍、影视剧、音乐和游戏。不是评分榜，而是给未来的自己留一份可回看的记录。</p>
     {media.length > 0 ? <div class="media-library-grid searchable-group">
       {media.slice(0, 6).map((item, index) => { const type = item.data.mediaType ?? 'book'; const Icon = iconMap[type]; const tone = getMediaTone(item.data.color ?? tones[index % tones.length]); const wordCount = formatWordCount(item.data.wordCount); return <a class={`media-card media-${type} media-tone-${tone} searchable-item`} data-search={`${item.data.title} ${item.data.description} ${item.data.creator ?? ''} ${item.data.status ?? ''}`} href={item.data.url ?? '/library/'} target={item.data.url ? '_blank' : undefined} rel={item.data.url ? 'noreferrer' : undefined}>
-        <div class="media-card-mark"><Icon /></div><div class="media-card-copy"><span class="media-type">{typeLabels[type]}{wordCount ? ` · ${wordCount}` : ''}{item.data.status ? ` · ${item.data.status}` : ''}</span><h3>{formatMediaTitle(item.data.title, type)}</h3><p>{item.data.description}</p>{item.data.creator && <small class="media-creator">{item.data.creator}</small>}</div>{item.data.rating !== undefined && <span class="media-rating">{'★'.repeat(Math.round(item.data.rating))}</span>}<ArrowUpRight />
+        <div class="media-card-mark"><Icon /></div><div class="media-card-copy"><span class="media-type">{typeLabels[type]}{wordCount ? ` · ${wordCount}` : ''}</span>{item.data.status && <span class={`media-status media-status-${item.data.status === '已经看' ? 'done' : item.data.status === '正在看' ? 'current' : 'next'}`}>{statusLabels[item.data.status as keyof typeof statusLabels] ?? item.data.status}</span>}<h3>{formatMediaTitle(item.data.title, type)}</h3><p>{item.data.description}</p>{item.data.creator && <small class="media-creator">{item.data.creator}</small>}</div>{item.data.rating !== undefined && <span class="media-rating">{'★'.repeat(Math.round(item.data.rating))}</span>}<ArrowUpRight />
       </a>; })}
-    </div> : <a class="media-empty" href="/library/"><span class="media-card-mark"><BookOpen /></span><div><span class="eyebrow">YOUR LIBRARY</span><h3>从第一本书开始记录</h3><p>在图书馆里添加你看过的书、电影或游戏，它们会出现在这里。</p></div><ArrowUpRight /></a>}
+    </div> : <a class="media-empty" href="/library/"><span class="media-card-mark"><BookOpen /></span><div><span class="eyebrow">YOUR LIBRARY</span><h3>从第一本书开始记录</h3><p>在图书馆里添加书籍、影视剧、音乐或游戏，它们会出现在这里。</p></div><ArrowUpRight /></a>}
   </div>
 </section>

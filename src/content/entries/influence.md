@@ -8,6 +8,7 @@ color: yellow
 creator: 罗伯特·西奥迪尼
 year: 2006
 wordCount: 300000
+status: 正在看
 url: "https://weread.qq.com/web/search/books?keyword=%E5%BD%B1%E5%93%8D%E5%8A%9B"
 ---
 

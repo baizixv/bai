@@ -15,7 +15,7 @@ const entries = defineCollection({
     progress: z.number().min(0).max(100).optional(),
     status: z.string().optional(),
     wordCount: z.number().int().positive().optional(),
-    mediaType: z.enum(["book", "film", "game"]).optional(),
+    mediaType: z.enum(["book", "screen", "music", "game"]).optional(),
     creator: z.string().optional(),
     originalTitle: z.string().optional(),
     year: z.number().int().optional(),
@@ -28,9 +28,7 @@ const entries = defineCollection({
     icon: z.enum(["layers", "type", "github", "book-open"]).optional(),
     visual: z
       .enum([
-        "xiaoman",
         "tiny",
-        "rain",
         "extension",
         "benchmark",
         "chicken",

@@ -8,7 +8,7 @@ color: blue
 creator: E. T. 杰恩斯
 originalTitle: "Probability Theory: The Logic of Science"
 year: 2003
-status: 未来要看
+status: 将要看
 label: YouTube 课程
 url: "https://www.youtube.com/watch?v=rfKS69cIwHc"
 ---

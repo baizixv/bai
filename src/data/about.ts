@@ -11,9 +11,7 @@ export const about = {
     { label: '当前版本', value: 'v0.4.0' }
   ],
   progress: [
-    { name: '个人网站 2.0', detail: '内容系统与视觉重构', status: '进行中', percent: 68, color: 'blue' },
-    { name: 'Tiny Tools', detail: '补充开发者常用小工具', status: '下一步', percent: 34, color: 'yellow' },
-    { name: 'Rainy Day', detail: '增加关卡与声音设计', status: '计划中', percent: 12, color: 'pink' }
+    { name: '个人网站 2.0', detail: '内容系统与视觉重构', status: '进行中', percent: 68, color: 'blue' }
   ],
   releases: [
     { version: 'v0.4.0', date: '2025.03.18', title: '迁移到 Astro', description: '加入 Markdown 内容集合、独立详情页和类型检查。' },

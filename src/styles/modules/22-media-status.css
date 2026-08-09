@@ -1,0 +1,77 @@
+/* 22 Media Status */
+
+.media-status {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 8px 3px;
+  font: 700 10px "Noto Sans SC", sans-serif;
+  letter-spacing: 0.04em;
+}
+.media-status-done {
+  background: var(--ink);
+  color: var(--paper);
+}
+.media-status-current {
+  background: var(--blue);
+  color: var(--paper);
+}
+.media-status-next {
+  background: var(--yellow);
+  color: var(--ink);
+}
+.library-status-groups {
+  margin: 20px 0 0 57px;
+}
+.library-status-group {
+  margin-bottom: 20px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+.library-status-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+  font-weight: 700;
+}
+.library-status-heading small {
+  color: var(--muted);
+  font: 10px "DM Mono", monospace;
+}
+.library-status-group-done .library-status-heading {
+  background: var(--ink);
+  color: var(--paper);
+}
+.library-status-group-current .library-status-heading {
+  background: var(--blue);
+  color: var(--paper);
+}
+.library-status-group-next .library-status-heading {
+  background: var(--yellow);
+  color: var(--ink);
+}
+.library-status-group .library-catalog-list {
+  margin: 0;
+  padding: 0 14px;
+}
+.library-status-group .library-catalog-item:first-child {
+  border-top: 0;
+}
+.library-status-empty {
+  margin: 0;
+  padding: 13px 14px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.library-item-meta .library-label {
+  color: var(--muted);
+  letter-spacing: 0;
+}
+
+@media (max-width: 560px) {
+  .library-status-groups {
+    margin-left: 0;
+  }
+}

@@ -1,23 +1,26 @@
 ---
-import { ArrowLeft, ArrowUpRight, BookOpen, Film, Gamepad2 } from 'lucide-astro';
+import { ArrowLeft, ArrowUpRight, BookOpen, Film, Gamepad2, Music } from 'lucide-astro';
 import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import { formatMediaTitle, formatWordCount, getMediaTone, type MediaTone } from '@/lib/media';
 
 const media = (await getCollection('entries', ({ data }) => data.kind === 'media')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const tones: MediaTone[] = ['blue', 'yellow', 'pink', 'green'];
+const statusLabels = { '已经看': '已经看', '正在看': '正在看', '将要看': '将要看' };
+const statuses = ['已经看', '正在看', '将要看'] as const;
 const groups = [
   { type: 'book' as const, label: '书籍', icon: BookOpen },
-  { type: 'film' as const, label: '电影', icon: Film },
+  { type: 'screen' as const, label: '影视剧', icon: Film },
+  { type: 'music' as const, label: '音乐', icon: Music },
   { type: 'game' as const, label: '游戏', icon: Gamepad2 }
 ];
 ---
-<Layout title="图书馆 · 白子诩" description="白子诩看过的书、电影和游戏。">
+<Layout title="图书馆 · 白子诩" description="白子诩收藏的书籍、影视剧、音乐和游戏。">
   <main class="archive-page library-page section-wrap">
     <a class="back-link" href="/"><ArrowLeft /> 返回首页</a>
-    <div class="archive-heading"><p class="eyebrow">06 / LIBRARY</p><h1>图书馆</h1><p>记录看过的书、电影和游戏。这里不追求完整，只留下那些值得以后再想一遍的东西。</p></div>
+    <div class="archive-heading"><p class="eyebrow">06 / LIBRARY</p><h1>图书馆</h1><p>记录看过的书籍、影视剧、音乐和游戏。每个分类都按观看或阅读状态分开，方便找到下一件想打开的东西。</p></div>
     <div class="library-catalog">
-      {groups.map(({ type, label, icon: Icon }) => { const items = media.filter((item) => item.data.mediaType === type); return <section class="library-catalog-group"><div class="library-catalog-heading"><span class="library-catalog-icon"><Icon /></span><div><span class="eyebrow">{type.toUpperCase()}</span><h2>{label}</h2></div><span class="library-count">{items.length}</span></div>{items.length > 0 ? <div class="library-catalog-list">{items.map((item, index) => <a class={`library-catalog-item media-tone-${getMediaTone(item.data.color ?? tones[index % tones.length])}`} href={item.data.url ?? '#'} target={item.data.url ? '_blank' : undefined} rel={item.data.url ? 'noreferrer' : undefined}><div><h3>{formatMediaTitle(item.data.title, type)}</h3><p>{item.data.creator ? `${item.data.creator} · ` : ''}{item.data.description}</p></div><div class="library-item-meta">{item.data.status && <span class="library-status">{item.data.status}</span>}{item.data.label && <span class="library-label">{item.data.label}</span>}{formatWordCount(item.data.wordCount) && <span>{formatWordCount(item.data.wordCount)}</span>}{item.data.year && <span>{item.data.year}</span>}{item.data.rating !== undefined && <span>{'★'.repeat(Math.round(item.data.rating))}</span>}<ArrowUpRight /></div></a>)}</div> : <p class="library-catalog-empty">还没有记录。新增一个 `kind: media` 的内容条目即可。</p>}</section>; })}
+      {groups.map(({ type, label, icon: Icon }) => { const items = media.filter((item) => item.data.mediaType === type); return <section class="library-catalog-group"><div class="library-catalog-heading"><span class="library-catalog-icon"><Icon /></span><div><span class="eyebrow">{type.toUpperCase()}</span><h2>{label}</h2></div><span class="library-count">{items.length}</span></div>{items.length > 0 ? <div class="library-status-groups">{statuses.map((status) => { const statusItems = items.filter((item) => item.data.status === status); return <section class={`library-status-group library-status-group-${status === '已经看' ? 'done' : status === '正在看' ? 'current' : 'next'}`}><div class="library-status-heading"><span>{statusLabels[status]}</span><small>{statusItems.length}</small></div>{statusItems.length > 0 ? <div class="library-catalog-list">{statusItems.map((item, index) => <a class={`library-catalog-item media-tone-${getMediaTone(item.data.color ?? tones[index % tones.length])}`} href={item.data.url ?? '#'} target={item.data.url ? '_blank' : undefined} rel={item.data.url ? 'noreferrer' : undefined}><div><h3>{formatMediaTitle(item.data.title, type)}</h3><p>{item.data.creator ? `${item.data.creator} · ` : ''}{item.data.description}</p></div><div class="library-item-meta">{item.data.label && <span class="library-label">{item.data.label}</span>}{formatWordCount(item.data.wordCount) && <span>{formatWordCount(item.data.wordCount)}</span>}{item.data.year && <span>{item.data.year}</span>}{item.data.rating !== undefined && <span>{'★'.repeat(Math.round(item.data.rating))}</span>}<ArrowUpRight /></div></a>)}</div> : <p class="library-status-empty">暂无条目</p>}</section>; })}</div> : <p class="library-catalog-empty">还没有记录。新增一个 `kind: media` 的内容条目即可。</p>}</section>; })}
     </div>
   </main>
 </Layout>

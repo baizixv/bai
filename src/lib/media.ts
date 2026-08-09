@@ -1,4 +1,4 @@
-export type MediaType = 'book' | 'film' | 'game';
+export type MediaType = 'book' | 'screen' | 'music' | 'game';
 export type MediaTone = 'blue' | 'yellow' | 'pink' | 'green';
 
 export const formatMediaTitle = (title: string, mediaType?: MediaType): string =>
