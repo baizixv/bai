@@ -3,6 +3,7 @@ import { initLotteryFx } from "./lottery-fx";
 
 const ODDS = 21_425_712; // 大乐透头奖概率
 const PRICE = 2; // 每注 2 元
+const JACKPOT = 18_000_000; // 头奖固定值：1,800 万（大乐透追加头奖口径）
 const KEY = "bai-lottery-reincarnation-v2";
 const RUN_LIMIT = 8;
 
@@ -18,7 +19,6 @@ const startAgeInput = q<HTMLInputElement>("#lottery-start-age");
 const endAgeInput = q<HTMLInputElement>("#lottery-end-age");
 const frequencyInput = q<HTMLInputElement>("#lottery-frequency");
 const ticketsInput = q<HTMLInputElement>("#lottery-tickets");
-const jackpotInput = q<HTMLInputElement>("#lottery-jackpot");
 const worldsInput = q<HTMLInputElement>("#lottery-worlds");
 const presetButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-worlds]")];
 const form = q<HTMLFormElement>("#lottery-settings");
@@ -61,12 +61,11 @@ const fmtMoney = (value: number): string => {
   return `${sign}${Math.round(v)} 元`;
 };
 
-const readSettings = (): { startAge: number; endAge: number; frequency: number; tickets: number; jackpot: number; worlds: number } | null => {
+const readSettings = (): { startAge: number; endAge: number; frequency: number; tickets: number; worlds: number } | null => {
   const startAge = Number(startAgeInput?.value ?? 30);
   const endAge = Number(endAgeInput?.value ?? 50);
   const frequency = Number(frequencyInput?.value ?? 3);
   const tickets = Number(ticketsInput?.value ?? 1);
-  const jackpot = Number(jackpotInput?.value ?? 10_000_000);
   const worlds = Number(worldsInput?.value ?? 100);
   if (!(startAge >= 1 && endAge <= 120 && startAge < endAge)) {
     if (statusOutput) statusOutput.textContent = "年龄区间无效：开始年龄需小于结束年龄（1—120 岁）。";
@@ -80,15 +79,11 @@ const readSettings = (): { startAge: number; endAge: number; frequency: number; 
     if (statusOutput) statusOutput.textContent = "注数无效：每次购买需在 1—20 注之间。";
     return null;
   }
-  if (!(jackpot >= 10_000)) {
-    if (statusOutput) statusOutput.textContent = "头奖金额无效：至少 1 万元。";
-    return null;
-  }
   if (!(worlds >= 1 && worlds <= 100_000)) {
     if (statusOutput) statusOutput.textContent = "平行世界数无效：支持 1—100,000。";
     return null;
   }
-  return { startAge, endAge, frequency, tickets, jackpot, worlds };
+  return { startAge, endAge, frequency, tickets, worlds };
 };
 
 const computePlan = (s: { startAge: number; endAge: number; frequency: number; tickets: number }) => {
@@ -99,12 +94,12 @@ const computePlan = (s: { startAge: number; endAge: number; frequency: number; t
   return { weeks, purchases, tickets, ticketsPerWeek, cost: tickets * PRICE };
 };
 
-const renderPlan = (s: { startAge: number; endAge: number; frequency: number; tickets: number; jackpot: number; worlds: number }) => {
+const renderPlan = (s: { startAge: number; endAge: number; frequency: number; tickets: number; worlds: number }) => {
   const plan = computePlan(s);
   if (planPurchases) planPurchases.textContent = `${num.format(plan.purchases)} 次`;
   if (planTickets) planTickets.textContent = `${num.format(plan.tickets)} 注`;
   if (planCost) planCost.textContent = fmtMoney(plan.cost);
-  if (runButton) runButton.textContent = `开始模拟 ${num.format(s.worlds)} 个平行世界`;
+  if (runButton) runButton.textContent = "开始模拟";
 };
 
 const renderTotals = () => {
@@ -155,7 +150,7 @@ const setProgress = (ratio: number) => {
   if (progressValue) progressValue.textContent = `${(ratio * 100).toFixed(0)}%`;
 };
 
-const renderResult = (worlds: number, plan: { purchases: number; tickets: number; cost: number }, jackpot: number, winners: WinRecord[], invested: number, won: number) => {
+const renderResult = (worlds: number, plan: { purchases: number; tickets: number; cost: number }, winners: WinRecord[], invested: number, won: number) => {
   if (results) results.hidden = false;
   if (resultWorlds) resultWorlds.textContent = num.format(worlds);
   if (resultInvested) resultInvested.textContent = fmtMoney(invested);
@@ -167,13 +162,13 @@ const renderResult = (worlds: number, plan: { purchases: number; tickets: number
     resultNet.classList.toggle("lottery-net-positive", won - invested > 0);
   }
   if (resultRate) resultRate.textContent = invested > 0 ? `${((won / invested) * 100).toFixed(1)}%` : "—";
-  if (resultSummary) resultSummary.textContent = `每世 ${num.format(plan.purchases)} 次购买 · ${num.format(plan.tickets)} 注 · ${fmtMoney(plan.cost)} · 头奖 ${fmtMoney(jackpot)}`;
+  if (resultSummary) resultSummary.textContent = `每世 ${num.format(plan.purchases)} 次购买 · ${num.format(plan.tickets)} 注 · ${fmtMoney(plan.cost)} · 头奖 ${fmtMoney(JACKPOT)}`;
   if (!winnersBlock || !winnersText) return;
   winnersBlock.hidden = winners.length === 0;
   winnersText.textContent = winners.length > 0 ? `中奖世界：${winners.slice(0, 8).map((w) => `#${num.format(w.world)} 号 · 约 ${fmtAge(w.age)} 岁`).join("、")}${winners.length > 8 ? ` 等 ${winners.length} 个` : ""}` : "";
 };
 
-const showWin = (winners: WinRecord[], settings: { jackpot: number }, invested: number, won: number) => {
+const showWin = (winners: WinRecord[], invested: number, won: number) => {
   if (!winOverlay) return;
   const first = winners[0];
   if (winTitle) {
@@ -182,7 +177,7 @@ const showWin = (winners: WinRecord[], settings: { jackpot: number }, invested: 
         ? `第 <span>${num.format(first.world)}</span> 号世界在约 <span>${fmtAge(first.age)}</span> 岁中了头奖！`
         : `<span>${winners.length}</span> 个平行世界中奖！最早约 ${fmtAge(first.age)} 岁`;
   }
-  if (winMeta) winMeta.textContent = `投入 ${fmtMoney(invested)} · 奖金 ${fmtMoney(won)} · 头奖 ${fmtMoney(settings.jackpot)}`;
+  if (winMeta) winMeta.textContent = `投入 ${fmtMoney(invested)} · 奖金 ${fmtMoney(won)} · 头奖 ${fmtMoney(JACKPOT)}`;
   winOverlay.hidden = false;
   fx.launchFireworks();
 };
@@ -211,7 +206,7 @@ const execute = async () => {
     if (done < settings.worlds) await new Promise((resolve) => requestAnimationFrame(resolve));
   }
   const invested = plan.cost * settings.worlds;
-  const won = winners.length * settings.jackpot;
+  const won = winners.length * JACKPOT;
   state.totalWorlds += settings.worlds;
   state.totalInvested += invested;
   state.totalWins += winners.length;
@@ -220,12 +215,12 @@ const execute = async () => {
   if (state.runs.length > RUN_LIMIT) state.runs.shift();
   writeStorage(KEY, state);
   renderTotals();
-  renderResult(settings.worlds, plan, settings.jackpot, winners, invested, won);
+  renderResult(settings.worlds, plan, winners, invested, won);
   if (progressLabel) progressLabel.textContent = "模拟完成";
   if (statusOutput) statusOutput.textContent = winners.length > 0 ? `🎉 ${winners.length} 个世界命中头奖！` : `模拟完成：${num.format(settings.worlds)} 个世界全部未中头奖。`;
   if (runButton) runButton.disabled = false;
   running = false;
-  if (winners.length > 0) showWin(winners, settings, invested, won);
+  if (winners.length > 0) showWin(winners, invested, won);
 };
 
 presetButtons.forEach((button) => {
@@ -238,7 +233,7 @@ form?.addEventListener("submit", (event) => {
   event.preventDefault();
   void execute();
 });
-[startAgeInput, endAgeInput, frequencyInput, ticketsInput, jackpotInput, worldsInput].forEach((input) => {
+[startAgeInput, endAgeInput, frequencyInput, ticketsInput, worldsInput].forEach((input) => {
   input?.addEventListener("input", () => {
     const settings = readSettings();
     if (settings) renderPlan(settings);
