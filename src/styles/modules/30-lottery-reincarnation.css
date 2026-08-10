@@ -31,6 +31,7 @@ body.lottery-game .topbar { border-bottom-color: #2b3139; }
 .lottery-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .lottery-presets button { border: 1px solid var(--line); background: transparent; color: var(--ink); padding: 10px 0; font-size: 12px; cursor: pointer; }
 .lottery-presets button:hover { border-color: var(--yellow); color: var(--yellow); }
+.lottery-presets button.active { border-color: var(--yellow); color: var(--yellow); background: #f3ca5115; }
 .lottery-live { width: 100%; border: 0; background: var(--yellow); color: #1a1a1a; font-weight: 800; font-size: 15px; padding: 16px 20px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 10px 30px #f3ca5133; transition: transform 0.15s; margin-top: 6px; }
 .lottery-live:hover { transform: translateY(-2px); }
 .lottery-live:disabled { opacity: 0.55; cursor: default; transform: none; }
@@ -46,7 +47,19 @@ body.lottery-game .topbar { border-bottom-color: #2b3139; }
 .lottery-plan dd { margin: 0; font-size: 15px; font-weight: 700; color: var(--yellow); font-variant-numeric: tabular-nums; }
 .lottery-life-head { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 10px; }
 .lottery-progress-track { height: 8px; background: var(--paper-deep); border: 1px solid var(--line); overflow: hidden; }
-.lottery-progress-track span { display: block; height: 100%; width: 0%; background: var(--yellow); transition: width 0.1s linear; }
+.lottery-progress-track span { display: block; height: 100%; width: 0%; background: var(--yellow); transition: width 0.12s linear; }
+.lottery-progress-track span.lottery-running-bar { background: linear-gradient(90deg, #f3ca51, #fff3c4, #f3ca51); background-size: 200% 100%; animation: lottery-shimmer 0.8s linear infinite; }
+@keyframes lottery-shimmer { from { background-position: 0% 0; } to { background-position: -200% 0; } }
+.lottery-running { display: grid; justify-items: center; gap: 12px; padding: 8px 0; }
+.lottery-running[hidden] { display: none; }
+.lottery-running p { font-size: 12px; color: var(--muted); margin: 0; font-variant-numeric: tabular-nums; }
+.lottery-balls { display: flex; gap: 10px; }
+.lottery-balls span { width: 42px; height: 42px; border-radius: 50%; background: radial-gradient(circle at 32% 30%, #fff3c4, #f3ca51 55%, #d9a52e); color: #1a1a1a; font-weight: 800; font-size: 14px; display: grid; place-items: center; box-shadow: 0 4px 14px #f3ca5140; animation: lottery-ball 0.7s ease-in-out infinite alternate; }
+.lottery-balls span:nth-child(2) { animation-delay: 0.08s; }
+.lottery-balls span:nth-child(3) { animation-delay: 0.16s; }
+.lottery-balls span:nth-child(4) { animation-delay: 0.24s; }
+.lottery-balls span:nth-child(5) { animation-delay: 0.32s; }
+@keyframes lottery-ball { from { transform: translateY(0) rotate(-6deg); } to { transform: translateY(-9px) rotate(6deg); } }
 .lottery-status { font-size: 12px; color: var(--muted); line-height: 1.8; margin: 0; }
 
 /* 结果报告 */

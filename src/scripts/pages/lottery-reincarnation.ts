@@ -28,6 +28,8 @@ const statusOutput = q<HTMLElement>("#lottery-status");
 const progressLabel = q<HTMLElement>("#lottery-progress-label");
 const progressValue = q<HTMLElement>("#lottery-progress-value");
 const progressBar = q<HTMLElement>("#lottery-progress-bar");
+const runningBlock = q<HTMLElement>("#lottery-running");
+const rollingOutput = q<HTMLElement>("#lottery-rolling");
 const planPurchases = q<HTMLElement>("#plan-purchases");
 const planTickets = q<HTMLElement>("#plan-tickets");
 const planCost = q<HTMLElement>("#plan-cost");
@@ -182,16 +184,33 @@ const showWin = (winners: WinRecord[], invested: number, won: number) => {
   fx.launchFireworks();
 };
 
+const countUp = (el: HTMLElement | null, to: number, fmt: (v: number) => string, duration = 900) => {
+  if (!el) return;
+  el.textContent = fmt(0);
+  const start = performance.now();
+  const tick = (now: number) => {
+    const t = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - t, 3);
+    el.textContent = fmt(to * eased);
+    if (t < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+};
+
 const execute = async () => {
   if (running) return;
   const settings = readSettings();
   if (!settings) return;
   running = true;
   const plan = computePlan(settings);
+  const startedAt = performance.now();
   if (runButton) runButton.disabled = true;
   if (winOverlay) winOverlay.hidden = true;
   if (results) results.hidden = true;
-  if (statusOutput) statusOutput.textContent = `正在模拟 ${num.format(settings.worlds)} 个平行世界…`;
+  if (runningBlock) runningBlock.hidden = false;
+  if (rollingOutput) rollingOutput.textContent = "已模拟 0 个世界";
+  progressBar?.classList.add("lottery-running-bar");
+  if (statusOutput) statusOutput.textContent = `正在开奖：${num.format(settings.worlds)} 个平行世界…`;
   setProgress(0);
   const winners: WinRecord[] = [];
   const CHUNK = 5000;
@@ -202,9 +221,15 @@ const execute = async () => {
     winners.push(...found.map((w) => ({ world: w.world + done, age: w.age })));
     done += batch;
     setProgress(done / settings.worlds);
-    if (progressLabel) progressLabel.textContent = `模拟中… 世界 ${num.format(done)} / ${num.format(settings.worlds)}`;
+    countUp(rollingOutput, done, (v) => `已模拟 ${num.format(Math.round(v))} 个世界`, 300);
+    if (progressLabel) progressLabel.textContent = "模拟中…";
     if (done < settings.worlds) await new Promise((resolve) => requestAnimationFrame(resolve));
   }
+  // 保证动画至少呈现一小段，再揭示结果
+  const elapsed = performance.now() - startedAt;
+  if (elapsed < 800) await new Promise((resolve) => window.setTimeout(resolve, 800 - elapsed));
+  if (runningBlock) runningBlock.hidden = true;
+  progressBar?.classList.remove("lottery-running-bar");
   const invested = plan.cost * settings.worlds;
   const won = winners.length * JACKPOT;
   state.totalWorlds += settings.worlds;
@@ -216,6 +241,12 @@ const execute = async () => {
   writeStorage(KEY, state);
   renderTotals();
   renderResult(settings.worlds, plan, winners, invested, won);
+  countUp(resultWorlds, settings.worlds, (v) => num.format(Math.round(v)));
+  countUp(resultInvested, invested, (v) => fmtMoney(Math.round(v)));
+  countUp(resultWinners, winners.length, (v) => num.format(Math.round(v)));
+  countUp(resultWon, won, (v) => fmtMoney(Math.round(v)));
+  countUp(resultNet, won - invested, (v) => fmtMoney(Math.round(v)));
+  countUp(resultRate, invested > 0 ? (won / invested) * 100 : 0, (v) => `${v.toFixed(1)}%`);
   if (progressLabel) progressLabel.textContent = "模拟完成";
   if (statusOutput) statusOutput.textContent = winners.length > 0 ? `🎉 ${winners.length} 个世界命中头奖！` : `模拟完成：${num.format(settings.worlds)} 个世界全部未中头奖。`;
   if (runButton) runButton.disabled = false;
@@ -226,7 +257,7 @@ const execute = async () => {
 presetButtons.forEach((button) => {
   button.addEventListener("click", () => {
     if (worldsInput) worldsInput.value = button.dataset.worlds ?? "100";
-    void execute();
+    presetButtons.forEach((b) => b.classList.toggle("active", b === button));
   });
 });
 form?.addEventListener("submit", (event) => {
@@ -252,4 +283,5 @@ winClose?.addEventListener("click", () => {
 
 const initial = readSettings();
 if (initial) renderPlan(initial);
+presetButtons.forEach((b) => b.classList.toggle("active", b.dataset.worlds === (worldsInput?.value ?? "100")));
 renderTotals();
