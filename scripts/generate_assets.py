@@ -68,7 +68,9 @@ def logo():
     final = image.resize((512, 512), Image.Resampling.LANCZOS)
     final.save(OUT / "logo-mark.png", optimize=True)
     final.resize((180, 180), Image.Resampling.LANCZOS).save(OUT / "apple-touch-icon.png", optimize=True)
-    pwa = Image.new("RGBA", (512, 512), COLORS["paper"])
+    # PWA icons use the brand's near-black background so the launch screen
+    # (black background_color in the manifest) shows a seamless centered icon.
+    pwa = Image.new("RGBA", (512, 512), COLORS["ink"])
     pwa_logo = final.resize((388, 388), Image.Resampling.LANCZOS)
     pwa.alpha_composite(pwa_logo, (62, 62))
     pwa.convert("RGB").save(OUT / "pwa-512.png", optimize=True)
