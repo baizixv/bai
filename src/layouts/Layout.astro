@@ -15,6 +15,11 @@ const { title = '白子诩 · 数字花园', description = '白子诩的个人�
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#f7f5f1" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="白子诩" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <title>{title}</title>
     <link rel="icon" type="image/png" href="/assets/favicon.png" />
     <link rel="icon" href="/assets/favicon.ico" sizes="any" />
@@ -57,5 +62,6 @@ const { title = '白子诩 · 数字花园', description = '白子诩的个人�
     </div>
     <div class="no-results" id="no-results" hidden>没有找到匹配的内容。换个关键词试试。</div>
     <script src="../scripts/site.ts"></script>
+    <script src="../scripts/pwa.ts"></script>
   </body>
 </html>
