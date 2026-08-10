@@ -1,9 +1,6 @@
 import { readStorage, writeStorage } from "../../lib/storage";
 import { addCollectedNumber, countUp, deriveOneNumber, fetchDrawSource, fmtAge, fmtMoney, formatOne, initLotteryFx, isBack, randomDraw, renderBalls, renderCollection, renderWinNumber, renderWinSet, runWorlds, slotValue } from "./lottery-fx";
-const PRICE = 2; // 每注 2 元
-const JACKPOT = 10_000_000; // 头奖固定值：1,000 万（大乐透基本投注头奖口径）
-const KEY = "bai-lottery-reincarnation-v2";
-const RUN_LIMIT = 8, CHUNK = 5000;
+const PRICE = 2, JACKPOT = 10_000_000, KEY = "bai-lottery-reincarnation-v2", RUN_LIMIT = 8, CHUNK = 5000;
 type RunRecord = { worlds: number; invested: number; winners: number; won: number };
 type Collected = { front: number[]; back: number[] };
 type GameState = { totalWorlds: number; totalInvested: number; totalWins: number; totalWon: number; collected: Collected; runs: RunRecord[] };
