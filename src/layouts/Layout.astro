@@ -60,11 +60,14 @@ const { title = '白子诩 · 数字花园', description = '白子诩的个人�
           <button class="icon-button" id="install-button" type="button" aria-label="下载并安装应用" title="下载并安装应用" hidden>
             <Download aria-hidden="true" />
           </button>
-          <label class="search-box" for="site-search">
-            <Search aria-hidden="true" />
-            <input id="site-search" type="search" placeholder="搜索内容" autocomplete="off" />
-            <kbd>/</kbd>
-          </label>
+          <div class="search-wrap">
+            <label class="search-box" for="site-search">
+              <Search aria-hidden="true" />
+              <input id="site-search" type="search" placeholder="搜索内容" autocomplete="off" />
+              <kbd>/</kbd>
+            </label>
+            <div class="search-panel" id="search-panel" hidden></div>
+          </div>
           <button class="icon-button" id="theme-toggle" type="button" aria-label="切换深色模式" title="切换深色模式">
             <Sun class="theme-sun" aria-hidden="true" />
             <Moon class="theme-moon" aria-hidden="true" />
@@ -73,7 +76,6 @@ const { title = '白子诩 · 数字花园', description = '白子诩的个人�
       </header>
       <slot />
     </div>
-    <div class="no-results" id="no-results" hidden>没有找到匹配的内容。换个关键词试试。</div>
     <script src="../scripts/site.ts"></script>
     <script src="../scripts/pwa.ts"></script>
   </body>

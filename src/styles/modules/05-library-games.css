@@ -150,18 +150,6 @@
 .footer a svg {
   width: 13px;
 }
-.no-results {
-  position: fixed;
-  z-index: 10;
-  left: 50%;
-  bottom: 30px;
-  transform: translateX(-50%);
-  background: var(--ink);
-  color: var(--paper);
-  padding: 13px 18px;
-  font-size: 12px;
-  box-shadow: 0 6px 20px #0002;
-}
 .games-section {
   background: var(--paper-deep);
   color: var(--ink);

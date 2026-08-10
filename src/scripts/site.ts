@@ -1,4 +1,5 @@
 import { readStorage, writeStorage } from "../lib/storage";
+import { setupSearch } from "./search";
 
 let cleanup: (() => void) | undefined;
 
@@ -7,9 +8,6 @@ const setupSite = () => {
 
   const body = document.body;
   const themeToggle = document.querySelector<HTMLButtonElement>("#theme-toggle");
-  const searchInput = document.querySelector<HTMLInputElement>("#site-search");
-  const searchable = [...document.querySelectorAll<HTMLElement>(".searchable-item")];
-  const noResults = document.querySelector<HTMLElement>("#no-results");
   const savedTheme = readStorage<"dark" | "light">("bai-theme", "light");
   document.documentElement.dataset.theme = savedTheme;
   body.classList.toggle("dark", savedTheme === "dark");
@@ -25,30 +23,7 @@ const setupSite = () => {
   };
   themeToggle?.addEventListener("click", onThemeToggle);
 
-  const runSearch = () => {
-    const query = searchInput?.value.trim().toLowerCase() ?? "";
-    let matches = 0;
-    searchable.forEach((item) => {
-      const found = !query || `${item.dataset.search ?? ""} ${item.textContent ?? ""}`.toLowerCase().includes(query);
-      item.hidden = !found;
-      if (found) matches += 1;
-    });
-    if (noResults) noResults.hidden = Boolean(matches || !query);
-  };
-  const onSearchInput = () => runSearch();
-  const onKeyDown = (event: KeyboardEvent) => {
-    if (event.key === "/" && document.activeElement !== searchInput && searchInput) {
-      event.preventDefault();
-      searchInput.focus();
-    }
-    if (event.key === "Escape" && searchInput) {
-      searchInput.value = "";
-      runSearch();
-      searchInput.blur();
-    }
-  };
-  searchInput?.addEventListener("input", onSearchInput);
-  document.addEventListener("keydown", onKeyDown);
+  const cleanupSearch = setupSearch();
 
   const navLinks = [...document.querySelectorAll<HTMLAnchorElement>(".main-nav a")];
   const sections = [...document.querySelectorAll<HTMLElement>("main section[id]")];
@@ -75,8 +50,7 @@ const setupSite = () => {
 
   cleanup = () => {
     themeToggle?.removeEventListener("click", onThemeToggle);
-    searchInput?.removeEventListener("input", onSearchInput);
-    document.removeEventListener("keydown", onKeyDown);
+    cleanupSearch();
     observer.disconnect();
   };
 };

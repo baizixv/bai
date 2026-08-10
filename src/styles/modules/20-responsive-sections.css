@@ -54,10 +54,26 @@
   .search-box {
     width: 40px;
     padding: 0 11px;
+    cursor: pointer;
+    transition: width 0.2s ease;
   }
   .search-box input,
   .search-box kbd {
     display: none;
+  }
+  .search-box.expanded {
+    width: min(46vw, 220px);
+  }
+  .search-box.expanded input {
+    display: block;
+  }
+  .search-panel {
+    position: fixed;
+    left: 22px;
+    right: 22px;
+    top: 76px;
+    width: auto;
+    max-height: min(520px, calc(100vh - 100px));
   }
   .section-wrap {
     width: min(100% - 44px, 620px);

@@ -1,0 +1,105 @@
+/* 27 Site Search */
+
+.search-wrap {
+  position: relative;
+}
+.search-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: min(420px, calc(100vw - 44px));
+  max-height: min(520px, calc(100vh - 140px));
+  overflow-y: auto;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: 0 14px 44px #0003;
+  z-index: 60;
+}
+.search-ai-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-deep);
+  color: var(--ink);
+  font-size: 12px;
+  cursor: pointer;
+  text-align: left;
+}
+.search-ai-row span:first-child {
+  color: var(--blue);
+}
+.search-ai-row.active {
+  background: var(--blue);
+  color: var(--paper);
+}
+.search-ai-row.active span:first-child {
+  color: var(--yellow);
+}
+.search-ai-box {
+  padding: 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-deep);
+}
+.search-ai-q {
+  font-weight: 700;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.search-ai-answer {
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--ink);
+}
+.search-list {
+  padding: 6px 0;
+}
+.search-result {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "kind title"
+    "kind desc";
+  gap: 1px 10px;
+  padding: 10px 14px;
+  align-items: baseline;
+}
+.search-result.active {
+  background: color-mix(in srgb, var(--blue) 12%, transparent);
+}
+.search-kind {
+  grid-area: kind;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  color: var(--blue);
+  border: 1px solid currentColor;
+  padding: 2px 5px;
+  border-radius: 3px;
+  align-self: start;
+  margin-top: 1px;
+}
+.search-result strong {
+  grid-area: title;
+  font-size: 13px;
+}
+.search-desc {
+  grid-area: desc;
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.search-empty {
+  padding: 22px 14px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
