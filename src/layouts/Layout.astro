@@ -14,6 +14,15 @@ const { title = '白子诩 · 数字花园', description = '白子诩的个人�
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script is:inline>
+      (() => {
+        try {
+          if (localStorage.getItem('bai-theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch {
+          // Ignore storage restrictions and keep the default light theme.
+        }
+      })();
+    </script>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f7f5f1" />
     <meta name="mobile-web-app-capable" content="yes" />

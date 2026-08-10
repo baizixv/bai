@@ -252,9 +252,11 @@
 .theme-moon {
   display: none;
 }
+html[data-theme="dark"] .theme-sun,
 body.dark .theme-sun {
   display: none;
 }
+html[data-theme="dark"] .theme-moon,
 body.dark .theme-moon {
   display: block;
 }

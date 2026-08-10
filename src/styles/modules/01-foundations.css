@@ -18,6 +18,14 @@
 }
 html {
   scroll-behavior: smooth;
+  background: var(--paper);
+}
+html[data-theme="dark"] {
+  background: #1b1d22;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
 }
 body {
   margin: 0;
@@ -25,6 +33,7 @@ body {
   color: var(--ink);
   font-family: "Manrope", "Noto Sans SC", sans-serif;
 }
+html[data-theme="dark"] body,
 body.dark {
   --paper: #17191b;
   --paper-deep: #232629;
@@ -33,6 +42,10 @@ body.dark {
   --line: #3e4244;
   --dark: #f4f1eb;
   --white: #202428;
+}
+html[data-theme="dark"] body,
+body.dark {
+  color-scheme: dark;
 }
 a {
   color: inherit;

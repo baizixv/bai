@@ -15,6 +15,7 @@
   --green: #91a99d;
   --accent-soft: #e8ebf2;
 }
+html[data-theme="dark"] body,
 body.dark {
   --paper: #1b1d22;
   --paper-deep: #25272d;
@@ -87,6 +88,7 @@ body.dark {
   padding-top: 100px;
   padding-bottom: 112px;
 }
+html[data-theme="dark"] .games-section,
 body.dark .games-section { background: #25272d; }
 .games-section .games-symbol { background: #e5c5c0; }
 .games-section .game-grid { gap: 28px; }
@@ -95,6 +97,7 @@ body.dark .games-section { background: #25272d; }
   background: #dfe4ed;
   border: 1px solid #cdd4e1;
 }
+html[data-theme="dark"] .games-section .project-visual,
 body.dark .games-section .project-visual { background: #343a49; border-color: #4b5366; }
 .games-section .game-info { padding-top: 18px; }
 .games-section .game-play { background: var(--blue); color: #fff; }
@@ -104,9 +107,12 @@ body.dark .games-section .project-visual { background: #343a49; border-color: #4
   padding-top: 100px;
   padding-bottom: 112px;
 }
+html[data-theme="dark"] .media-library-section,
 body.dark .media-library-section { background: #202228; }
 .media-library-section .media-card,
 .media-library-section .media-empty { background: rgba(255,255,255,.58); }
+html[data-theme="dark"] .media-library-section .media-card,
+html[data-theme="dark"] .media-library-section .media-empty,
 body.dark .media-library-section .media-card,
 body.dark .media-library-section .media-empty { background: rgba(255,255,255,.04); }
 .media-library-section .media-card { border-color: #d2dcd6; }
@@ -134,8 +140,10 @@ body.dark .media-library-section .media-empty { background: rgba(255,255,255,.04
   padding-top: 100px;
   padding-bottom: 112px;
 }
+html[data-theme="dark"] .ideas-section,
 body.dark .ideas-section { background: #2b2925; }
 .ideas-section .idea-card { background: rgba(255,255,255,.62); border-color: #ded7c3; }
+html[data-theme="dark"] .ideas-section .idea-card,
 body.dark .ideas-section .idea-card { background: rgba(255,255,255,.05); border-color: #555040; }
 .ideas-section .idea-status { background: #e6cd8d; }
 .ideas-section .ideas-intro svg { color: #b18427; }
