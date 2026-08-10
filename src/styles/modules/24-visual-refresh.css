@@ -1,0 +1,158 @@
+/* 24 Visual refresh
+ * A calmer section system: neutral surfaces first, accents used as signals.
+ */
+:root {
+  --paper: #f6f7f5;
+  --paper-deep: #ecefeb;
+  --white: #ffffff;
+  --ink: #202522;
+  --muted: #717a75;
+  --line: #d9dfda;
+  --dark: #29322f;
+  --blue: #3d6f68;
+  --yellow: #d9a83e;
+  --pink: #d48682;
+  --green: #8caf9a;
+  --accent-soft: #e3ece8;
+}
+body.dark {
+  --paper: #171d1b;
+  --paper-deep: #202a26;
+  --white: #24302b;
+  --ink: #edf2ee;
+  --muted: #aab5af;
+  --line: #394640;
+  --dark: #e9f0eb;
+  --blue: #91c7ba;
+  --yellow: #e4bd63;
+  --pink: #df9e99;
+  --green: #9cc7ad;
+  --accent-soft: #293b35;
+}
+
+/* Give each homepage area a distinct surface without turning it into a color block. */
+.projects-section {
+  background: var(--dark);
+  color: var(--paper);
+  padding-top: 100px;
+  padding-bottom: 112px;
+  position: relative;
+}
+.projects-section::before,
+.games-section::before,
+.media-library-section::before,
+.tools-section::before,
+.ideas-section::before {
+  content: "";
+  display: block;
+  width: 42px;
+  height: 3px;
+  margin: 0 auto 42px;
+  background: var(--section-accent, var(--blue));
+}
+.projects-section::before { --section-accent: var(--yellow); }
+.games-section::before { --section-accent: var(--pink); }
+.media-library-section::before { --section-accent: var(--blue); }
+.tools-section::before { --section-accent: var(--green); }
+.ideas-section::before { --section-accent: var(--yellow); }
+
+.projects-section .section-heading,
+.games-section .section-heading,
+.media-library-section .section-heading,
+.tools-section .section-heading,
+.ideas-section .section-heading {
+  margin-bottom: 30px;
+}
+.projects-section .section-heading h2 { color: #f3f6f2; }
+.projects-section .project-grid { gap: 28px; }
+.projects-section .project-visual {
+  height: 238px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: #34433d;
+}
+.projects-section .project-info {
+  border-bottom-color: #53615b;
+  padding-top: 18px;
+}
+.projects-section .project-info h3 { color: #f3f6f2; }
+.projects-section .project-info p { color: #adb8b1; }
+.projects-section .project-info > svg { color: #a9c1b6; }
+.projects-section .project-type { color: #a9c1b6; }
+.projects-section .visual-extension { background: #40534b; color: #d9e9df; }
+.projects-section .extension-tabs { color: #a9c1b6; }
+
+.games-section {
+  background: #f0f3f0;
+  color: var(--ink);
+  padding-top: 100px;
+  padding-bottom: 112px;
+}
+body.dark .games-section { background: #202a26; }
+.games-section .games-symbol { background: #e5c5c0; }
+.games-section .game-grid { gap: 28px; }
+.games-section .project-visual {
+  height: 238px;
+  background: #d8e5df;
+  border: 1px solid #c8d5ce;
+}
+body.dark .games-section .project-visual { background: #30443c; border-color: #40584e; }
+.games-section .game-info { padding-top: 18px; }
+.games-section .game-play { background: var(--blue); color: #fff; }
+
+.media-library-section {
+  background: #e9efec;
+  padding-top: 100px;
+  padding-bottom: 112px;
+}
+body.dark .media-library-section { background: #1d2925; }
+.media-library-section .media-card,
+.media-library-section .media-empty { background: rgba(255,255,255,.58); }
+body.dark .media-library-section .media-card,
+body.dark .media-library-section .media-empty { background: rgba(255,255,255,.04); }
+.media-library-section .media-card { border-color: #d2dcd6; }
+.media-library-section .media-card:hover { border-color: var(--blue); }
+.media-card-mark { background: var(--blue); }
+.media-screen .media-card-mark { background: var(--pink); }
+.media-music .media-card-mark,
+.media-game .media-card-mark { background: var(--green); }
+
+.tools-section {
+  background: var(--paper);
+  padding-top: 100px;
+  padding-bottom: 112px;
+}
+.tools-section .tools-symbol { background: #c4dcd0; }
+.tools-section .tools-group { border-top-color: var(--blue); }
+.tools-section .tiny-tools-grid { gap: 14px; }
+.tools-section .tiny-tool-card { background: var(--white); border-color: var(--line); }
+.tools-section .tiny-tool-icon { background: #e6d39a; }
+.tools-section .more-tool-card { background: #e8d39a; border-color: #d5b86a; }
+.tools-section .finance-directory-card { background: #cfe2d7; }
+
+.ideas-section {
+  background: #f3efe2;
+  padding-top: 100px;
+  padding-bottom: 112px;
+}
+body.dark .ideas-section { background: #2a2921; }
+.ideas-section .idea-card { background: rgba(255,255,255,.62); border-color: #ded7c3; }
+body.dark .ideas-section .idea-card { background: rgba(255,255,255,.05); border-color: #555040; }
+.ideas-section .idea-status { background: #e6cd8d; }
+.ideas-section .ideas-intro svg { color: #b18427; }
+
+/* Consistent heading rhythm and restrained accent labels. */
+.section-heading .eyebrow { margin-bottom: 13px; }
+.projects-section .eyebrow { color: #a9c1b6; }
+.projects-section .view-all { color: #b7c6bf; border-color: #53615b; }
+.games-section .games-heading .eyebrow { color: #9a6e6a; }
+.media-library-section .eyebrow { color: #4c7970; }
+.tools-section .eyebrow { color: #527d69; }
+.ideas-section .eyebrow { color: #91732a; }
+
+@media (max-width: 900px) {
+  .projects-section,
+  .games-section,
+  .media-library-section,
+  .tools-section,
+  .ideas-section { padding-top: 78px; padding-bottom: 88px; }
+}
