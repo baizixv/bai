@@ -23,7 +23,7 @@ const runningBlock = q<HTMLElement>("#lottery-running"), rollingOutput = q<HTMLE
 const planPurchases = q<HTMLElement>("#plan-purchases"), planTickets = q<HTMLElement>("#plan-tickets"), planCost = q<HTMLElement>("#plan-cost");
 const collectFront = q<HTMLElement>("#lottery-collect-front"), collectBack = q<HTMLElement>("#lottery-collect-back"), collectProgress = q<HTMLElement>("#lottery-collect-progress");
 const report = q<HTMLElement>("#lottery-report"), resultWorlds = q<HTMLElement>("#result-worlds"), resultInvested = q<HTMLElement>("#result-invested"), resultWinners = q<HTMLElement>("#result-winners");
-const resultWon = q<HTMLElement>("#result-won"), resultNet = q<HTMLElement>("#result-net"), resultRate = q<HTMLElement>("#result-rate"), resultSummary = q<HTMLElement>("#lottery-result-summary"), winnersText = q<HTMLElement>("#lottery-winners-text");
+const resultWon = q<HTMLElement>("#result-won"), resultNet = q<HTMLElement>("#result-net"), resultRate = q<HTMLElement>("#result-rate"), resultSummary = q<HTMLElement>("#lottery-result-summary"), resultSource = q<HTMLElement>("#lottery-report-source"), winnersText = q<HTMLElement>("#lottery-winners-text");
 const totalWorlds = q<HTMLElement>("#total-worlds"), totalInvested = q<HTMLElement>("#total-invested"), totalWins = q<HTMLElement>("#total-wins"), totalWon = q<HTMLElement>("#total-won"), totalNet = q<HTMLElement>("#total-net"), runLog = q<HTMLElement>("#lottery-run-log");
 const winOverlay = q<HTMLElement>("#lottery-win"), winTitle = q<HTMLElement>("#lottery-win-title"), winNumber = q<HTMLElement>("#lottery-win-number"), winBasis = q<HTMLElement>("#lottery-win-basis"), winNote = q<HTMLElement>("#lottery-win-note"), winMeta = q<HTMLElement>("#lottery-win-meta"), winClose = q<HTMLButtonElement>("#lottery-win-close");
 const fx = initLotteryFx();
@@ -93,7 +93,7 @@ const animateResults = (worlds: number, invested: number, winners: number, won: 
   countUp(resultNet, won - invested, (v) => fmtMoney(Math.round(v)));
   countUp(resultRate, invested > 0 ? (won / invested) * 100 : 0, (v) => `${v.toFixed(1)}%`);
 };
-const renderResult = (worlds: number, plan: { purchases: number; tickets: number; cost: number }, winners: WinRecord[], invested: number, won: number) => {
+const renderResult = (worlds: number, plan: { purchases: number; tickets: number; cost: number }, winners: WinRecord[], invested: number, won: number, source: { hash: string; height: string } | null) => {
   if (report) report.hidden = false;
   set(resultWorlds, num.format(worlds));
   set(resultInvested, fmtMoney(invested));
@@ -102,6 +102,7 @@ const renderResult = (worlds: number, plan: { purchases: number; tickets: number
   if (resultNet) { resultNet.textContent = fmtMoney(won - invested); resultNet.classList.toggle("lottery-net-negative", won - invested < 0); resultNet.classList.toggle("lottery-net-positive", won - invested > 0); }
   set(resultRate, invested > 0 ? `${((won / invested) * 100).toFixed(1)}%` : "—");
   set(resultSummary, `每个世界 ${num.format(plan.purchases)} 次购买 · ${num.format(plan.tickets)} 注 · ${fmtMoney(plan.cost)} · 头奖 ${fmtMoney(JACKPOT)}`);
+  set(resultSource, source ? `幸运号码来源：区块 #${source.height} · ${source.hash.slice(0, 14)}… · SHA-256(区块哈希:世界:票号) 派生` : "幸运号码来源：本地随机（未获取到区块源）");
   if (!winnersText) return;
   winnersText.hidden = winners.length === 0;
   winnersText.textContent = winners.length > 0 ? `中奖世界：${winners.slice(0, 8).map((w) => `#${num.format(w.world)} 号 · 约 ${fmtAge(w.age)} 岁 · 号码 ${formatOne(slotValue(w.number))}（${isBack(w.number) ? "后区" : "前区"}）`).join("、")}${winners.length > 8 ? ` 等 ${winners.length} 个` : ""}` : "";
@@ -188,7 +189,7 @@ const execute = async () => {
   if (state.runs.length > RUN_LIMIT) state.runs.shift();
   writeStorage(KEY, state);
   renderTotals();
-  renderResult(settings.worlds, plan, winners, invested, won);
+  renderResult(settings.worlds, plan, winners, invested, won, source);
   animateResults(settings.worlds, invested, winners.length, won);
   set(progressLabel, "模拟完成");
   set(statusOutput, winners.length > 0 ? `🎉 ${winners.length} 个世界命中头奖！` : `模拟完成：${num.format(settings.worlds)} 个世界全部未中头奖。`);
@@ -251,7 +252,7 @@ const collectAll = async () => {
   progressBar?.classList.remove("lottery-running-bar");
   if (runButton) runButton.disabled = false;
   if (collectButton) collectButton.textContent = "幸运号码连抽";
-  renderResult(session.worlds, plan, [], session.invested, session.won);
+  renderResult(session.worlds, plan, [], session.invested, session.won, source);
   if (isComplete()) {
     set(statusOutput, `🎉 集齐 7 个幸运号码！共模拟 ${num.format(session.worlds)} 个世界。`);
     showCompleteOverlay(session.worlds, session.invested, session.wins);

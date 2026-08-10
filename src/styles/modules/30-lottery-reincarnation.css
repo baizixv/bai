@@ -99,6 +99,7 @@ body.lottery-game .topbar { border-bottom-color: #2b3139; }
 .lottery-report-grid b.lottery-net-positive { color: #8dd3a7; }
 #lottery-winners-text { font-size: 11px; color: var(--muted); margin: 10px 0 0; line-height: 1.7; }
 #lottery-winners-text[hidden] { display: none; }
+.lottery-report-source { font-family: "DM Mono", monospace; font-size: 10px; color: var(--muted); margin: 10px 0 0; line-height: 1.6; word-break: break-all; }
 
 /* 累计统计 */
 .lottery-total { margin-top: 46px; }
