@@ -1,5 +1,5 @@
 import { readStorage, writeStorage } from "../../lib/storage";
-import { addCollectedNumber, deriveOneNumber, fetchDrawSource, formatOne, initLotteryFx, isBack, renderCollection, renderWinNumber, slotValue } from "./lottery-fx";
+import { addCollectedNumber, deriveOneNumber, fetchDrawSource, formatOne, initLotteryFx, isBack, randomDraw, renderBalls, renderCollection, renderWinNumber, slotValue } from "./lottery-fx";
 
 const ODDS = 21_425_712; // 大乐透头奖概率
 const PRICE = 2; // 每注 2 元
@@ -154,6 +154,7 @@ const execute = async () => {
   if (winOverlay) winOverlay.hidden = true;
   if (report) report.hidden = true;
   if (runningBlock) runningBlock.hidden = false;
+  renderBalls(q("#lottery-balls"), randomDraw());
   if (rollingOutput) rollingOutput.textContent = "已模拟 0 个世界";
   progressBar?.classList.add("lottery-running-bar");
   if (statusOutput) statusOutput.textContent = `正在开奖：${num.format(settings.worlds)} 个平行世界…`;

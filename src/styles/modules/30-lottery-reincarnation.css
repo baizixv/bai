@@ -70,12 +70,17 @@ body.lottery-game .topbar { border-bottom-color: #2b3139; }
 .lottery-running { display: grid; justify-items: center; gap: 12px; padding: 8px 0; }
 .lottery-running[hidden] { display: none; }
 .lottery-running p { font-size: 12px; color: var(--muted); margin: 0; font-variant-numeric: tabular-nums; }
-.lottery-balls { display: flex; gap: 10px; }
-.lottery-balls span { width: 42px; height: 42px; border-radius: 50%; background: radial-gradient(circle at 32% 30%, #fff3c4, #f3ca51 55%, #d9a52e); color: #1a1a1a; font-weight: 800; font-size: 14px; display: grid; place-items: center; box-shadow: 0 4px 14px #f3ca5140; animation: lottery-ball 0.7s ease-in-out infinite alternate; }
-.lottery-balls span:nth-child(2) { animation-delay: 0.08s; }
-.lottery-balls span:nth-child(3) { animation-delay: 0.16s; }
-.lottery-balls span:nth-child(4) { animation-delay: 0.24s; }
-.lottery-balls span:nth-child(5) { animation-delay: 0.32s; }
+.lottery-balls { display: flex; align-items: center; gap: 10px; }
+.lottery-balls span { width: 42px; height: 42px; border-radius: 50%; color: #1a1a1a; font-weight: 800; font-size: 14px; display: grid; place-items: center; box-shadow: 0 4px 14px #f3ca5140; animation: lottery-ball 0.7s ease-in-out infinite alternate; font-variant-numeric: tabular-nums; }
+.lottery-balls span.front { background: radial-gradient(circle at 32% 30%, #fff3c4, #f3ca51 55%, #d9a52e); }
+.lottery-balls span.back { background: radial-gradient(circle at 32% 30%, #dbe4ff, #4264f5 60%, #2c47c8); color: #fff; }
+.lottery-balls i { font-style: normal; color: var(--muted); font-family: "DM Mono", monospace; }
+.lottery-balls span:nth-of-type(2) { animation-delay: 0.07s; }
+.lottery-balls span:nth-of-type(3) { animation-delay: 0.14s; }
+.lottery-balls span:nth-of-type(4) { animation-delay: 0.21s; }
+.lottery-balls span:nth-of-type(5) { animation-delay: 0.28s; }
+.lottery-balls span:nth-of-type(6) { animation-delay: 0.35s; }
+.lottery-balls span:nth-of-type(7) { animation-delay: 0.42s; }
 @keyframes lottery-ball { from { transform: translateY(0) rotate(-6deg); } to { transform: translateY(-9px) rotate(6deg); } }
 .lottery-status { font-size: 12px; color: var(--muted); line-height: 1.8; margin: 0; }
 

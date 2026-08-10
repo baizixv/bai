@@ -152,6 +152,36 @@ export const isBack = (n: number) => n > 35;
 export const formatOne = (n: number) => String(n).padStart(2, "0");
 export const slotValue = (n: number) => (isBack(n) ? n - 35 : n);
 
+// 开奖画面的滚动球：每次开奖随机一组完整号码（5 前区 + 2 后区），仅作视觉呈现。
+const pick = (n: number, max: number): number[] => {
+  const pool = Array.from({ length: max }, (_, i) => i + 1);
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, n).sort((a, b) => a - b);
+};
+export const randomDraw = (): { front: number[]; back: number[] } => ({ front: pick(5, 35), back: pick(2, 12) });
+export const renderBalls = (el: HTMLElement | null, draw: { front: number[]; back: number[] }) => {
+  if (!el) return;
+  el.textContent = "";
+  draw.front.forEach((n) => {
+    const s = document.createElement("span");
+    s.textContent = formatOne(n);
+    s.className = "front";
+    el.append(s);
+  });
+  const sep = document.createElement("i");
+  sep.textContent = "+";
+  el.append(sep);
+  draw.back.forEach((n) => {
+    const s = document.createElement("span");
+    s.textContent = formatOne(n);
+    s.className = "back";
+    el.append(s);
+  });
+};
+
 // 收集板：一次中奖加入一个号码；重复则不加；集齐 5 前区 + 2 后区为完成。
 export const addCollectedNumber = (front: number[], back: number[], n: number): { front: number[]; back: number[]; added: boolean; complete: boolean } => {
   const value = slotValue(n);
