@@ -8,7 +8,7 @@ interface Props {
   description?: string;
 }
 
-const { title = '白子诩 · 工作台', description = '白子诩的个人工作台：文章、工具、项目、游戏与收藏。' } = Astro.props;
+const { title = '白子诩 · 实验场', description = '白子诩的个人实验场：文章、工具、项目、游戏与收藏。' } = Astro.props;
 ---
 <!doctype html>
 <html lang="zh-CN">
@@ -44,7 +44,7 @@ const { title = '白子诩 · 工作台', description = '白子诩的个人工�
       <header class="topbar">
         <a class="brand" href="/" aria-label="返回首页">
           <span class="brand-mark"><img src="/assets/logo-mark.png" alt="" width="35" height="35" /></span>
-          <span class="brand-copy"><strong>白子诩</strong><small>workbench</small></span>
+          <span class="brand-copy"><strong>白子诩</strong><small>lab</small></span>
         </a>
         <nav class="main-nav" aria-label="主导航">
           <a class:list={{ active: Astro.url.pathname === '/' }} href="/#now">现在</a>

@@ -1,4 +1,4 @@
-# 白子诩 · 个人工作台
+# 白子诩 · 个人实验场
 
 
 当前版本使用 Astro + TypeScript + Markdown Content Collections，适合长期维护文章、项目、工具和收藏内容。

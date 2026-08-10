@@ -16,6 +16,6 @@ export const about = {
   releases: [
     { version: 'v0.4.0', date: '2025.03.18', title: '迁移到 Astro', description: '加入 Markdown 内容集合、独立详情页和类型检查。' },
     { version: 'v0.3.0', date: '2025.03.12', title: '项目与游戏分组', description: '把普通项目和游戏实验拆成两个独立的展示区。' },
-    { version: 'v0.2.0', date: '2025.02.21', title: '工作台上线', description: '建立文章、收藏、工具与项目的第一个首页。' }
+    { version: 'v0.2.0', date: '2025.02.21', title: '实验场上线', description: '建立文章、收藏、工具与项目的第一个首页。' }
   ]
 } as const;
