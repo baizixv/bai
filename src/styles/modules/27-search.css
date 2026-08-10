@@ -103,3 +103,43 @@
   color: var(--muted);
   text-align: center;
 }
+.search-ai-soon {
+  cursor: default;
+  opacity: 0.75;
+}
+
+/* 移动端：点击搜索框后整行展开为固定顶栏，浮层固定全宽，避免撑开页面宽度。 */
+@media (max-width: 900px) {
+  .search-box.expanded {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 82px;
+    padding: 0 22px;
+    background: var(--paper);
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    z-index: 70;
+  }
+  .search-box.expanded input {
+    display: block;
+    font-size: 14px;
+  }
+  .search-panel {
+    position: fixed;
+    top: 90px;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    max-height: calc(100vh - 110px);
+  }
+}
+@media (max-width: 560px) {
+  .search-box.expanded {
+    height: 68px;
+  }
+  .search-panel {
+    top: 76px;
+  }
+}

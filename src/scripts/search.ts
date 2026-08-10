@@ -24,7 +24,6 @@ const KIND_LABEL: Record<string, string> = {
 
 let searchIndex: SearchEntry[] | undefined;
 let searchTimer: number | undefined;
-let aiRunning = false;
 let navItems: HTMLElement[] = [];
 let activeIndex = -1;
 
@@ -80,23 +79,21 @@ const renderPanel = (query: string, results: SearchEntry[]) => {
   panel.textContent = "";
   panel.hidden = false;
 
-  const aiRow = document.createElement("button");
-  aiRow.type = "button";
-  aiRow.id = "ai-search-row";
-  aiRow.className = "search-ai-row";
+  // AI 搜索占位：后续版本接入 DeepSeek 后启用。
+  const aiSoon = document.createElement("div");
+  aiSoon.className = "search-ai-row search-ai-soon";
   const aiGlyph = document.createElement("span");
   aiGlyph.textContent = "✦";
   const aiLabel = document.createElement("span");
-  aiLabel.textContent = `让 AI 回答：${query}`;
-  aiRow.append(aiGlyph, aiLabel);
-  aiRow.addEventListener("click", () => runAiSearch(query));
+  aiLabel.textContent = "AI 搜索 · 即将上线";
+  aiSoon.append(aiGlyph, aiLabel);
 
   const list = document.createElement("div");
   list.className = "search-list";
   if (results.length === 0) {
     const empty = document.createElement("div");
     empty.className = "search-empty";
-    empty.textContent = "没有找到相关内容，可以让 AI 试着回答。";
+    empty.textContent = "没有找到相关内容，换个关键词试试。";
     list.append(empty);
   } else {
     results.forEach((entry) => {
@@ -120,78 +117,9 @@ const renderPanel = (query: string, results: SearchEntry[]) => {
     });
   }
 
-  panel.append(aiRow, list);
-  navItems = [aiRow, ...list.querySelectorAll<HTMLElement>(".search-result")];
-  setActive(0);
-};
-
-const runAiSearch = async (query: string) => {
-  if (aiRunning || !query) return;
-  aiRunning = true;
-  const panel = searchPanel();
-  if (!panel) return;
-  panel.hidden = false;
-  panel.querySelector("#ai-search-row")?.remove();
-
-  const aiBox = document.createElement("div");
-  aiBox.className = "search-ai-box";
-  const question = document.createElement("div");
-  question.className = "search-ai-q";
-  question.textContent = `AI 回答：${query}`;
-  const answer = document.createElement("div");
-  answer.className = "search-ai-answer";
-  answer.textContent = "思考中…";
-  aiBox.append(question, answer);
-  panel.insertBefore(aiBox, panel.firstChild);
-
-  try {
-    const res = await fetch("/api/ai-search", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query }),
-    });
-    if (!res.ok || !res.body) {
-      const err = await res.json().catch(() => null);
-      throw new Error(err?.error ?? `AI 搜索失败 (${res.status})`);
-    }
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = "";
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      let boundary = buffer.indexOf("\n\n");
-      while (boundary !== -1) {
-        const chunk = buffer.slice(0, boundary);
-        buffer = buffer.slice(boundary + 2);
-        for (const line of chunk.split("\n")) {
-          if (!line.startsWith("data:")) continue;
-          const data = line.slice(5).trim();
-          if (!data || data === "[DONE]") continue;
-          try {
-            const json = JSON.parse(data);
-            const delta = json.choices?.[0]?.delta?.content;
-            if (delta) answer.textContent += delta;
-          } catch {
-            // Ignore malformed SSE chunks.
-          }
-        }
-        boundary = buffer.indexOf("\n\n");
-      }
-    }
-    if (answer.textContent === "思考中…") answer.textContent = "AI 没有返回内容，换个问题试试。";
-  } catch (error) {
-    if (answer.textContent === "思考中…") {
-      answer.textContent = error instanceof Error ? error.message : "AI 搜索失败，请稍后重试。";
-    } else {
-      answer.textContent += "\n\n（回答中断，请重试）";
-    }
-  } finally {
-    aiRunning = false;
-    navItems = [...panel.querySelectorAll<HTMLElement>(".search-result")];
-    setActive(navItems.length ? 0 : -1);
-  }
+  panel.append(aiSoon, list);
+  navItems = [...list.querySelectorAll<HTMLElement>(".search-result")];
+  setActive(navItems.length ? 0 : -1);
 };
 
 export const setupSearch = (): (() => void) => {
@@ -256,8 +184,6 @@ export const setupSearch = (): (() => void) => {
       const target = isOpen && navItems.length ? navItems[activeIndex] : undefined;
       if (target instanceof HTMLAnchorElement || target instanceof HTMLButtonElement) {
         target.click();
-      } else {
-        runAiSearch(input.value.trim());
       }
     }
   };

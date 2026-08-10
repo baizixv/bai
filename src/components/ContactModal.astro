@@ -1,0 +1,26 @@
+---
+import { ArrowUpRight, Mail, X } from 'lucide-astro';
+import { about } from '@/data/about';
+---
+<div class="contact-modal" id="contact-modal" hidden>
+  <div class="contact-modal-card" role="dialog" aria-modal="true" aria-label="联系我">
+    <button class="icon-button contact-close" id="contact-close" type="button" aria-label="关闭弹窗">
+      <X aria-hidden="true" />
+    </button>
+    <p class="eyebrow">KEEP IN TOUCH</p>
+    <h3>联系我</h3>
+    <p class="contact-note">{about.availability}</p>
+    <div class="contact-row">
+      <span class="contact-label">邮箱</span>
+      <code class="contact-value">{about.email}</code>
+      <button class="contact-copy" type="button" data-copy={about.email}>复制</button>
+    </div>
+    <div class="contact-row">
+      <span class="contact-label">位置</span>
+      <span class="contact-value">{about.location}</span>
+    </div>
+    <a class="button button-dark contact-mail" href={`mailto:${about.email}`}>
+      <Mail aria-hidden="true" />直接发邮件 <ArrowUpRight aria-hidden="true" />
+    </a>
+  </div>
+</div>

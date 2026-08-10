@@ -1,5 +1,6 @@
 ---
 import { Download, Moon, Search, Sun } from 'lucide-astro';
+import ContactModal from '@/components/ContactModal.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -76,6 +77,7 @@ const { title = '白子诩 · 数字花园', description = '白子诩的个人�
       </header>
       <slot />
     </div>
+    <ContactModal />
     <script src="../scripts/site.ts"></script>
     <script src="../scripts/pwa.ts"></script>
   </body>
