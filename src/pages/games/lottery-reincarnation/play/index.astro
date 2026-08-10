@@ -1,61 +1,110 @@
 ---
-import { ArrowLeft, Coins, Dices, Flame, RotateCcw, Sparkles, Trophy } from 'lucide-astro';
+import { ArrowLeft, Coins, Dices, RotateCcw, Sparkles, Trophy } from 'lucide-astro';
 import Layout from '@/layouts/Layout.astro';
 ---
-<Layout title="2142万分之一 · 白子诩" description="大乐透头奖概率 1/21,425,712。买一辈子（1040 期）没中，就再活一辈子。">
+<Layout title="2142万分之一 · 白子诩" description="大乐透头奖概率 1/21,425,712，每注 2 元。自定义购买计划，批量模拟 N 个平行世界，看看投入与回报。">
   <main class="lottery-page">
     <div class="section-wrap lottery-inner">
       <a class="back-link" href="/games/lottery-reincarnation/"><ArrowLeft /> 返回游戏介绍</a>
       <header class="lottery-header">
-        <div><p class="eyebrow">GAME LAB / LOTTERY PROBABILITY</p><h1>2142万<br /><em>分之一</em></h1><p>大乐透头奖概率为 <strong>1 / 21,425,712</strong>。每买一辈子（1040 期）没中，就再活一辈子。看看要轮回多少次，才轮得到你。</p></div>
-        <div class="lottery-contract"><span>THE CONTRACT</span><strong>1 / 21,425,712</strong><small>头奖概率 · 每世 1040 期 · 30—50 岁</small></div>
+        <div><p class="eyebrow">GAME LAB / LOTTERY PROBABILITY</p><h1>2142万<br /><em>分之一</em></h1><p>大乐透头奖概率 <strong>1 / 21,425,712</strong>，每注 <strong>2 元</strong>，每周开奖 3 期。设定你的购买计划，批量模拟 N 个平行世界，看看投入与回报。</p></div>
+        <div class="lottery-contract"><span>THE CONTRACT</span><strong>1 / 21,425,712</strong><small>头奖概率 · 2 元/注 · 每周 3 期</small></div>
       </header>
 
-      <section class="lottery-simulator" id="lottery-simulator" aria-labelledby="lottery-title">
-        <div class="lottery-controls">
-          <p class="eyebrow">REINCARNATION MACHINE</p>
-          <h2 id="lottery-title">轮回模拟器</h2>
-          <button class="lottery-live" id="lottery-live" type="button"><Dices /> 再活一辈子</button>
-          <div class="lottery-sub-actions">
-            <button class="lottery-auto" id="lottery-auto" type="button"><Flame /> 自动轮回</button>
-            <button class="lottery-reset" id="lottery-reset" type="button"><RotateCcw /> 重置</button>
+      <section class="lottery-simulator" aria-labelledby="lottery-title">
+        <form class="lottery-settings" id="lottery-settings">
+          <p class="eyebrow">PURCHASE PLAN</p>
+          <h2 id="lottery-title">设定你的购买计划</h2>
+
+          <div class="lottery-field">
+            <span class="lottery-label">购买年龄</span>
+            <div class="lottery-input-row">
+              <label>从 <input id="lottery-start-age" type="number" min="1" max="120" value="30" inputmode="numeric" /> 岁</label>
+              <label>到 <input id="lottery-end-age" type="number" min="1" max="120" value="50" inputmode="numeric" /> 岁</label>
+            </div>
           </div>
-          <p class="lottery-hint" id="lottery-hint">点击按钮，模拟从 30 岁买到 50 岁的全部 1040 期开奖。</p>
-        </div>
 
-        <div class="lottery-counters">
-          <article class="lottery-counter-card lottery-counter-lives"><span>已轮回</span><strong id="lottery-lives">0</strong><small>世</small></article>
-          <article class="lottery-counter-card lottery-counter-draws"><span>已模拟</span><strong id="lottery-draws">0</strong><small>期</small></article>
-        </div>
-
-        <div class="lottery-life-progress">
-          <div class="lottery-life-head"><span>这辈子的人生进度</span><span id="lottery-life-label">第 1 世</span></div>
-          <div class="lottery-progress-track"><span id="lottery-progress-bar"></span></div>
-          <div class="lottery-life-meta"><span id="lottery-life-result">等待第一次轮回</span><span class="mono" id="lottery-draws-this-life">0 / 1040 期</span></div>
-        </div>
-
-        <div class="lottery-bottom-grid">
-          <div class="lottery-history">
-            <div class="lottery-block-head"><span class="eyebrow">RECENT LIVES</span><span>最近 10 世</span></div>
-            <ol class="lottery-history-list" id="lottery-history">
-              <li class="lottery-history-empty">还没有轮回记录</li>
-            </ol>
+          <div class="lottery-field">
+            <span class="lottery-label">每期注数</span>
+            <input id="lottery-base-tickets" type="number" min="0" max="20" value="1" inputmode="numeric" />
+            <small>每周 3 期（周一/三/六）各买几注 · 每注 2 元</small>
           </div>
-          <div class="lottery-stats">
-            <div class="lottery-block-head"><span class="eyebrow">STATISTICS</span><span>累计统计</span></div>
-            <dl class="lottery-stat-list">
-              <div><dt>平均每几世中一次</dt><dd id="lottery-avg">—</dd></div>
-              <div><dt>最长空窗期</dt><dd id="lottery-dry">—</dd></div>
-              <div><dt>当前连续未中</dt><dd id="lottery-streak">0 世</dd></div>
-              <div><dt>头奖次数</dt><dd id="lottery-wins">0</dd></div>
+
+          <div class="lottery-field">
+            <span class="lottery-label">周六加注</span>
+            <input id="lottery-saturday-extra" type="number" min="0" max="20" value="1" inputmode="numeric" />
+            <small>周六额外多买几注（大乐透周六开奖奖池通常更高）</small>
+          </div>
+
+          <div class="lottery-field">
+            <span class="lottery-label">头奖金额</span>
+            <input id="lottery-jackpot" type="number" min="10000" step="1000000" value="10000000" inputmode="numeric" />
+            <small>大乐透头奖社会平均约 1,000 万，可自行调整</small>
+          </div>
+
+          <div class="lottery-field">
+            <span class="lottery-label">平行世界数</span>
+            <div class="lottery-presets" role="group" aria-label="平行世界数量">
+              <button type="button" data-worlds="1">1</button>
+              <button type="button" data-worlds="100">100</button>
+              <button type="button" data-worlds="1000">1,000</button>
+              <button type="button" data-worlds="10000">10,000</button>
+            </div>
+            <div class="lottery-input-row"><label>自定义 <input id="lottery-worlds" type="number" min="1" max="100000" value="100" inputmode="numeric" /> 个世界</label></div>
+          </div>
+
+          <button class="lottery-live" id="lottery-run" type="submit"><Dices /> 开始模拟 100 个平行世界</button>
+          <button class="lottery-reset" id="lottery-reset" type="button"><RotateCcw /> 重置累计</button>
+        </form>
+
+        <div class="lottery-stage">
+          <div class="lottery-plan">
+            <p class="eyebrow">ONE LIFETIME</p>
+            <dl>
+              <div><dt>购买期数</dt><dd id="plan-draws">—</dd></div>
+              <div><dt>购买注数</dt><dd id="plan-tickets">—</dd></div>
+              <div><dt>一生投入</dt><dd id="plan-cost">—</dd></div>
             </dl>
           </div>
+          <div class="lottery-progress-block">
+            <div class="lottery-life-head"><span id="lottery-progress-label">等待模拟</span><span class="mono" id="lottery-progress-value">0%</span></div>
+            <div class="lottery-progress-track"><span id="lottery-progress-bar"></span></div>
+          </div>
+          <p class="lottery-status" id="lottery-status">设定购买计划后开始模拟，每个世界都严格按计划买完一辈子。</p>
         </div>
       </section>
 
+      <section class="lottery-results" id="lottery-results" hidden aria-live="polite">
+        <div class="lottery-result-heading"><div><p class="eyebrow">SIMULATION RESULT</p><h2>平行世界报告</h2></div><span id="lottery-result-summary">—</span></div>
+        <div class="lottery-result-grid">
+          <article><span>模拟世界</span><strong id="result-worlds">—</strong><small>个平行世界</small></article>
+          <article><span>总投入</span><strong id="result-invested">—</strong><small>N 世 × 每世成本</small></article>
+          <article class="lottery-gold"><span>中头奖</span><strong id="result-winners">—</strong><small>命中头奖的世界数</small></article>
+          <article class="lottery-gold"><span>总奖金</span><strong id="result-won">—</strong><small>中奖数 × 头奖</small></article>
+          <article class="lottery-net"><span>净收益</span><strong id="result-net">—</strong><small>奖金 − 投入</small></article>
+          <article><span>回收率</span><strong id="result-rate">—</strong><small>奖金 ÷ 投入</small></article>
+        </div>
+        <div class="lottery-winners" id="lottery-winners" hidden>
+          <div class="lottery-block-head"><span class="eyebrow">JACKPOT WORLDS</span><span>中奖世界明细</span></div>
+          <p id="lottery-winners-text">—</p>
+        </div>
+      </section>
+
+      <section class="lottery-total">
+        <div class="lottery-block-head"><span class="eyebrow">CUMULATIVE</span><span>累计统计 · 保存在本地</span></div>
+        <dl class="lottery-stat-list">
+          <div><dt>累计模拟世界</dt><dd id="total-worlds">0</dd></div>
+          <div><dt>累计投入</dt><dd id="total-invested">0 元</dd></div>
+          <div><dt>累计中奖</dt><dd id="total-wins">0 次</dd></div>
+          <div><dt>累计奖金</dt><dd id="total-won">0 元</dd></div>
+          <div><dt>累计净收益</dt><dd id="total-net">0 元</dd></div>
+        </dl>
+        <ol class="lottery-run-log" id="lottery-run-log"></ol>
+      </section>
+
       <section class="lottery-explanation">
-        <div><p class="eyebrow">THE MATH</p><h2>小概率<br /><em>需要轮回才能理解。</em></h2></div>
-        <div><p>单期不中奖的概率是 21,425,711 / 21,425,712，几乎等于 1。但一辈子要买 1040 期，一辈子都不中的概率仍然约为 <strong>99.9951%</strong>。</p><p>平均需要轮回约 <strong>20,602 世</strong>，也就是约 2,143 万期，才轮到一次头奖。你的轮回数会先超过几百世、几千世，然后慢慢逼近这个数字。</p><p>模拟使用均匀随机数独立判定每一期，不做近似。数据保存在浏览器本地，刷新不丢失。</p></div>
+        <div><p class="eyebrow">THE MATH</p><h2>小概率，<br /><em>经不起无限重复。</em></h2></div>
+        <div><p>以默认计划（30—50 岁、每期 1 注、周六加 1 注）计算：一辈子买 3,120 期、4,160 注，投入 <strong>8,320 元</strong>；一辈子不中头奖的概率约 <strong>99.9806%</strong>。</p><p>单看期望：每世投入 8,320 元，头奖期望收益约 1,941 元，长期回收率只有两成出头。平行世界越多，结果越接近这个数学期望——<strong>投入越多、活得越久，亏得越多</strong>。</p><p>模拟对每一注独立判定，不做近似。平行世界数支持 1—100,000，大数量分块执行并实时显示进度。</p></div>
       </section>
     </div>
 
@@ -64,9 +113,9 @@ import Layout from '@/layouts/Layout.astro';
       <div class="lottery-win-card">
         <Trophy class="lottery-win-trophy" aria-hidden="true" />
         <p class="eyebrow">JACKPOT</p>
-        <h2>第 <span id="lottery-win-life">—</span> 世，<br />中奖了！</h2>
-        <p id="lottery-win-draws">共模拟 — 期</p>
-        <button class="lottery-win-again" id="lottery-win-again" type="button"><Sparkles /> 继续下一世</button>
+        <h2 id="lottery-win-title">中奖了！</h2>
+        <p id="lottery-win-meta">—</p>
+        <button class="lottery-win-again" id="lottery-win-close" type="button"><Sparkles /> 继续模拟</button>
       </div>
     </div>
   </main>

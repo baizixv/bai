@@ -1,297 +1,245 @@
 import { readStorage, writeStorage } from "../../lib/storage";
-const JACKPOT_ODDS = 21_425_712; // 大乐透头奖精确概率 1/21,425,712
-const DRAWS_PER_LIFE = 1040; // 30—50 岁，每周一期
-const KEY = "bai-lottery-reincarnation-v1";
-const HISTORY_LIMIT = 10;
-type LifeResult = "win" | "miss";
-type HistoryEntry = { life: number; win: boolean };
-type GameState = {
-  lives: number;
-  draws: number;
-  wins: number;
-  history: HistoryEntry[];
-  longestDry: number;
-  currentStreak: number;
-};
-const initialState: GameState = { lives: 0, draws: 0, wins: 0, history: [], longestDry: 0, currentStreak: 0 };
+import { initLotteryFx } from "./lottery-fx";
+
+const ODDS = 21_425_712; // 大乐透头奖概率
+const PRICE = 2; // 每注 2 元
+const DRAWS_PER_WEEK = 3; // 每周 3 期（周一/三/六）
+const KEY = "bai-lottery-reincarnation-v2";
+const RUN_LIMIT = 8;
+
+type RunRecord = { worlds: number; invested: number; winners: number; won: number };
+type GameState = { totalWorlds: number; totalInvested: number; totalWins: number; totalWon: number; runs: RunRecord[] };
+const initialState: GameState = { totalWorlds: 0, totalInvested: 0, totalWins: 0, totalWon: 0, runs: [] };
 let state: GameState = readStorage(KEY, initialState);
-let autoRunning = false;
-let busy = false;
+let running = false;
+
 const num = new Intl.NumberFormat("zh-CN");
-const livesOutput = document.querySelector<HTMLElement>("#lottery-lives");
-const drawsOutput = document.querySelector<HTMLElement>("#lottery-draws");
-const winsOutput = document.querySelector<HTMLElement>("#lottery-wins");
-const avgOutput = document.querySelector<HTMLElement>("#lottery-avg");
-const dryOutput = document.querySelector<HTMLElement>("#lottery-dry");
-const streakOutput = document.querySelector<HTMLElement>("#lottery-streak");
-const progressBar = document.querySelector<HTMLElement>("#lottery-progress-bar");
-const lifeLabel = document.querySelector<HTMLElement>("#lottery-life-label");
-const lifeResult = document.querySelector<HTMLElement>("#lottery-life-result");
-const drawsThisLife = document.querySelector<HTMLElement>("#lottery-draws-this-life");
-const historyList = document.querySelector<HTMLElement>("#lottery-history");
-const hint = document.querySelector<HTMLElement>("#lottery-hint");
-const liveButton = document.querySelector<HTMLButtonElement>("#lottery-live");
-const autoButton = document.querySelector<HTMLButtonElement>("#lottery-auto");
-const resetButton = document.querySelector<HTMLButtonElement>("#lottery-reset");
-const winOverlay = document.querySelector<HTMLElement>("#lottery-win");
-const winLife = document.querySelector<HTMLElement>("#lottery-win-life");
-const winDraws = document.querySelector<HTMLElement>("#lottery-win-draws");
-const winAgain = document.querySelector<HTMLButtonElement>("#lottery-win-again");
+const q = <T extends HTMLElement>(id: string) => document.querySelector<T>(id);
+const startAgeInput = q<HTMLInputElement>("#lottery-start-age");
+const endAgeInput = q<HTMLInputElement>("#lottery-end-age");
+const baseTicketsInput = q<HTMLInputElement>("#lottery-base-tickets");
+const saturdayExtraInput = q<HTMLInputElement>("#lottery-saturday-extra");
+const jackpotInput = q<HTMLInputElement>("#lottery-jackpot");
+const worldsInput = q<HTMLInputElement>("#lottery-worlds");
+const presetButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-worlds]")];
+const form = q<HTMLFormElement>("#lottery-settings");
+const runButton = q<HTMLButtonElement>("#lottery-run");
+const resetButton = q<HTMLButtonElement>("#lottery-reset");
+const statusOutput = q<HTMLElement>("#lottery-status");
+const progressLabel = q<HTMLElement>("#lottery-progress-label");
+const progressValue = q<HTMLElement>("#lottery-progress-value");
+const progressBar = q<HTMLElement>("#lottery-progress-bar");
+const planDraws = q<HTMLElement>("#plan-draws");
+const planTickets = q<HTMLElement>("#plan-tickets");
+const planCost = q<HTMLElement>("#plan-cost");
+const results = q<HTMLElement>("#lottery-results");
+const resultWorlds = q<HTMLElement>("#result-worlds");
+const resultInvested = q<HTMLElement>("#result-invested");
+const resultWinners = q<HTMLElement>("#result-winners");
+const resultWon = q<HTMLElement>("#result-won");
+const resultNet = q<HTMLElement>("#result-net");
+const resultRate = q<HTMLElement>("#result-rate");
+const resultSummary = q<HTMLElement>("#lottery-result-summary");
+const winnersBlock = q<HTMLElement>("#lottery-winners");
+const winnersText = q<HTMLElement>("#lottery-winners-text");
+const totalWorlds = q<HTMLElement>("#total-worlds");
+const totalInvested = q<HTMLElement>("#total-invested");
+const totalWins = q<HTMLElement>("#total-wins");
+const totalWon = q<HTMLElement>("#total-won");
+const totalNet = q<HTMLElement>("#total-net");
+const runLog = q<HTMLElement>("#lottery-run-log");
+const winOverlay = q<HTMLElement>("#lottery-win");
+const winTitle = q<HTMLElement>("#lottery-win-title");
+const winMeta = q<HTMLElement>("#lottery-win-meta");
+const winClose = q<HTMLButtonElement>("#lottery-win-close");
+const fx = initLotteryFx();
 
-const simulateLife = (): LifeResult => {
-  for (let i = 0; i < DRAWS_PER_LIFE; i++) {
-    if (Math.floor(Math.random() * JACKPOT_ODDS) + 1 === 1) return "win";
-  }
-  return "miss";
+const fmtMoney = (value: number): string => {
+  const sign = value < 0 ? "-" : "";
+  const v = Math.abs(value);
+  if (v >= 1e8) return `${sign}${v / 1e8 >= 100 ? Math.round(v / 1e8) : (v / 1e8).toFixed(1)} 亿`;
+  if (v >= 1e4) return `${sign}${v / 1e4 >= 1000 ? Math.round(v / 1e4) : (v / 1e4).toFixed(1)} 万`;
+  return `${sign}${Math.round(v)} 元`;
 };
 
-const liveOneLife = (): LifeResult => {
-  const result = simulateLife();
-  state.lives += 1;
-  state.draws += DRAWS_PER_LIFE;
-  if (result === "win") {
-    state.wins += 1;
-    state.longestDry = Math.max(state.longestDry, state.currentStreak);
-    state.currentStreak = 0;
-  } else {
-    state.currentStreak += 1;
+const readSettings = (): { startAge: number; endAge: number; baseTickets: number; saturdayExtra: number; jackpot: number; worlds: number } | null => {
+  const startAge = Number(startAgeInput?.value ?? 30);
+  const endAge = Number(endAgeInput?.value ?? 50);
+  const baseTickets = Number(baseTicketsInput?.value ?? 1);
+  const saturdayExtra = Number(saturdayExtraInput?.value ?? 1);
+  const jackpot = Number(jackpotInput?.value ?? 10_000_000);
+  const worlds = Number(worldsInput?.value ?? 100);
+  if (!(startAge >= 1 && endAge <= 120 && startAge < endAge)) {
+    if (statusOutput) statusOutput.textContent = "年龄区间无效：开始年龄需小于结束年龄（1—120 岁）。";
+    return null;
   }
-  state.history.push({ life: state.lives, win: result === "win" });
-  if (state.history.length > HISTORY_LIMIT) state.history.shift();
-  return result;
+  if (!(baseTickets >= 0 && baseTickets <= 20 && saturdayExtra >= 0 && saturdayExtra <= 20)) {
+    if (statusOutput) statusOutput.textContent = "注数无效：每期与周六加注需在 0—20 注之间。";
+    return null;
+  }
+  if (!(jackpot >= 10_000)) {
+    if (statusOutput) statusOutput.textContent = "头奖金额无效：至少 1 万元。";
+    return null;
+  }
+  if (!(worlds >= 1 && worlds <= 100_000)) {
+    if (statusOutput) statusOutput.textContent = "平行世界数无效：支持 1—100,000。";
+    return null;
+  }
+  return { startAge, endAge, baseTickets, saturdayExtra, jackpot, worlds };
 };
 
-const persist = () => writeStorage(KEY, state);
+const computePlan = (s: { startAge: number; endAge: number; baseTickets: number; saturdayExtra: number }) => {
+  const weeks = (s.endAge - s.startAge) * 52;
+  return { weeks, draws: weeks * DRAWS_PER_WEEK, tickets: weeks * (DRAWS_PER_WEEK * s.baseTickets + s.saturdayExtra), cost: weeks * (DRAWS_PER_WEEK * s.baseTickets + s.saturdayExtra) * PRICE };
+};
 
-const render = () => {
-  if (livesOutput) livesOutput.textContent = num.format(state.lives);
-  if (drawsOutput) drawsOutput.textContent = num.format(state.draws);
-  if (winsOutput) winsOutput.textContent = num.format(state.wins);
-  if (avgOutput) avgOutput.textContent = state.wins > 0 ? `约 ${num.format(Math.round(state.lives / state.wins))} 世` : "—";
-  if (dryOutput) dryOutput.textContent = state.longestDry > 0 ? `${num.format(state.longestDry)} 世` : "—";
-  if (streakOutput) streakOutput.textContent = `${num.format(state.currentStreak)} 世`;
-  if (lifeLabel) lifeLabel.textContent = `第 ${num.format(state.lives + 1)} 世`;
-  if (!historyList) return;
-  historyList.textContent = "";
-  if (state.history.length === 0) {
+const renderPlan = (s: { startAge: number; endAge: number; baseTickets: number; saturdayExtra: number; jackpot: number; worlds: number }) => {
+  const plan = computePlan(s);
+  if (planDraws) planDraws.textContent = `${num.format(plan.draws)} 期`;
+  if (planTickets) planTickets.textContent = `${num.format(plan.tickets)} 注`;
+  if (planCost) planCost.textContent = fmtMoney(plan.cost);
+  if (runButton) runButton.textContent = `开始模拟 ${num.format(s.worlds)} 个平行世界`;
+};
+
+const renderTotals = () => {
+  if (totalWorlds) totalWorlds.textContent = num.format(state.totalWorlds);
+  if (totalInvested) totalInvested.textContent = fmtMoney(state.totalInvested);
+  if (totalWins) totalWins.textContent = num.format(state.totalWins);
+  if (totalWon) totalWon.textContent = fmtMoney(state.totalWon);
+  if (totalNet) totalNet.textContent = fmtMoney(state.totalWon - state.totalInvested);
+  if (!runLog) return;
+  runLog.textContent = "";
+  if (state.runs.length === 0) {
     const li = document.createElement("li");
-    li.className = "lottery-history-empty";
-    li.textContent = "还没有轮回记录";
-    historyList.append(li);
+    li.className = "lottery-run-empty";
+    li.textContent = "还没有模拟记录";
+    runLog.append(li);
     return;
   }
-  [...state.history].reverse().forEach((entry) => {
+  [...state.runs].reverse().forEach((run, index) => {
     const li = document.createElement("li");
-    if (entry.win) li.className = "lottery-history-win";
-    const life = document.createElement("span");
-    life.textContent = `第 ${num.format(entry.life)} 世`;
-    const result = document.createElement("b");
-    result.textContent = entry.win ? "★ 中奖" : "未中";
-    li.append(life, result);
-    historyList.append(li);
+    if (run.winners > 0) li.className = "lottery-run-win";
+    const name = document.createElement("span");
+    name.textContent = `第 ${state.runs.length - index} 次 · ${num.format(run.worlds)} 世`;
+    const detail = document.createElement("b");
+    detail.textContent = `投入 ${fmtMoney(run.invested)} · 中奖 ${run.winners} 世 · ${fmtMoney(run.won - run.invested)}`;
+    li.append(name, detail);
+    runLog.append(li);
   });
 };
 
-const animateProgress = (duration: number, onDone: () => void) => {
-  const start = performance.now();
-  const step = (now: number) => {
-    const t = Math.min(1, (now - start) / duration);
-    if (progressBar) progressBar.style.width = `${(t * 100).toFixed(1)}%`;
-    if (drawsThisLife) drawsThisLife.textContent = `${num.format(Math.round(t * DRAWS_PER_LIFE))} / 1040 期`;
-    if (t < 1) requestAnimationFrame(step);
-    else onDone();
-  };
-  requestAnimationFrame(step);
-};
-
-const showWin = () => {
-  if (winLife) winLife.textContent = num.format(state.lives);
-  if (winDraws) winDraws.textContent = `共模拟 ${num.format(state.draws)} 期`;
-  if (winOverlay) winOverlay.hidden = false;
-  launchFireworks();
-};
-
-const runSingleLife = () => {
-  if (busy || autoRunning) return;
-  busy = true;
-  if (lifeResult) lifeResult.textContent = "模拟这一辈子…";
-  if (progressBar) {
-    progressBar.classList.remove("lottery-bar-win");
-    progressBar.style.width = "0%";
+const runWorlds = (n: number, ticketsPerLife: number): number[] => {
+  const winners: number[] = [];
+  for (let w = 0; w < n; w++) {
+    for (let t = 0; t < ticketsPerLife; t++) {
+      if (Math.floor(Math.random() * ODDS) + 1 === 1) {
+        winners.push(w + 1);
+        break;
+      }
+    }
   }
+  return winners;
+};
+
+const setProgress = (ratio: number) => {
+  if (progressBar) progressBar.style.width = `${(ratio * 100).toFixed(1)}%`;
+  if (progressValue) progressValue.textContent = `${(ratio * 100).toFixed(0)}%`;
+};
+
+const renderResult = (worlds: number, plan: { draws: number; tickets: number; cost: number }, jackpot: number, winners: number[], invested: number, won: number) => {
+  if (results) results.hidden = false;
+  if (resultWorlds) resultWorlds.textContent = num.format(worlds);
+  if (resultInvested) resultInvested.textContent = fmtMoney(invested);
+  if (resultWinners) resultWinners.textContent = `${winners.length} 世`;
+  if (resultWon) resultWon.textContent = fmtMoney(won);
+  if (resultNet) {
+    resultNet.textContent = fmtMoney(won - invested);
+    resultNet.classList.toggle("lottery-net-negative", won - invested < 0);
+    resultNet.classList.toggle("lottery-net-positive", won - invested > 0);
+  }
+  if (resultRate) resultRate.textContent = invested > 0 ? `${((won / invested) * 100).toFixed(1)}%` : "—";
+  if (resultSummary) resultSummary.textContent = `每世 ${num.format(plan.draws)} 期 · ${num.format(plan.tickets)} 注 · ${fmtMoney(plan.cost)} · 头奖 ${fmtMoney(jackpot)}`;
+  if (!winnersBlock || !winnersText) return;
+  winnersBlock.hidden = winners.length === 0;
+  winnersText.textContent = winners.length > 0 ? `中奖世界编号：${winners.slice(0, 12).map((w) => `#${num.format(w)}`).join("、")}${winners.length > 12 ? ` 等 ${winners.length} 个` : ""}` : "";
+};
+
+const showWin = (winners: number[], settings: { jackpot: number }, invested: number, won: number) => {
+  if (!winOverlay) return;
+  if (winTitle) winTitle.innerHTML = winners.length === 1 ? `第 <span>${num.format(winners[0])}</span> 号世界中了头奖！` : `<span>${winners.length}</span> 个平行世界中奖！`;
+  if (winMeta) winMeta.textContent = `投入 ${fmtMoney(invested)} · 奖金 ${fmtMoney(won)} · 头奖 ${fmtMoney(settings.jackpot)}`;
+  winOverlay.hidden = false;
+  fx.launchFireworks();
+};
+
+const execute = async () => {
+  if (running) return;
+  const settings = readSettings();
+  if (!settings) return;
+  running = true;
+  const plan = computePlan(settings);
+  if (runButton) runButton.disabled = true;
   if (winOverlay) winOverlay.hidden = true;
-  const result = liveOneLife();
-  persist();
-  render();
-  animateProgress(520, () => {
-    if (lifeResult) lifeResult.textContent = result === "win" ? "🎉 这辈子中了！" : `这辈子没中 · 已轮回 ${num.format(state.lives)} 世`;
-    if (result === "win" && progressBar) progressBar.classList.add("lottery-bar-win");
-    if (result === "win") showWin();
-    busy = false;
+  if (results) results.hidden = true;
+  if (statusOutput) statusOutput.textContent = `正在模拟 ${num.format(settings.worlds)} 个平行世界…`;
+  setProgress(0);
+  const winners: number[] = [];
+  const CHUNK = 5000;
+  let done = 0;
+  while (done < settings.worlds) {
+    const batch = Math.min(CHUNK, settings.worlds - done);
+    const found = runWorlds(batch, plan.tickets);
+    winners.push(...found.map((w) => w + done));
+    done += batch;
+    setProgress(done / settings.worlds);
+    if (progressLabel) progressLabel.textContent = `模拟中… 世界 ${num.format(done)} / ${num.format(settings.worlds)}`;
+    if (done < settings.worlds) await new Promise((resolve) => requestAnimationFrame(resolve));
+  }
+  const invested = plan.cost * settings.worlds;
+  const won = winners.length * settings.jackpot;
+  state.totalWorlds += settings.worlds;
+  state.totalInvested += invested;
+  state.totalWins += winners.length;
+  state.totalWon += won;
+  state.runs.push({ worlds: settings.worlds, invested, winners: winners.length, won });
+  if (state.runs.length > RUN_LIMIT) state.runs.shift();
+  writeStorage(KEY, state);
+  renderTotals();
+  renderResult(settings.worlds, plan, settings.jackpot, winners, invested, won);
+  if (progressLabel) progressLabel.textContent = "模拟完成";
+  if (statusOutput) statusOutput.textContent = winners.length > 0 ? `🎉 ${winners.length} 个世界命中头奖！` : `模拟完成：${num.format(settings.worlds)} 个世界全部未中头奖。`;
+  if (runButton) runButton.disabled = false;
+  running = false;
+  if (winners.length > 0) showWin(winners, settings, invested, won);
+};
+
+presetButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (worldsInput) worldsInput.value = button.dataset.worlds ?? "100";
+    void execute();
   });
-};
-
-const startAuto = () => {
-  autoRunning = true;
-  if (autoButton) autoButton.textContent = "停止轮回";
-  if (hint) hint.textContent = "自动轮回中…直到中奖或手动停止。";
-  if (liveButton) liveButton.disabled = true;
-  if (lifeResult) lifeResult.textContent = "自动轮回中…";
-  tick();
-};
-
-const stopAuto = () => {
-  autoRunning = false;
-  if (autoButton) autoButton.textContent = "自动轮回";
-  if (hint) hint.textContent = "点击按钮，模拟从 30 岁买到 50 岁的全部 1040 期开奖。";
-  if (liveButton) liveButton.disabled = false;
-};
-
-const tick = () => {
-  if (!autoRunning) return;
-  let result: LifeResult = "miss";
-  for (let i = 0; i < 40 && result !== "win"; i++) result = liveOneLife();
-  persist();  render();
-  if (result === "win") {
-    stopAuto();
-    if (progressBar) progressBar.classList.add("lottery-bar-win");
-    if (lifeResult) lifeResult.textContent = `🎉 第 ${num.format(state.lives)} 世中了！`;
-    showWin();
-  } else {
-    requestAnimationFrame(tick);
-  }
-};
-
-liveButton?.addEventListener("click", runSingleLife);
-autoButton?.addEventListener("click", () => (autoRunning ? stopAuto() : startAuto()));
-winAgain?.addEventListener("click", () => { if (winOverlay) winOverlay.hidden = true; runSingleLife(); });
+});
+form?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  void execute();
+});
+[startAgeInput, endAgeInput, baseTicketsInput, saturdayExtraInput, jackpotInput, worldsInput].forEach((input) => {
+  input?.addEventListener("input", () => {
+    const settings = readSettings();
+    if (settings) renderPlan(settings);
+  });
+});
 resetButton?.addEventListener("click", () => {
-  if (state.lives > 0 && !window.confirm("确定要清空所有轮回记录吗？")) return;
-  stopAuto();
+  if (state.totalWorlds > 0 && !window.confirm("确定要清空所有累计记录吗？")) return;
   state = { ...initialState };
-  persist();
-  render();
-  if (progressBar) {
-    progressBar.classList.remove("lottery-bar-win");
-    progressBar.style.width = "0%";
-  }
-  if (drawsThisLife) drawsThisLife.textContent = "0 / 1040 期";
-  if (lifeResult) lifeResult.textContent = "等待第一次轮回";
+  writeStorage(KEY, state);
+  renderTotals();
+  if (statusOutput) statusOutput.textContent = "累计记录已清空。";
+});
+winClose?.addEventListener("click", () => {
   if (winOverlay) winOverlay.hidden = true;
 });
 
-// —— 背景金光粒子 + 中奖烟花 ——
-const canvas = document.querySelector<HTMLCanvasElement>("#lottery-canvas");
-const ctx = canvas?.getContext("2d");
-const resize = () => {
-  if (!canvas) return;
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-};
-window.addEventListener("resize", resize);
-resize();
-
-const GOLD = ["#f3ca51", "#ffd97a", "#f8b64c", "#fff3c4"];
-type Particle = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  life: number;
-  maxLife: number;
-  size: number;
-  color: string;
-  gravity: number;
-};
-let ambient: Particle[] = [];
-let bursts: Particle[] = [];
-let fireworkEnd = 0;
-let nextBurstAt = 0;
-
-const spawnAmbient = () => {
-  if (!canvas) return;
-  ambient = Array.from({ length: 36 }, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    vx: (Math.random() - 0.5) * 0.14,
-    vy: -0.04 - Math.random() * 0.1,
-    life: 0,
-    maxLife: Infinity,
-    size: 0.8 + Math.random() * 1.5,
-    color: GOLD[Math.floor(Math.random() * GOLD.length)],
-    gravity: 0,
-  }));
-};
-
-const spawnBurst = () => {
-  if (!canvas) return;
-  const cx = canvas.width * (0.15 + Math.random() * 0.7);
-  const cy = canvas.height * (0.18 + Math.random() * 0.5);
-  const color = GOLD[Math.floor(Math.random() * GOLD.length)];
-  for (let i = 0; i < 72; i++) {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 1.5 + Math.random() * 4.5;
-    bursts.push({
-      x: cx,
-      y: cy,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      life: 0,
-      maxLife: 60 + Math.random() * 40,
-      size: 1 + Math.random() * 2,
-      color,
-      gravity: 0.06,
-    });
-  }
-};
-
-const launchFireworks = () => {
-  fireworkEnd = performance.now() + 3000;
-  nextBurstAt = performance.now();
-};
-
-const animate = () => {
-  if (!canvas || !ctx) return;
-  const now = performance.now();
-  if (now < fireworkEnd && now >= nextBurstAt) {
-    spawnBurst();
-    nextBurstAt = now + 240;
-  }
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ambient.forEach((p) => {
-    p.x += p.vx;
-    p.y += p.vy;
-    if (p.y < -10) {
-      p.y = canvas.height + 10;
-      p.x = Math.random() * canvas.width;
-    }
-    if (p.x < -10) p.x = canvas.width + 10;
-    if (p.x > canvas.width + 10) p.x = -10;
-    ctx.globalAlpha = 0.3 + 0.25 * Math.sin(now / 900 + p.x);
-    ctx.fillStyle = p.color;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-    ctx.fill();
-  });
-  bursts = bursts.filter((p) => {
-    p.life += 1;
-    p.vy += p.gravity;
-    p.x += p.vx;
-    p.y += p.vy;
-    if (p.life < p.maxLife) {
-      ctx.globalAlpha = 1 - p.life / p.maxLife;
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fill();
-      return true;
-    }
-    return false;
-  });
-  ctx.globalAlpha = 1;
-  requestAnimationFrame(animate);
-};
-spawnAmbient();
-animate();
-
-render();
+const initial = readSettings();
+if (initial) renderPlan(initial);
+renderTotals();
