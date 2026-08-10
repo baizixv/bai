@@ -3,7 +3,7 @@ import { initLotteryFx } from "./lottery-fx";
 
 const ODDS = 21_425_712; // 大乐透头奖概率
 const PRICE = 2; // 每注 2 元
-const JACKPOT = 18_000_000; // 头奖固定值：1,800 万（大乐透追加头奖口径）
+const JACKPOT = 10_000_000; // 头奖固定值：1,000 万（大乐透基本投注头奖口径）
 const KEY = "bai-lottery-reincarnation-v2";
 const RUN_LIMIT = 8;
 
