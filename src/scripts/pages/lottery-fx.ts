@@ -1,4 +1,6 @@
 // 金色粒子背景 + 烟花 + 可验证幸运号码系统
+const ODDS_LOTTERY = 21_425_712; // 大乐透头奖概率
+
 export const initLotteryFx = (): { launchFireworks: () => void } => {
   const canvas = document.querySelector<HTMLCanvasElement>("#lottery-canvas");
   const ctx = canvas?.getContext("2d");
@@ -227,4 +229,61 @@ export const renderWinNumber = (el: HTMLElement | null, n: number) => {
   const label = document.createElement("i");
   label.textContent = isBack(n) ? "后区" : "前区";
   el.append(chip, label);
+};
+
+export const renderWinSet = (el: HTMLElement | null, front: number[], back: number[]) => {
+  if (!el) return;
+  el.textContent = "";
+  front.forEach((n) => {
+    const s = document.createElement("span");
+    s.textContent = formatOne(n);
+    s.className = "front";
+    el.append(s);
+  });
+  const sep = document.createElement("i");
+  sep.textContent = "+";
+  el.append(sep);
+  back.forEach((n) => {
+    const s = document.createElement("span");
+    s.textContent = formatOne(n);
+    s.className = "back";
+    el.append(s);
+  });
+};
+
+// —— 通用工具（供主脚本复用）——
+export const fmtMoney = (value: number): string => {
+  const sign = value < 0 ? "-" : "";
+  const v = Math.abs(value);
+  if (v >= 1e8) return `${sign}${v / 1e8 >= 100 ? Math.round(v / 1e8) : (v / 1e8).toFixed(1)} 亿`;
+  if (v >= 1e4) return `${sign}${v / 1e4 >= 1000 ? Math.round(v / 1e4) : (v / 1e4).toFixed(1)} 万`;
+  return `${sign}${Math.round(v)} 元`;
+};
+export const fmtAge = (age: number) => age.toFixed(1).replace(/\.0$/, "");
+
+export type RawWin = { world: number; age: number; ticket: number };
+export const runWorlds = (n: number, ticketsPerLife: number, ticketsPerWeek: number, startAge: number): RawWin[] => {
+  const winners: RawWin[] = [];
+  for (let w = 0; w < n; w++) {
+    for (let t = 0; t < ticketsPerLife; t++) {
+      if (Math.floor(Math.random() * ODDS_LOTTERY) + 1 === 1) {
+        winners.push({ world: w + 1, age: startAge + Math.floor(t / ticketsPerWeek) / 52, ticket: t + 1 });
+        break;
+      }
+    }
+  }
+  return winners;
+};
+
+export const countUp = (el: HTMLElement | null, to: number, fmt: (v: number) => string, duration = 900) => {
+  if (!el) return;
+  el.textContent = fmt(0);
+  const start = performance.now();
+  const tick = (now: number) => {
+    const t = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - t, 3);
+    el.textContent = fmt(to * eased);
+    if (t < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
 };

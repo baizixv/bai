@@ -39,6 +39,9 @@ body.lottery-game .topbar { border-bottom-color: #2b3139; }
 .lottery-live { width: 100%; border: 0; background: var(--yellow); color: #1a1a1a; font-weight: 800; font-size: 15px; padding: 16px 20px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 10px 30px #f3ca5133; transition: transform 0.15s; margin-top: 6px; }
 .lottery-live:hover { transform: translateY(-2px); }
 .lottery-live:disabled { opacity: 0.55; cursor: default; transform: none; }
+.lottery-collect-all { width: 100%; border: 1px solid var(--yellow); background: transparent; color: var(--yellow); padding: 14px 12px; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; }
+.lottery-collect-all:hover { background: var(--yellow); color: #1a1a1a; }
+.lottery-collect-all:disabled { opacity: 0.55; cursor: default; }
 .lottery-reset { width: 100%; border: 1px solid var(--line); background: transparent; color: var(--ink); padding: 11px 12px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 7px; margin-top: 12px; }
 .lottery-reset:hover { border-color: var(--yellow); color: var(--yellow); }
 
