@@ -6,6 +6,29 @@ type BeforeInstallPromptEvent = Event & {
 let themeObserver: MutationObserver | undefined;
 let deferredPrompt: BeforeInstallPromptEvent | undefined;
 let cleanupInstall: (() => void) | undefined;
+let toastTimer: number | undefined;
+let lastToastAt = 0;
+
+const showToast = (message: string) => {
+  // userChoice(accepted) 和 appinstalled 可能先后触发，去重避免重复提示。
+  const now = Date.now();
+  if (now - lastToastAt < 1500) return;
+  lastToastAt = now;
+
+  let toast = document.querySelector<HTMLDivElement>("#pwa-toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "pwa-toast";
+    toast.className = "pwa-toast";
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.classList.add("show");
+  window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => {
+    document.querySelector("#pwa-toast")?.classList.remove("show");
+  }, 3200);
+};
 
 const updateInstallButton = () => {
   const button = document.querySelector<HTMLButtonElement>("#install-button");
@@ -29,9 +52,10 @@ const setupPwa = () => {
   const onInstallClick = async () => {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
+    const choice = await deferredPrompt.userChoice;
     deferredPrompt = undefined;
     updateInstallButton();
+    if (choice.outcome === "accepted") showToast("安装成功，已添加到主屏幕");
   };
   installButton?.addEventListener("click", onInstallClick);
   cleanupInstall = () => installButton?.removeEventListener("click", onInstallClick);
@@ -50,6 +74,7 @@ window.addEventListener("beforeinstallprompt", (event) => {
 window.addEventListener("appinstalled", () => {
   deferredPrompt = undefined;
   updateInstallButton();
+  showToast("安装成功，已添加到主屏幕");
 });
 
 if ("serviceWorker" in navigator) {

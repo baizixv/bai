@@ -189,3 +189,24 @@ kbd {
 .icon-button[hidden] {
   display: none;
 }
+.pwa-toast {
+  position: fixed;
+  z-index: 50;
+  left: 50%;
+  bottom: 30px;
+  transform: translate(-50%, 12px);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 13px 18px;
+  font-size: 12px;
+  box-shadow: 0 6px 20px #0002;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.25s,
+    transform 0.25s;
+}
+.pwa-toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
