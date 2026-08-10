@@ -1,5 +1,5 @@
 import { readStorage, writeStorage } from "../../lib/storage";
-import { addCollectedNumber, countUp, deriveOneNumber, fetchDrawSource, fmtAge, fmtMoney, formatOne, initLotteryFx, isBack, randomDraw, renderBalls, renderCollection, renderWinNumber, renderWinSet, runWorlds, slotValue } from "./lottery-fx";
+import { addCollectedNumber, countUp, deriveOneNumber, fetchDrawSource, fmtAge, fmtMoney, formatOne, initLotteryFx, initNumberCopy, isBack, randomDraw, renderBalls, renderCollection, renderWinNumber, renderWinSet, runWorlds, slotValue } from "./lottery-fx";
 const PRICE = 2, JACKPOT = 10_000_000, KEY = "bai-lottery-reincarnation-v2", RUN_LIMIT = 8, CHUNK = 5000;
 type RunRecord = { worlds: number; invested: number; winners: number; won: number };
 type Collected = { front: number[]; back: number[] };
@@ -276,6 +276,7 @@ form?.addEventListener("submit", (event) => {
   void execute();
 });
 collectButton?.addEventListener("click", () => void collectAll());
+initNumberCopy(q("#lottery-copy-numbers"), () => state.collected);
 [startAgeInput, endAgeInput, ticketsInput, worldsInput].forEach((input) => {
   input?.addEventListener("input", () => {
     const settings = readSettings();
