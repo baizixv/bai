@@ -2,32 +2,32 @@
  * A calmer section system: neutral surfaces first, accents used as signals.
  */
 :root {
-  --paper: #f6f7f5;
-  --paper-deep: #ecefeb;
-  --white: #ffffff;
-  --ink: #202522;
-  --muted: #717a75;
-  --line: #d9dfda;
-  --dark: #29322f;
-  --blue: #3d6f68;
-  --yellow: #d9a83e;
-  --pink: #d48682;
-  --green: #8caf9a;
-  --accent-soft: #e3ece8;
+  --paper: #f7f5f1;
+  --paper-deep: #ece9e3;
+  --white: #fffdf9;
+  --ink: #27282b;
+  --muted: #77746e;
+  --line: #ddd9d1;
+  --dark: #2d3038;
+  --blue: #536b9c;
+  --yellow: #d8ad58;
+  --pink: #bd8c8b;
+  --green: #91a99d;
+  --accent-soft: #e8ebf2;
 }
 body.dark {
-  --paper: #171d1b;
-  --paper-deep: #202a26;
-  --white: #24302b;
-  --ink: #edf2ee;
-  --muted: #aab5af;
-  --line: #394640;
-  --dark: #e9f0eb;
-  --blue: #91c7ba;
-  --yellow: #e4bd63;
-  --pink: #df9e99;
-  --green: #9cc7ad;
-  --accent-soft: #293b35;
+  --paper: #1b1d22;
+  --paper-deep: #25272d;
+  --white: #292b31;
+  --ink: #f0eee8;
+  --muted: #aaa8a1;
+  --line: #41434a;
+  --dark: #e9e7df;
+  --blue: #a7b9df;
+  --yellow: #e4c477;
+  --pink: #d5a5a2;
+  --green: #abc4b5;
+  --accent-soft: #303541;
 }
 
 /* Give each homepage area a distinct surface without turning it into a color block. */
@@ -68,43 +68,43 @@ body.dark {
 .projects-section .project-visual {
   height: 238px;
   border: 1px solid rgba(255,255,255,.12);
-  background: #34433d;
+  background: #3b414e;
 }
 .projects-section .project-info {
   border-bottom-color: #53615b;
   padding-top: 18px;
 }
 .projects-section .project-info h3 { color: #f3f6f2; }
-.projects-section .project-info p { color: #adb8b1; }
-.projects-section .project-info > svg { color: #a9c1b6; }
-.projects-section .project-type { color: #a9c1b6; }
-.projects-section .visual-extension { background: #40534b; color: #d9e9df; }
-.projects-section .extension-tabs { color: #a9c1b6; }
+.projects-section .project-info p { color: #b8bbc4; }
+.projects-section .project-info > svg { color: #bbc5db; }
+.projects-section .project-type { color: #bbc5db; }
+.projects-section .visual-extension { background: #454b5a; color: #e0e5f0; }
+.projects-section .extension-tabs { color: #bbc5db; }
 
 .games-section {
-  background: #f0f3f0;
+  background: #f4f0eb;
   color: var(--ink);
   padding-top: 100px;
   padding-bottom: 112px;
 }
-body.dark .games-section { background: #202a26; }
+body.dark .games-section { background: #25272d; }
 .games-section .games-symbol { background: #e5c5c0; }
 .games-section .game-grid { gap: 28px; }
 .games-section .project-visual {
   height: 238px;
-  background: #d8e5df;
-  border: 1px solid #c8d5ce;
+  background: #dfe4ed;
+  border: 1px solid #cdd4e1;
 }
-body.dark .games-section .project-visual { background: #30443c; border-color: #40584e; }
+body.dark .games-section .project-visual { background: #343a49; border-color: #4b5366; }
 .games-section .game-info { padding-top: 18px; }
 .games-section .game-play { background: var(--blue); color: #fff; }
 
 .media-library-section {
-  background: #e9efec;
+  background: #efede9;
   padding-top: 100px;
   padding-bottom: 112px;
 }
-body.dark .media-library-section { background: #1d2925; }
+body.dark .media-library-section { background: #202228; }
 .media-library-section .media-card,
 .media-library-section .media-empty { background: rgba(255,255,255,.58); }
 body.dark .media-library-section .media-card,
@@ -117,24 +117,24 @@ body.dark .media-library-section .media-empty { background: rgba(255,255,255,.04
 .media-game .media-card-mark { background: var(--green); }
 
 .tools-section {
-  background: var(--paper);
+  background: #f1f2f5;
   padding-top: 100px;
   padding-bottom: 112px;
 }
-.tools-section .tools-symbol { background: #c4dcd0; }
+.tools-section .tools-symbol { background: #d7ddec; }
 .tools-section .tools-group { border-top-color: var(--blue); }
 .tools-section .tiny-tools-grid { gap: 14px; }
 .tools-section .tiny-tool-card { background: var(--white); border-color: var(--line); }
 .tools-section .tiny-tool-icon { background: #e6d39a; }
 .tools-section .more-tool-card { background: #e8d39a; border-color: #d5b86a; }
-.tools-section .finance-directory-card { background: #cfe2d7; }
+.tools-section .finance-directory-card { background: #dce4d9; }
 
 .ideas-section {
-  background: #f3efe2;
+  background: #f3eee4;
   padding-top: 100px;
   padding-bottom: 112px;
 }
-body.dark .ideas-section { background: #2a2921; }
+body.dark .ideas-section { background: #2b2925; }
 .ideas-section .idea-card { background: rgba(255,255,255,.62); border-color: #ded7c3; }
 body.dark .ideas-section .idea-card { background: rgba(255,255,255,.05); border-color: #555040; }
 .ideas-section .idea-status { background: #e6cd8d; }
@@ -142,11 +142,11 @@ body.dark .ideas-section .idea-card { background: rgba(255,255,255,.05); border-
 
 /* Consistent heading rhythm and restrained accent labels. */
 .section-heading .eyebrow { margin-bottom: 13px; }
-.projects-section .eyebrow { color: #a9c1b6; }
-.projects-section .view-all { color: #b7c6bf; border-color: #53615b; }
+.projects-section .eyebrow { color: #bbc5db; }
+.projects-section .view-all { color: #c4c9d6; border-color: #5a606d; }
 .games-section .games-heading .eyebrow { color: #9a6e6a; }
-.media-library-section .eyebrow { color: #4c7970; }
-.tools-section .eyebrow { color: #527d69; }
+.media-library-section .eyebrow { color: #61729a; }
+.tools-section .eyebrow { color: #68749a; }
 .ideas-section .eyebrow { color: #91732a; }
 
 @media (max-width: 900px) {

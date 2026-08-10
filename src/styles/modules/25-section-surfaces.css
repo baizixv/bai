@@ -1,11 +1,11 @@
 /* 25 Section surfaces */
 .library-section {
-  background: #f7f8f6;
+  background: #f6f3ef;
   width: 100%;
   padding-top: 100px;
   padding-bottom: 112px;
 }
-body.dark .library-section { background: #18211e; }
+body.dark .library-section { background: #1d1f24; }
 .library-section .library-layout {
   grid-template-columns: .85fr 1.15fr;
   gap: 78px;
@@ -16,15 +16,15 @@ body.dark .library-section { background: #18211e; }
 }
 .library-section .library-row {
   min-height: 76px;
-  border-bottom-color: #dce3de;
+  border-bottom-color: #dedad3;
 }
 body.dark .library-section .library-row { border-bottom-color: var(--line); }
 .library-section .library-row:hover { background: var(--accent-soft); }
 .library-section .library-icon { width: 32px; height: 32px; }
-.library-section .blue-icon { background: #c8ddd7; }
-.library-section .yellow-icon { background: #ead7a0; }
-.library-section .pink-icon { background: #e7c5c1; }
-.library-section .green-icon { background: #c9dfd1; }
+.library-section .blue-icon { background: #d7dfef; }
+.library-section .yellow-icon { background: #eadbb6; }
+.library-section .pink-icon { background: #e8d0ce; }
+.library-section .green-icon { background: #d9e2db; }
 .library-section .external-label,
 .library-section .library-row > svg { color: var(--blue); }
 
