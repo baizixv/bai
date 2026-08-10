@@ -47,3 +47,6 @@
 /* 全局 UI（必须在响应式覆盖层之后，内含移动端规则） */
 @import './modules/28-search.css';
 @import './modules/29-contact-modal.css';
+
+/* 游戏独立页（深色舞台） */
+@import './modules/30-lottery-reincarnation.css';

@@ -1,0 +1,74 @@
+---
+import { ArrowLeft, Coins, Dices, Flame, RotateCcw, Sparkles, Trophy } from 'lucide-astro';
+import Layout from '@/layouts/Layout.astro';
+---
+<Layout title="2142万分之一 · 白子诩" description="大乐透头奖概率 1/21,425,712。买一辈子（1040 期）没中，就再活一辈子。">
+  <main class="lottery-page">
+    <div class="section-wrap lottery-inner">
+      <a class="back-link" href="/games/lottery-reincarnation/"><ArrowLeft /> 返回游戏介绍</a>
+      <header class="lottery-header">
+        <div><p class="eyebrow">GAME LAB / LOTTERY PROBABILITY</p><h1>2142万<br /><em>分之一</em></h1><p>大乐透头奖概率为 <strong>1 / 21,425,712</strong>。每买一辈子（1040 期）没中，就再活一辈子。看看要轮回多少次，才轮得到你。</p></div>
+        <div class="lottery-contract"><span>THE CONTRACT</span><strong>1 / 21,425,712</strong><small>头奖概率 · 每世 1040 期 · 30—50 岁</small></div>
+      </header>
+
+      <section class="lottery-simulator" id="lottery-simulator" aria-labelledby="lottery-title">
+        <div class="lottery-controls">
+          <p class="eyebrow">REINCARNATION MACHINE</p>
+          <h2 id="lottery-title">轮回模拟器</h2>
+          <button class="lottery-live" id="lottery-live" type="button"><Dices /> 再活一辈子</button>
+          <div class="lottery-sub-actions">
+            <button class="lottery-auto" id="lottery-auto" type="button"><Flame /> 自动轮回</button>
+            <button class="lottery-reset" id="lottery-reset" type="button"><RotateCcw /> 重置</button>
+          </div>
+          <p class="lottery-hint" id="lottery-hint">点击按钮，模拟从 30 岁买到 50 岁的全部 1040 期开奖。</p>
+        </div>
+
+        <div class="lottery-counters">
+          <article class="lottery-counter-card lottery-counter-lives"><span>已轮回</span><strong id="lottery-lives">0</strong><small>世</small></article>
+          <article class="lottery-counter-card lottery-counter-draws"><span>已模拟</span><strong id="lottery-draws">0</strong><small>期</small></article>
+        </div>
+
+        <div class="lottery-life-progress">
+          <div class="lottery-life-head"><span>这辈子的人生进度</span><span id="lottery-life-label">第 1 世</span></div>
+          <div class="lottery-progress-track"><span id="lottery-progress-bar"></span></div>
+          <div class="lottery-life-meta"><span id="lottery-life-result">等待第一次轮回</span><span class="mono" id="lottery-draws-this-life">0 / 1040 期</span></div>
+        </div>
+
+        <div class="lottery-bottom-grid">
+          <div class="lottery-history">
+            <div class="lottery-block-head"><span class="eyebrow">RECENT LIVES</span><span>最近 10 世</span></div>
+            <ol class="lottery-history-list" id="lottery-history">
+              <li class="lottery-history-empty">还没有轮回记录</li>
+            </ol>
+          </div>
+          <div class="lottery-stats">
+            <div class="lottery-block-head"><span class="eyebrow">STATISTICS</span><span>累计统计</span></div>
+            <dl class="lottery-stat-list">
+              <div><dt>平均每几世中一次</dt><dd id="lottery-avg">—</dd></div>
+              <div><dt>最长空窗期</dt><dd id="lottery-dry">—</dd></div>
+              <div><dt>当前连续未中</dt><dd id="lottery-streak">0 世</dd></div>
+              <div><dt>头奖次数</dt><dd id="lottery-wins">0</dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <section class="lottery-explanation">
+        <div><p class="eyebrow">THE MATH</p><h2>小概率<br /><em>需要轮回才能理解。</em></h2></div>
+        <div><p>单期不中奖的概率是 21,425,711 / 21,425,712，几乎等于 1。但一辈子要买 1040 期，一辈子都不中的概率仍然约为 <strong>99.9951%</strong>。</p><p>平均需要轮回约 <strong>20,602 世</strong>，也就是约 2,143 万期，才轮到一次头奖。你的轮回数会先超过几百世、几千世，然后慢慢逼近这个数字。</p><p>模拟使用均匀随机数独立判定每一期，不做近似。数据保存在浏览器本地，刷新不丢失。</p></div>
+      </section>
+    </div>
+
+    <canvas class="lottery-canvas" id="lottery-canvas" aria-hidden="true"></canvas>
+    <div class="lottery-win" id="lottery-win" hidden>
+      <div class="lottery-win-card">
+        <Trophy class="lottery-win-trophy" aria-hidden="true" />
+        <p class="eyebrow">JACKPOT</p>
+        <h2>第 <span id="lottery-win-life">—</span> 世，<br />中奖了！</h2>
+        <p id="lottery-win-draws">共模拟 — 期</p>
+        <button class="lottery-win-again" id="lottery-win-again" type="button"><Sparkles /> 继续下一世</button>
+      </div>
+    </div>
+  </main>
+</Layout>
+<script src="../../../../scripts/pages/lottery-reincarnation.ts"></script>

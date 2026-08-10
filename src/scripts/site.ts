@@ -11,6 +11,8 @@ const setupSite = () => {
   const savedTheme = readStorage<"dark" | "light">("bai-theme", "light");
   document.documentElement.dataset.theme = savedTheme;
   body.classList.toggle("dark", savedTheme === "dark");
+  // 游戏独立页强制深色舞台（变量覆盖，不影响主题切换）。
+  body.classList.toggle("lottery-game", Boolean(document.querySelector(".lottery-page")));
 
   const onThemeToggle = () => {
     body.classList.toggle("dark");

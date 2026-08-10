@@ -187,8 +187,25 @@ def project_artworks():
     save(rain, "game-rainy-day.png")
 
 
+def lottery_art():
+    image = canvas(900, 600, "#14181d")
+    draw = ImageDraw.Draw(image)
+    rect(draw, (52, 50, 848, 550), "#14181d", outline=COLORS["yellow"], width=3, radius=8)
+    line(draw, [(70, 122), (830, 122)], COLORS["yellow"], 2)
+    draw_text(draw, (78, 90), "A LOTTERY REINCARNATION SIM", 15, COLORS["yellow"], bold=True)
+    rect(draw, (295, 175, 605, 415), "#0d1014", outline=COLORS["yellow"], width=3, radius=16)
+    draw_text(draw, (450, 235), "1 /", 42, COLORS["paper"], bold=True, anchor="mm")
+    draw_text(draw, (450, 310), "21,425,712", 30, COLORS["yellow"], bold=True, anchor="mm")
+    line(draw, [(345, 355), (555, 355)], "#3a3f47", 2)
+    draw_text(draw, (450, 385), "每世 1040 期 · 30—50 岁", 14, "#9aa3ab", bold=True, anchor="mm")
+    draw_text(draw, (78, 508), "2142万分之一", 24, COLORS["yellow"], bold=True, cjk=True)
+    draw_text(draw, (780, 512), "∞", 32, COLORS["yellow"], bold=True, anchor="mm")
+    save(image, "game-lottery-reincarnation.png")
+
+
 if __name__ == "__main__":
     logo()
     hero_workbench()
     project_artworks()
+    lottery_art()
     print(f"Generated assets in {OUT}")
