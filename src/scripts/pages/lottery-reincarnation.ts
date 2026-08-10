@@ -33,7 +33,7 @@ const rollingOutput = q<HTMLElement>("#lottery-rolling");
 const planPurchases = q<HTMLElement>("#plan-purchases");
 const planTickets = q<HTMLElement>("#plan-tickets");
 const planCost = q<HTMLElement>("#plan-cost");
-const results = q<HTMLElement>("#lottery-results");
+const report = q<HTMLElement>("#lottery-report");
 const resultWorlds = q<HTMLElement>("#result-worlds");
 const resultInvested = q<HTMLElement>("#result-invested");
 const resultWinners = q<HTMLElement>("#result-winners");
@@ -41,7 +41,6 @@ const resultWon = q<HTMLElement>("#result-won");
 const resultNet = q<HTMLElement>("#result-net");
 const resultRate = q<HTMLElement>("#result-rate");
 const resultSummary = q<HTMLElement>("#lottery-result-summary");
-const winnersBlock = q<HTMLElement>("#lottery-winners");
 const winnersText = q<HTMLElement>("#lottery-winners-text");
 const totalWorlds = q<HTMLElement>("#total-worlds");
 const totalInvested = q<HTMLElement>("#total-invested");
@@ -123,9 +122,9 @@ const renderTotals = () => {
     const li = document.createElement("li");
     if (run.winners > 0) li.className = "lottery-run-win";
     const name = document.createElement("span");
-    name.textContent = `第 ${state.runs.length - index} 次 · ${num.format(run.worlds)} 世`;
+    name.textContent = `第 ${state.runs.length - index} 次 · ${num.format(run.worlds)} 个世界`;
     const detail = document.createElement("b");
-    detail.textContent = `投入 ${fmtMoney(run.invested)} · 中奖 ${run.winners} 世 · ${fmtMoney(run.won - run.invested)}`;
+    detail.textContent = `投入 ${fmtMoney(run.invested)} · 中奖 ${run.winners} 个世界 · ${fmtMoney(run.won - run.invested)}`;
     li.append(name, detail);
     runLog.append(li);
   });
@@ -153,10 +152,10 @@ const setProgress = (ratio: number) => {
 };
 
 const renderResult = (worlds: number, plan: { purchases: number; tickets: number; cost: number }, winners: WinRecord[], invested: number, won: number) => {
-  if (results) results.hidden = false;
+  if (report) report.hidden = false;
   if (resultWorlds) resultWorlds.textContent = num.format(worlds);
   if (resultInvested) resultInvested.textContent = fmtMoney(invested);
-  if (resultWinners) resultWinners.textContent = `${winners.length} 世`;
+  if (resultWinners) resultWinners.textContent = `${winners.length} 个世界`;
   if (resultWon) resultWon.textContent = fmtMoney(won);
   if (resultNet) {
     resultNet.textContent = fmtMoney(won - invested);
@@ -164,9 +163,9 @@ const renderResult = (worlds: number, plan: { purchases: number; tickets: number
     resultNet.classList.toggle("lottery-net-positive", won - invested > 0);
   }
   if (resultRate) resultRate.textContent = invested > 0 ? `${((won / invested) * 100).toFixed(1)}%` : "—";
-  if (resultSummary) resultSummary.textContent = `每世 ${num.format(plan.purchases)} 次购买 · ${num.format(plan.tickets)} 注 · ${fmtMoney(plan.cost)} · 头奖 ${fmtMoney(JACKPOT)}`;
-  if (!winnersBlock || !winnersText) return;
-  winnersBlock.hidden = winners.length === 0;
+  if (resultSummary) resultSummary.textContent = `每个世界 ${num.format(plan.purchases)} 次购买 · ${num.format(plan.tickets)} 注 · ${fmtMoney(plan.cost)} · 头奖 ${fmtMoney(JACKPOT)}`;
+  if (!winnersText) return;
+  winnersText.hidden = winners.length === 0;
   winnersText.textContent = winners.length > 0 ? `中奖世界：${winners.slice(0, 8).map((w) => `#${num.format(w.world)} 号 · 约 ${fmtAge(w.age)} 岁`).join("、")}${winners.length > 8 ? ` 等 ${winners.length} 个` : ""}` : "";
 };
 
@@ -206,7 +205,7 @@ const execute = async () => {
   const startedAt = performance.now();
   if (runButton) runButton.disabled = true;
   if (winOverlay) winOverlay.hidden = true;
-  if (results) results.hidden = true;
+  if (report) report.hidden = true;
   if (runningBlock) runningBlock.hidden = false;
   if (rollingOutput) rollingOutput.textContent = "已模拟 0 个世界";
   progressBar?.classList.add("lottery-running-bar");

@@ -74,23 +74,19 @@ import Layout from '@/layouts/Layout.astro';
             <div class="lottery-balls"><span>07</span><span>14</span><span>23</span><span>31</span><span>35</span></div>
             <p class="mono" id="lottery-rolling">已模拟 0 个世界</p>
           </div>
+          <div class="lottery-report" id="lottery-report" hidden aria-live="polite">
+            <div class="lottery-report-head"><span class="eyebrow">RESULT</span><span id="lottery-result-summary">—</span></div>
+            <div class="lottery-report-grid">
+              <span>模拟世界<b id="result-worlds">—</b></span>
+              <span>总投入<b id="result-invested">—</b></span>
+              <span>中头奖<b id="result-winners">—</b></span>
+              <span>总奖金<b id="result-won">—</b></span>
+              <span>净收益<b id="result-net">—</b></span>
+              <span>回收率<b id="result-rate">—</b></span>
+            </div>
+            <p id="lottery-winners-text" hidden></p>
+          </div>
           <p class="lottery-status" id="lottery-status">设定购买计划后开始模拟，每个世界都严格按计划买完一辈子。</p>
-        </div>
-      </section>
-
-      <section class="lottery-results" id="lottery-results" hidden aria-live="polite">
-        <div class="lottery-result-heading"><div><p class="eyebrow">SIMULATION RESULT</p><h2>平行世界报告</h2></div><span id="lottery-result-summary">—</span></div>
-        <div class="lottery-result-grid">
-          <article><span>模拟世界</span><strong id="result-worlds">—</strong><small>个平行世界</small></article>
-          <article><span>总投入</span><strong id="result-invested">—</strong><small>N 世 × 每世成本</small></article>
-          <article class="lottery-gold"><span>中头奖</span><strong id="result-winners">—</strong><small>命中头奖的世界数</small></article>
-          <article class="lottery-gold"><span>总奖金</span><strong id="result-won">—</strong><small>中奖数 × 头奖</small></article>
-          <article class="lottery-net"><span>净收益</span><strong id="result-net">—</strong><small>奖金 − 投入</small></article>
-          <article><span>回收率</span><strong id="result-rate">—</strong><small>奖金 ÷ 投入</small></article>
-        </div>
-        <div class="lottery-winners" id="lottery-winners" hidden>
-          <div class="lottery-block-head"><span class="eyebrow">JACKPOT WORLDS</span><span>中奖世界明细</span></div>
-          <p id="lottery-winners-text">—</p>
         </div>
       </section>
 
