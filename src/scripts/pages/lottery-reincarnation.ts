@@ -1,5 +1,5 @@
 import { readStorage, writeStorage } from "../../lib/storage";
-import { initLotteryFx } from "./lottery-fx";
+import { addCollectedNumber, deriveOneNumber, fetchDrawSource, formatOne, initLotteryFx, isBack, renderCollection, renderWinNumber, slotValue } from "./lottery-fx";
 
 const ODDS = 21_425_712; // 大乐透头奖概率
 const PRICE = 2; // 每注 2 元
@@ -8,50 +8,27 @@ const KEY = "bai-lottery-reincarnation-v2";
 const RUN_LIMIT = 8;
 
 type RunRecord = { worlds: number; invested: number; winners: number; won: number };
-type GameState = { totalWorlds: number; totalInvested: number; totalWins: number; totalWon: number; runs: RunRecord[] };
-const initialState: GameState = { totalWorlds: 0, totalInvested: 0, totalWins: 0, totalWon: 0, runs: [] };
+type Collected = { front: number[]; back: number[] };
+type GameState = { totalWorlds: number; totalInvested: number; totalWins: number; totalWon: number; collected: Collected; runs: RunRecord[] };
+const initialState: GameState = { totalWorlds: 0, totalInvested: 0, totalWins: 0, totalWon: 0, collected: { front: [], back: [] }, runs: [] };
 let state: GameState = readStorage(KEY, initialState);
 let running = false;
 
 const num = new Intl.NumberFormat("zh-CN");
 const q = <T extends HTMLElement>(id: string) => document.querySelector<T>(id);
-const startAgeInput = q<HTMLInputElement>("#lottery-start-age");
-const endAgeInput = q<HTMLInputElement>("#lottery-end-age");
+const startAgeInput = q<HTMLInputElement>("#lottery-start-age"), endAgeInput = q<HTMLInputElement>("#lottery-end-age");
 const frequencyButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-frequency]")];
-const ticketsInput = q<HTMLInputElement>("#lottery-tickets");
-const worldsInput = q<HTMLInputElement>("#lottery-worlds");
+const ticketsInput = q<HTMLInputElement>("#lottery-tickets"), worldsInput = q<HTMLInputElement>("#lottery-worlds");
 const presetButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-worlds]")];
-const form = q<HTMLFormElement>("#lottery-settings");
-const runButton = q<HTMLButtonElement>("#lottery-run");
-const resetButton = q<HTMLButtonElement>("#lottery-reset");
-const statusOutput = q<HTMLElement>("#lottery-status");
-const progressLabel = q<HTMLElement>("#lottery-progress-label");
-const progressValue = q<HTMLElement>("#lottery-progress-value");
-const progressBar = q<HTMLElement>("#lottery-progress-bar");
-const runningBlock = q<HTMLElement>("#lottery-running");
-const rollingOutput = q<HTMLElement>("#lottery-rolling");
-const planPurchases = q<HTMLElement>("#plan-purchases");
-const planTickets = q<HTMLElement>("#plan-tickets");
-const planCost = q<HTMLElement>("#plan-cost");
-const report = q<HTMLElement>("#lottery-report");
-const resultWorlds = q<HTMLElement>("#result-worlds");
-const resultInvested = q<HTMLElement>("#result-invested");
-const resultWinners = q<HTMLElement>("#result-winners");
-const resultWon = q<HTMLElement>("#result-won");
-const resultNet = q<HTMLElement>("#result-net");
-const resultRate = q<HTMLElement>("#result-rate");
-const resultSummary = q<HTMLElement>("#lottery-result-summary");
-const winnersText = q<HTMLElement>("#lottery-winners-text");
-const totalWorlds = q<HTMLElement>("#total-worlds");
-const totalInvested = q<HTMLElement>("#total-invested");
-const totalWins = q<HTMLElement>("#total-wins");
-const totalWon = q<HTMLElement>("#total-won");
-const totalNet = q<HTMLElement>("#total-net");
-const runLog = q<HTMLElement>("#lottery-run-log");
-const winOverlay = q<HTMLElement>("#lottery-win");
-const winTitle = q<HTMLElement>("#lottery-win-title");
-const winMeta = q<HTMLElement>("#lottery-win-meta");
-const winClose = q<HTMLButtonElement>("#lottery-win-close");
+const form = q<HTMLFormElement>("#lottery-settings"), runButton = q<HTMLButtonElement>("#lottery-run"), resetButton = q<HTMLButtonElement>("#lottery-reset");
+const statusOutput = q<HTMLElement>("#lottery-status"), progressLabel = q<HTMLElement>("#lottery-progress-label"), progressValue = q<HTMLElement>("#lottery-progress-value"), progressBar = q<HTMLElement>("#lottery-progress-bar");
+const runningBlock = q<HTMLElement>("#lottery-running"), rollingOutput = q<HTMLElement>("#lottery-rolling");
+const planPurchases = q<HTMLElement>("#plan-purchases"), planTickets = q<HTMLElement>("#plan-tickets"), planCost = q<HTMLElement>("#plan-cost");
+const collectFront = q<HTMLElement>("#lottery-collect-front"), collectBack = q<HTMLElement>("#lottery-collect-back"), collectProgress = q<HTMLElement>("#lottery-collect-progress");
+const report = q<HTMLElement>("#lottery-report"), resultWorlds = q<HTMLElement>("#result-worlds"), resultInvested = q<HTMLElement>("#result-invested"), resultWinners = q<HTMLElement>("#result-winners");
+const resultWon = q<HTMLElement>("#result-won"), resultNet = q<HTMLElement>("#result-net"), resultRate = q<HTMLElement>("#result-rate"), resultSummary = q<HTMLElement>("#lottery-result-summary"), winnersText = q<HTMLElement>("#lottery-winners-text");
+const totalWorlds = q<HTMLElement>("#total-worlds"), totalInvested = q<HTMLElement>("#total-invested"), totalWins = q<HTMLElement>("#total-wins"), totalWon = q<HTMLElement>("#total-won"), totalNet = q<HTMLElement>("#total-net"), runLog = q<HTMLElement>("#lottery-run-log");
+const winOverlay = q<HTMLElement>("#lottery-win"), winTitle = q<HTMLElement>("#lottery-win-title"), winNumber = q<HTMLElement>("#lottery-win-number"), winBasis = q<HTMLElement>("#lottery-win-basis"), winNote = q<HTMLElement>("#lottery-win-note"), winMeta = q<HTMLElement>("#lottery-win-meta"), winClose = q<HTMLButtonElement>("#lottery-win-close");
 const fx = initLotteryFx();
 
 const fmtMoney = (value: number): string => {
@@ -61,6 +38,7 @@ const fmtMoney = (value: number): string => {
   if (v >= 1e4) return `${sign}${v / 1e4 >= 1000 ? Math.round(v / 1e4) : (v / 1e4).toFixed(1)} 万`;
   return `${sign}${Math.round(v)} 元`;
 };
+const fmtAge = (age: number) => age.toFixed(1).replace(/\.0$/, "");
 
 const readSettings = (): { startAge: number; endAge: number; frequency: number; tickets: number; worlds: number } | null => {
   const startAge = Number(startAgeInput?.value ?? 30);
@@ -109,6 +87,7 @@ const renderTotals = () => {
   if (totalWins) totalWins.textContent = num.format(state.totalWins);
   if (totalWon) totalWon.textContent = fmtMoney(state.totalWon);
   if (totalNet) totalNet.textContent = fmtMoney(state.totalWon - state.totalInvested);
+  renderCollection(collectFront, collectBack, collectProgress, state.collected.front, state.collected.back);
   if (!runLog) return;
   runLog.textContent = "";
   if (state.runs.length === 0) {
@@ -130,57 +109,19 @@ const renderTotals = () => {
   });
 };
 
-const fmtAge = (age: number) => age.toFixed(1).replace(/\.0$/, "");
-
-type WinRecord = { world: number; age: number };
-const runWorlds = (n: number, ticketsPerLife: number, ticketsPerWeek: number, startAge: number): WinRecord[] => {
-  const winners: WinRecord[] = [];
+type RawWin = { world: number; age: number; ticket: number };
+type WinRecord = { world: number; age: number; ticket: number; number: number; added: boolean };
+const runWorlds = (n: number, ticketsPerLife: number, ticketsPerWeek: number, startAge: number): RawWin[] => {
+  const winners: RawWin[] = [];
   for (let w = 0; w < n; w++) {
     for (let t = 0; t < ticketsPerLife; t++) {
       if (Math.floor(Math.random() * ODDS) + 1 === 1) {
-        winners.push({ world: w + 1, age: startAge + Math.floor(t / ticketsPerWeek) / 52 });
+        winners.push({ world: w + 1, age: startAge + Math.floor(t / ticketsPerWeek) / 52, ticket: t + 1 });
         break;
       }
     }
   }
   return winners;
-};
-
-const setProgress = (ratio: number) => {
-  if (progressBar) progressBar.style.width = `${(ratio * 100).toFixed(1)}%`;
-  if (progressValue) progressValue.textContent = `${(ratio * 100).toFixed(0)}%`;
-};
-
-const renderResult = (worlds: number, plan: { purchases: number; tickets: number; cost: number }, winners: WinRecord[], invested: number, won: number) => {
-  if (report) report.hidden = false;
-  if (resultWorlds) resultWorlds.textContent = num.format(worlds);
-  if (resultInvested) resultInvested.textContent = fmtMoney(invested);
-  if (resultWinners) resultWinners.textContent = `${winners.length} 个世界`;
-  if (resultWon) resultWon.textContent = fmtMoney(won);
-  if (resultNet) {
-    resultNet.textContent = fmtMoney(won - invested);
-    resultNet.classList.toggle("lottery-net-negative", won - invested < 0);
-    resultNet.classList.toggle("lottery-net-positive", won - invested > 0);
-  }
-  if (resultRate) resultRate.textContent = invested > 0 ? `${((won / invested) * 100).toFixed(1)}%` : "—";
-  if (resultSummary) resultSummary.textContent = `每个世界 ${num.format(plan.purchases)} 次购买 · ${num.format(plan.tickets)} 注 · ${fmtMoney(plan.cost)} · 头奖 ${fmtMoney(JACKPOT)}`;
-  if (!winnersText) return;
-  winnersText.hidden = winners.length === 0;
-  winnersText.textContent = winners.length > 0 ? `中奖世界：${winners.slice(0, 8).map((w) => `#${num.format(w.world)} 号 · 约 ${fmtAge(w.age)} 岁`).join("、")}${winners.length > 8 ? ` 等 ${winners.length} 个` : ""}` : "";
-};
-
-const showWin = (winners: WinRecord[], invested: number, won: number) => {
-  if (!winOverlay) return;
-  const first = winners[0];
-  if (winTitle) {
-    winTitle.innerHTML =
-      winners.length === 1
-        ? `第 <span>${num.format(first.world)}</span> 号世界在约 <span>${fmtAge(first.age)}</span> 岁中了头奖！`
-        : `<span>${winners.length}</span> 个平行世界中奖！最早约 ${fmtAge(first.age)} 岁`;
-  }
-  if (winMeta) winMeta.textContent = `投入 ${fmtMoney(invested)} · 奖金 ${fmtMoney(won)} · 头奖 ${fmtMoney(JACKPOT)}`;
-  winOverlay.hidden = false;
-  fx.launchFireworks();
 };
 
 const countUp = (el: HTMLElement | null, to: number, fmt: (v: number) => string, duration = 900) => {
@@ -196,6 +137,11 @@ const countUp = (el: HTMLElement | null, to: number, fmt: (v: number) => string,
   requestAnimationFrame(tick);
 };
 
+const setProgress = (ratio: number) => {
+  if (progressBar) progressBar.style.width = `${(ratio * 100).toFixed(1)}%`;
+  if (progressValue) progressValue.textContent = `${(ratio * 100).toFixed(0)}%`;
+};
+
 const execute = async () => {
   if (running) return;
   const settings = readSettings();
@@ -203,6 +149,7 @@ const execute = async () => {
   running = true;
   const plan = computePlan(settings);
   const startedAt = performance.now();
+  const sourcePromise = fetchDrawSource();
   if (runButton) runButton.disabled = true;
   if (winOverlay) winOverlay.hidden = true;
   if (report) report.hidden = true;
@@ -211,24 +158,34 @@ const execute = async () => {
   progressBar?.classList.add("lottery-running-bar");
   if (statusOutput) statusOutput.textContent = `正在开奖：${num.format(settings.worlds)} 个平行世界…`;
   setProgress(0);
-  const winners: WinRecord[] = [];
+  const rawWinners: RawWin[] = [];
   const CHUNK = 5000;
   let done = 0;
   while (done < settings.worlds) {
     const batch = Math.min(CHUNK, settings.worlds - done);
     const found = runWorlds(batch, plan.tickets, plan.ticketsPerWeek, settings.startAge);
-    winners.push(...found.map((w) => ({ world: w.world + done, age: w.age })));
+    rawWinners.push(...found.map((w) => ({ world: w.world + done, age: w.age, ticket: w.ticket })));
     done += batch;
     setProgress(done / settings.worlds);
     countUp(rollingOutput, done, (v) => `已模拟 ${num.format(Math.round(v))} 个世界`, 300);
     if (progressLabel) progressLabel.textContent = "模拟中…";
     if (done < settings.worlds) await new Promise((resolve) => requestAnimationFrame(resolve));
   }
-  // 保证动画至少呈现一小段，再揭示结果
   const elapsed = performance.now() - startedAt;
   if (elapsed < 800) await new Promise((resolve) => window.setTimeout(resolve, 800 - elapsed));
   if (runningBlock) runningBlock.hidden = true;
   progressBar?.classList.remove("lottery-running-bar");
+  const source = await sourcePromise;
+  // 每次中奖由真实随机源派生一个号码，并收入幸运号码收集板
+  const winners: WinRecord[] = [];
+  for (const w of rawWinners) {
+    const n = await deriveOneNumber(source, w.world, w.ticket);
+    const result = addCollectedNumber(state.collected.front, state.collected.back, n);
+    state.collected = result;
+    winners.push({ world: w.world, age: w.age, ticket: w.ticket, number: n, added: result.added });
+    if (result.complete && result.added) fx.launchFireworks();
+  }
+  renderCollection(collectFront, collectBack, collectProgress, state.collected.front, state.collected.back);
   const invested = plan.cost * settings.worlds;
   const won = winners.length * JACKPOT;
   state.totalWorlds += settings.worlds;
@@ -250,7 +207,49 @@ const execute = async () => {
   if (statusOutput) statusOutput.textContent = winners.length > 0 ? `🎉 ${winners.length} 个世界命中头奖！` : `模拟完成：${num.format(settings.worlds)} 个世界全部未中头奖。`;
   if (runButton) runButton.disabled = false;
   running = false;
-  if (winners.length > 0) showWin(winners, invested, won);
+  if (winners.length > 0) showWin(winners, source, invested, won);
+};
+
+const renderResult = (worlds: number, plan: { purchases: number; tickets: number; cost: number }, winners: WinRecord[], invested: number, won: number) => {
+  if (report) report.hidden = false;
+  if (resultWorlds) resultWorlds.textContent = num.format(worlds);
+  if (resultInvested) resultInvested.textContent = fmtMoney(invested);
+  if (resultWinners) resultWinners.textContent = `${winners.length} 个世界`;
+  if (resultWon) resultWon.textContent = fmtMoney(won);
+  if (resultNet) {
+    resultNet.textContent = fmtMoney(won - invested);
+    resultNet.classList.toggle("lottery-net-negative", won - invested < 0);
+    resultNet.classList.toggle("lottery-net-positive", won - invested > 0);
+  }
+  if (resultRate) resultRate.textContent = invested > 0 ? `${((won / invested) * 100).toFixed(1)}%` : "—";
+  if (resultSummary) resultSummary.textContent = `每个世界 ${num.format(plan.purchases)} 次购买 · ${num.format(plan.tickets)} 注 · ${fmtMoney(plan.cost)} · 头奖 ${fmtMoney(JACKPOT)}`;
+  if (!winnersText) return;
+  winnersText.hidden = winners.length === 0;
+  winnersText.textContent = winners.length > 0 ? `中奖世界：${winners.slice(0, 8).map((w) => `#${num.format(w.world)} 号 · 约 ${fmtAge(w.age)} 岁 · 号码 ${formatOne(slotValue(w.number))}（${isBack(w.number) ? "后区" : "前区"}）`).join("、")}${winners.length > 8 ? ` 等 ${winners.length} 个` : ""}` : "";
+};
+
+const showWin = (winners: WinRecord[], source: { hash: string; height: string } | null, invested: number, won: number) => {
+  if (!winOverlay) return;
+  const first = winners[0];
+  if (winTitle) {
+    winTitle.innerHTML =
+      winners.length === 1
+        ? `第 <span>${num.format(first.world)}</span> 号世界在约 <span>${fmtAge(first.age)}</span> 岁中了头奖！`
+        : `<span>${winners.length}</span> 个平行世界中奖！最早约 ${fmtAge(first.age)} 岁`;
+  }
+  renderWinNumber(winNumber, first.number);
+  if (winBasis) {
+    winBasis.textContent = source
+      ? `开奖依据：区块 #${source.height} · ${source.hash.slice(0, 14)}… · 世界 ${num.format(first.world)} 第 ${num.format(first.ticket)} 张票 · SHA-256 派生`
+      : "开奖依据：本地随机（未获取到区块源）";
+  }
+  if (winNote) {
+    const complete = state.collected.front.length === 5 && state.collected.back.length === 2;
+    winNote.textContent = complete && first.added ? "🎉 幸运号码全部集齐！" : first.added ? "新号码已收入收集板" : "重复号码，未新增";
+  }
+  if (winMeta) winMeta.textContent = `投入 ${fmtMoney(invested)} · 奖金 ${fmtMoney(won)} · 头奖 ${fmtMoney(JACKPOT)}`;
+  winOverlay.hidden = false;
+  fx.launchFireworks();
 };
 
 frequencyButtons.forEach((button) => {
@@ -277,11 +276,11 @@ form?.addEventListener("submit", (event) => {
   });
 });
 resetButton?.addEventListener("click", () => {
-  if (state.totalWorlds > 0 && !window.confirm("确定要清空所有累计记录吗？")) return;
-  state = { ...initialState };
+  if (state.totalWorlds > 0 && !window.confirm("确定要清空所有累计记录和幸运号码吗？")) return;
+  state = { ...initialState, collected: { front: [], back: [] } };
   writeStorage(KEY, state);
   renderTotals();
-  if (statusOutput) statusOutput.textContent = "累计记录已清空。";
+  if (statusOutput) statusOutput.textContent = "累计记录与幸运号码已清空。";
 });
 winClose?.addEventListener("click", () => {
   if (winOverlay) winOverlay.hidden = true;

@@ -1,4 +1,4 @@
-// 金色粒子背景 + 中奖烟花（canvas 特效，独立模块便于主脚本控制行数）
+// 金色粒子背景 + 烟花 + 可验证幸运号码系统
 export const initLotteryFx = (): { launchFireworks: () => void } => {
   const canvas = document.querySelector<HTMLCanvasElement>("#lottery-canvas");
   const ctx = canvas?.getContext("2d");
@@ -104,4 +104,97 @@ export const initLotteryFx = (): { launchFireworks: () => void } => {
       nextBurstAt = performance.now();
     },
   };
+};
+
+// —— 可验证随机源：公开比特币区块哈希 ——
+export type DrawSource = { hash: string; height: string };
+let cachedSource: DrawSource | null | undefined;
+
+export const fetchDrawSource = async (): Promise<DrawSource | null> => {
+  if (cachedSource !== undefined) return cachedSource;
+  cachedSource = null;
+  try {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 5000);
+    const [hashRes, heightRes] = await Promise.all([
+      fetch("https://mempool.space/api/blocks/tip/hash", { signal: controller.signal }),
+      fetch("https://mempool.space/api/blocks/tip/height", { signal: controller.signal }),
+    ]);
+    window.clearTimeout(timer);
+    if (hashRes.ok && heightRes.ok) {
+      cachedSource = { hash: (await hashRes.text()).trim(), height: (await heightRes.text()).trim() };
+    }
+  } catch {
+    cachedSource = null;
+  }
+  return cachedSource;
+};
+
+const sha256 = async (text: string): Promise<Uint8Array> => {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return new Uint8Array(digest);
+};
+
+// 号码派生：SHA-256(随机源:世界序号:票号) → 拒绝采样出 1..47（47×5=235，拒绝 ≥235 避免模偏差）
+// ≤35 为前区号码，>35 为后区号码（减去 35）。确定性、可复算验证。
+export const deriveOneNumber = async (source: DrawSource | null, world: number, ticket: number): Promise<number> => {
+  const seed = source ? `${source.hash}:${world}:${ticket}` : `local:${world}:${ticket}:${Math.random()}`;
+  const bytes = await sha256(seed);
+  let i = 0;
+  while (true) {
+    const b = bytes[i % bytes.length];
+    i++;
+    if (b < 235) return (b % 47) + 1;
+  }
+};
+
+export const isBack = (n: number) => n > 35;
+export const formatOne = (n: number) => String(n).padStart(2, "0");
+export const slotValue = (n: number) => (isBack(n) ? n - 35 : n);
+
+// 收集板：一次中奖加入一个号码；重复则不加；集齐 5 前区 + 2 后区为完成。
+export const addCollectedNumber = (front: number[], back: number[], n: number): { front: number[]; back: number[]; added: boolean; complete: boolean } => {
+  const value = slotValue(n);
+  const intoBack = isBack(n);
+  const target = intoBack ? back : front;
+  if (target.includes(value)) return { front, back, added: false, complete: front.length === 5 && back.length === 2 };
+  const next = [...target, value].sort((a, b) => a - b);
+  const newFront = intoBack ? front : next;
+  const newBack = intoBack ? next : back;
+  return { front: newFront, back: newBack, added: true, complete: newFront.length === 5 && newBack.length === 2 };
+};
+
+const slot = (value: number | null, kind: "front" | "back") => {
+  const span = document.createElement("span");
+  span.className = `lottery-slot ${kind}`;
+  if (value === null) {
+    span.textContent = "·";
+  } else {
+    span.textContent = formatOne(value);
+    span.classList.add("filled");
+  }
+  return span;
+};
+
+export const renderCollection = (frontEl: HTMLElement | null, backEl: HTMLElement | null, progressEl: HTMLElement | null, front: number[], back: number[]) => {
+  if (frontEl) {
+    frontEl.textContent = "";
+    for (let i = 0; i < 5; i++) frontEl.append(slot(front[i] ?? null, "front"));
+  }
+  if (backEl) {
+    backEl.textContent = "";
+    for (let i = 0; i < 2; i++) backEl.append(slot(back[i] ?? null, "back"));
+  }
+  if (progressEl) progressEl.textContent = `${front.length + back.length} / 7`;
+};
+
+export const renderWinNumber = (el: HTMLElement | null, n: number) => {
+  if (!el) return;
+  el.textContent = "";
+  const chip = document.createElement("span");
+  chip.textContent = formatOne(slotValue(n));
+  chip.className = isBack(n) ? "back" : "front";
+  const label = document.createElement("i");
+  label.textContent = isBack(n) ? "后区" : "前区";
+  el.append(chip, label);
 };

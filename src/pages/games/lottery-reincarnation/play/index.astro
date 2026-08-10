@@ -66,6 +66,12 @@ import Layout from '@/layouts/Layout.astro';
               <div><dt>头奖金额</dt><dd>1,000 万</dd></div>
             </dl>
           </div>
+          <div class="lottery-collect">
+            <div class="lottery-collect-head"><span class="eyebrow">LUCKY NUMBERS</span><span id="lottery-collect-progress">0 / 7</span></div>
+            <div class="lottery-collect-row" id="lottery-collect-front"></div>
+            <div class="lottery-collect-row" id="lottery-collect-back"></div>
+            <p class="lottery-collect-note">每次中奖由真实随机源派生一个号码，集齐前区 5 个 + 后区 2 个。</p>
+          </div>
           <div class="lottery-progress-block">
             <div class="lottery-life-head"><span id="lottery-progress-label">等待模拟</span><span class="mono" id="lottery-progress-value">0%</span></div>
             <div class="lottery-progress-track"><span id="lottery-progress-bar"></span></div>
@@ -114,6 +120,9 @@ import Layout from '@/layouts/Layout.astro';
         <Trophy class="lottery-win-trophy" aria-hidden="true" />
         <p class="eyebrow">JACKPOT</p>
         <h2 id="lottery-win-title">中奖了！</h2>
+        <div class="lottery-win-number" id="lottery-win-number"></div>
+        <p class="lottery-win-basis" id="lottery-win-basis"></p>
+        <p class="lottery-win-note" id="lottery-win-note"></p>
         <p id="lottery-win-meta">—</p>
         <button class="lottery-win-again" id="lottery-win-close" type="button"><Sparkles /> 继续模拟</button>
       </div>
