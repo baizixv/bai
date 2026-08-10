@@ -35,6 +35,7 @@ const entries = defineCollection({
         "extension",
         "benchmark",
         "chicken",
+        "wealth",
         "ogden",
       ])
       .optional(),

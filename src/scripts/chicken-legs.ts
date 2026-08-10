@@ -84,3 +84,5 @@ const reset = () => {
 };
 runButton?.addEventListener("click", runSimulation);
 resetButton?.addEventListener("click", reset);
+
+export {};

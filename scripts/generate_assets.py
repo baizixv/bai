@@ -167,6 +167,14 @@ def project_artworks():
     draw_text(draw, (450, 350), "N → N 次随机操作", 17, COLORS["ink"], bold=True, anchor="mm")
     save(chicken, "game-chicken-legs.png")
 
+    wealth = project_art("wealth", "#e1e5ef", COLORS["blue"], "财富代价", "Survival probability", "∞")
+    draw = ImageDraw.Draw(wealth)
+    rect(draw, (300, 145, 600, 390), "#282d38", outline=COLORS["blue"], width=3, radius=18)
+    draw_text(draw, (450, 215), "¥", 72, COLORS["yellow"], bold=True, anchor="mm")
+    draw_text(draw, (450, 315), "1 / 100,000,000", 22, COLORS["paper"], bold=True, anchor="mm")
+    line(draw, [(360, 420), (540, 420)], COLORS["pink"], 5)
+    save(wealth, "game-wealth-cost.png")
+
     rain = project_art("rain", COLORS["mint"], "#e87971", "Rainy Day", "A five minute game", "04")
     draw = ImageDraw.Draw(rain)
     rect(draw, (340, 165, 560, 355), "#253a40", radius=8)

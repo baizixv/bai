@@ -1,0 +1,69 @@
+---
+import { ArrowLeft, ArrowUpRight, Coins, Dices, RotateCcw, Skull } from 'lucide-astro';
+import Layout from '@/layouts/Layout.astro';
+
+const stages = [
+  ['0—1 天', '倒霉透顶'],
+  ['1 天—1 月', '昙花一现'],
+  ['1 月—1 年', '短暂富裕'],
+  ['1—3 年', '接近中位数'],
+  ['3—10 年', '越过平均线'],
+  ['10—20 年', '幸运长寿'],
+  ['20 年以上', '天选之人'],
+];
+---
+<Layout title="财富代价模拟器 · 白子诩" description="每毫秒获得一亿元，但每秒承受一亿分之一的死亡概率。">
+  <main class="wealth-page section-wrap">
+    <a class="back-link" href="/games/wealth-cost/"><ArrowLeft /> 返回游戏介绍</a>
+    <header class="wealth-header">
+      <div><p class="eyebrow">GAME LAB / SURVIVAL PROBABILITY</p><h1>财富代价<br /><em>模拟器</em></h1><p>每毫秒获得 <strong>1 亿元</strong>，代价是每秒有 <strong>1 亿分之一</strong>的概率立即死亡。你愿意按下按钮吗？</p></div>
+      <div class="wealth-contract"><span>THE CONTRACT</span><strong>¥ 1 亿 / ms</strong><small>死亡率 1 / 100,000,000 · 每秒</small></div>
+    </header>
+
+    <section class="wealth-simulator" aria-labelledby="wealth-simulator-title">
+      <div class="wealth-control-panel">
+        <div><p class="eyebrow">CHOOSE UNIVERSES</p><h2 id="wealth-simulator-title">开启多少个<br />平行世界？</h2></div>
+        <div class="wealth-actions" role="group" aria-label="选择模拟人数">
+          <button type="button" data-count="1">1 人</button>
+          <button type="button" data-count="100">100 人</button>
+          <button type="button" data-count="1000">1,000 人</button>
+          <button type="button" data-count="10000">10,000 人</button>
+        </div>
+        <button class="wealth-reset" id="wealth-reset" type="button"><RotateCcw /> 清空结果</button>
+      </div>
+      <div class="wealth-stage" id="wealth-stage">
+        <div class="wealth-stage-symbol"><Coins /></div>
+        <p class="mono" id="wealth-status">等待你签下这份契约</p>
+        <strong id="wealth-stage-title">每一次选择，都会产生一组新的命运。</strong>
+        <span>模拟只计算概率，不代表现实寿命预测。</span>
+      </div>
+    </section>
+
+    <section class="wealth-results" id="wealth-results" hidden aria-live="polite">
+      <div class="wealth-result-heading"><div><p class="eyebrow">SIMULATION RESULT</p><h2>平行世界报告</h2></div><Dices /></div>
+      <div class="wealth-stat-grid">
+        <article><span>模拟人数</span><strong id="wealth-count">—</strong><small>个平行世界</small></article>
+        <article><span>平均存活</span><strong id="wealth-average">—</strong><small>理论均值约 3.17 年</small></article>
+        <article><span>最长存活</span><strong id="wealth-maximum">—</strong><small>本次最幸运样本</small></article>
+        <article class="wealth-total"><span>累计财富</span><strong id="wealth-money">—</strong><small>按每毫秒 1 亿元计算</small></article>
+      </div>
+      <div class="wealth-distribution">
+        <div class="wealth-distribution-head"><div><p class="eyebrow">SURVIVAL DISTRIBUTION</p><h3>生存时间分布</h3></div><span id="wealth-survivors">—</span></div>
+        <div class="wealth-bars">
+          {stages.map(([label, description], index) => <div class={`wealth-bar-row wealth-tone-${index + 1}`} data-bin={index}>
+            <div class="wealth-bar-label"><strong>{label}</strong><small>{description}</small></div>
+            <div class="wealth-bar-track"><span></span></div>
+            <div class="wealth-bar-value"><strong>0</strong><small>0.00%</small></div>
+          </div>)}
+        </div>
+      </div>
+      <div class="wealth-verdict"><Skull /><p id="wealth-verdict-text">—</p></div>
+    </section>
+
+    <section class="wealth-explanation">
+      <div><p class="eyebrow">THE MATH</p><h2>小概率，<br /><em>经不起无限重复。</em></h2></div>
+      <div><p>每秒死亡概率只有 0.000001%，但它会不断累积。存活到 1 年的概率约为 72.94%，到 3 年约为 38.83%，到 10 年只剩约 4.27%。</p><p>模拟通过几何分布逆变换直接抽取死亡时间，因此即使同时计算一万个平行世界，也不需要真的逐秒运行数十亿次判定。</p><a href="/games/wealth-cost/">查看规则与来源 <ArrowUpRight /></a></div>
+    </section>
+  </main>
+</Layout>
+<script src="../../../../scripts/wealth-cost.ts"></script>
