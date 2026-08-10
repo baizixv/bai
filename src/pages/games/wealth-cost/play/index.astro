@@ -29,6 +29,11 @@ const stages = [
           <button type="button" data-count="1000">1,000 人</button>
           <button type="button" data-count="10000">10,000 人</button>
         </div>
+        <form class="wealth-custom-count" id="wealth-custom-form">
+          <label for="wealth-custom-input">自定义人数</label>
+          <div><input id="wealth-custom-input" type="number" min="1" max="1000000" step="1" value="500" inputmode="numeric" /><button type="submit">开始模拟</button></div>
+          <small id="wealth-custom-error" role="alert">支持 1—1,000,000 人</small>
+        </form>
         <button class="wealth-reset" id="wealth-reset" type="button"><RotateCcw /> 清空结果</button>
       </div>
       <div class="wealth-stage" id="wealth-stage">
@@ -40,12 +45,16 @@ const stages = [
     </section>
 
     <section class="wealth-results" id="wealth-results" hidden aria-live="polite">
-      <div class="wealth-result-heading"><div><p class="eyebrow">SIMULATION RESULT</p><h2>平行世界报告</h2></div><Dices /></div>
+      <div class="wealth-result-heading"><div><p class="eyebrow">SIMULATION RESULT</p><h2>平行世界报告</h2></div><button class="wealth-reroll" id="wealth-reroll" type="button" aria-label="使用当前人数重新模拟" title="重新模拟"><Dices /><span>再掷一次</span></button></div>
       <div class="wealth-stat-grid">
         <article><span>模拟人数</span><strong id="wealth-count">—</strong><small>个平行世界</small></article>
         <article><span>平均存活</span><strong id="wealth-average">—</strong><small>理论均值约 3.17 年</small></article>
         <article><span>最长存活</span><strong id="wealth-maximum">—</strong><small>本次最幸运样本</small></article>
-        <article class="wealth-total"><span>累计财富</span><strong id="wealth-money">—</strong><small>按每毫秒 1 亿元计算</small></article>
+        <article><span>最短存活</span><strong id="wealth-minimum">—</strong><small>本次最早结束样本</small></article>
+        <article><span>最少单人财富</span><strong id="wealth-min-money">—</strong><small>本次最低个人累计</small></article>
+        <article><span>平均单人财富</span><strong id="wealth-average-money">—</strong><small>总额 ÷ 模拟人数</small></article>
+        <article><span>最多单人财富</span><strong id="wealth-max-money">—</strong><small>本次最高个人累计</small></article>
+        <article class="wealth-total"><span>总累计财富</span><strong id="wealth-money">—</strong><small>所有平行世界累计</small></article>
       </div>
       <div class="wealth-distribution">
         <div class="wealth-distribution-head"><div><p class="eyebrow">SURVIVAL DISTRIBUTION</p><h3>生存时间分布</h3></div><span id="wealth-survivors">—</span></div>

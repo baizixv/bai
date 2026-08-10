@@ -99,7 +99,25 @@
   padding-bottom: 5px;
 }
 .wealth-reset:hover { color: var(--ink); border-color: var(--ink); }
+.wealth-reset:disabled { cursor: wait; opacity: .5; }
 .wealth-reset svg { width: 13px; }
+.wealth-custom-count { margin-top: 25px; }
+.wealth-custom-count label { display: block; margin-bottom: 8px; color: var(--muted); font: 10px "DM Mono", monospace; }
+.wealth-custom-count > div { display: flex; gap: 7px; }
+.wealth-custom-count input { width: 125px; min-width: 0; border: 1px solid var(--line); background: var(--paper); color: var(--ink); padding: 0 10px; outline: none; font: 12px "DM Mono", monospace; }
+.wealth-custom-count input:focus { border-color: var(--blue); }
+.wealth-custom-count input[aria-invalid="true"] { border-color: var(--pink); }
+.wealth-custom-count button { flex: 1; min-height: 40px; border: 0; background: var(--blue); color: #fff; cursor: pointer; font-size: 11px; }
+.wealth-custom-count button:hover { filter: brightness(1.08); }
+.wealth-custom-count button:disabled { cursor: wait; opacity: .5; }
+.wealth-custom-count small { display: block; margin-top: 8px; color: var(--muted); font-size: 10px; }
+.wealth-custom-count small[data-invalid="true"] { color: var(--pink); }
+.wealth-custom-count small[data-invalid="true"]::after { content: " · 请输入有效人数"; }
+.wealth-reroll { display: inline-flex; align-items: center; gap: 9px; border: 1px solid var(--line); background: var(--paper); color: var(--blue); cursor: pointer; padding: 9px 12px; font-size: 11px; transition: transform .2s, background .2s, border-color .2s; }
+.wealth-reroll:hover:not(:disabled) { transform: translateY(-2px); background: var(--accent-soft); border-color: var(--blue); }
+.wealth-reroll:disabled { cursor: wait; opacity: .45; }
+.wealth-reroll svg { width: 20px; }
+.wealth-reroll span { font-family: "DM Mono", monospace; }
 .wealth-stage {
   min-height: 325px;
   display: flex;
@@ -249,14 +267,17 @@
   .wealth-header, .wealth-simulator, .wealth-explanation { grid-template-columns: 1fr; display: grid; gap: 35px; }
   .wealth-header { align-items: start; padding-bottom: 45px; }
   .wealth-contract { width: min(100%, 300px); }
-  .wealth-stat-grid { grid-template-columns: 1fr 1fr; }
+  .wealth-stat-grid { grid-template-columns: repeat(3, 1fr); }
+  .wealth-custom-count > div { max-width: 300px; }
 }
 @media (max-width: 560px) {
   .wealth-page { padding-bottom: 78px; }
   .wealth-header h1 { font-size: 43px; }
   .wealth-simulator { gap: 15px; }
   .wealth-stage { min-height: 280px; padding: 25px 15px; }
-  .wealth-stat-grid { grid-template-columns: 1fr; }
+  .wealth-stat-grid { grid-template-columns: 1fr 1fr; }
+  .wealth-reroll span { display: none; }
+  .wealth-reroll { padding: 10px; }
   .wealth-bar-row { grid-template-columns: 92px 1fr 70px; gap: 9px; }
   .wealth-bar-label strong { font-size: 10px; }
   .wealth-bar-label small { font-size: 9px; }

@@ -7,17 +7,26 @@ const YEAR = 31_536_000;
 const thresholds = [DAY, MONTH, YEAR, YEAR * 3, YEAR * 10, YEAR * 20];
 
 const actionButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-count]")];
+const customForm = document.querySelector<HTMLFormElement>("#wealth-custom-form");
+const customInput = document.querySelector<HTMLInputElement>("#wealth-custom-input");
+const customError = document.querySelector<HTMLElement>("#wealth-custom-error");
 const resetButton = document.querySelector<HTMLButtonElement>("#wealth-reset");
+const rerollButton = document.querySelector<HTMLButtonElement>("#wealth-reroll");
 const results = document.querySelector<HTMLElement>("#wealth-results");
 const wealthStatus = document.querySelector<HTMLElement>("#wealth-status");
 const stageTitle = document.querySelector<HTMLElement>("#wealth-stage-title");
 const countOutput = document.querySelector<HTMLElement>("#wealth-count");
 const averageOutput = document.querySelector<HTMLElement>("#wealth-average");
 const maximumOutput = document.querySelector<HTMLElement>("#wealth-maximum");
+const minimumOutput = document.querySelector<HTMLElement>("#wealth-minimum");
+const minMoneyOutput = document.querySelector<HTMLElement>("#wealth-min-money");
+const averageMoneyOutput = document.querySelector<HTMLElement>("#wealth-average-money");
+const maxMoneyOutput = document.querySelector<HTMLElement>("#wealth-max-money");
 const moneyOutput = document.querySelector<HTMLElement>("#wealth-money");
 const survivorOutput = document.querySelector<HTMLElement>("#wealth-survivors");
 const verdictOutput = document.querySelector<HTMLElement>("#wealth-verdict-text");
 const barRows = [...document.querySelectorAll<HTMLElement>("[data-bin]")];
+let lastCount: number | undefined;
 
 const numberFormat = new Intl.NumberFormat("zh-CN");
 const sampleLifetime = () =>
@@ -58,6 +67,23 @@ const setBusy = (busy: boolean, activeCount?: number) => {
     button.disabled = busy;
     button.classList.toggle("active", Number(button.dataset.count) === activeCount);
   });
+  if (customInput) customInput.disabled = busy;
+  if (customForm?.querySelector("button")) customForm.querySelector<HTMLButtonElement>("button")!.disabled = busy;
+  if (resetButton) resetButton.disabled = busy;
+  if (rerollButton) rerollButton.disabled = busy || lastCount === undefined;
+};
+
+const parseCustomCount = () => {
+  const value = Math.floor(Number(customInput?.value));
+  if (!Number.isFinite(value) || value < 1 || value > 1_000_000) {
+    if (customError) customError.dataset.invalid = "true";
+    customInput?.setAttribute("aria-invalid", "true");
+    return undefined;
+  }
+  if (customError) customError.dataset.invalid = "false";
+  customInput?.removeAttribute("aria-invalid");
+  if (customInput) customInput.value = String(value);
+  return value;
 };
 
 const updateDistribution = (bins: number[], total: number) => {
@@ -75,6 +101,7 @@ const updateDistribution = (bins: number[], total: number) => {
 };
 
 const runSimulation = async (total: number) => {
+  lastCount = total;
   setBusy(true, total);
   if (wealthStatus) wealthStatus.textContent = `正在展开 ${numberFormat.format(total)} 个平行世界…`;
   if (stageTitle) stageTitle.textContent = "命运正在进行一亿分之一的判定。";
@@ -84,25 +111,34 @@ const runSimulation = async (total: number) => {
   const bins = new Array<number>(7).fill(0);
   let sum = 0;
   let maximum = 0;
+  let minimum = Number.POSITIVE_INFINITY;
   for (let index = 0; index < total; index += 1) {
     const lifetime = sampleLifetime();
     sum += lifetime;
     maximum = Math.max(maximum, lifetime);
+    minimum = Math.min(minimum, lifetime);
     bins[getBin(lifetime)] += 1;
   }
 
   const average = Math.floor(sum / total);
+  const totalMoney = BigInt(sum) * MONEY_PER_SECOND;
+  const minimumMoney = BigInt(minimum) * MONEY_PER_SECOND;
+  const maximumMoney = BigInt(maximum) * MONEY_PER_SECOND;
   const overTenYears = bins[5] + bins[6];
   if (countOutput) countOutput.textContent = numberFormat.format(total);
   if (averageOutput) averageOutput.textContent = formatTime(average);
   if (maximumOutput) maximumOutput.textContent = formatTime(maximum);
-  if (moneyOutput) moneyOutput.textContent = formatMoney(BigInt(sum) * MONEY_PER_SECOND);
+  if (minimumOutput) minimumOutput.textContent = formatTime(minimum);
+  if (minMoneyOutput) minMoneyOutput.textContent = formatMoney(minimumMoney);
+  if (averageMoneyOutput) averageMoneyOutput.textContent = formatMoney(totalMoney / BigInt(total));
+  if (maxMoneyOutput) maxMoneyOutput.textContent = formatMoney(maximumMoney);
+  if (moneyOutput) moneyOutput.textContent = formatMoney(totalMoney);
   if (survivorOutput) survivorOutput.textContent = `${numberFormat.format(overTenYears)} 人活过 10 年`;
   updateDistribution(bins, total);
 
   const unlucky = bins[0];
   if (verdictOutput) verdictOutput.textContent = total === 1
-    ? `这个世界里的你存活了 ${formatTime(maximum)}，并获得 ${formatMoney(BigInt(maximum) * MONEY_PER_SECOND)}。再按一次，命运可能完全不同。`
+    ? `这个世界里的你存活了 ${formatTime(maximum)}，并获得 ${formatMoney(maximumMoney)}。再按一次，命运可能完全不同。`
     : `${numberFormat.format(unlucky)} 人没能撑过第一天，${numberFormat.format(overTenYears)} 人活过了十年。本次平均值为 ${formatTime(average)}。`;
   if (wealthStatus) wealthStatus.textContent = "判定完成 · 契约已经结算";
   if (stageTitle) stageTitle.textContent = `${numberFormat.format(total)} 段命运已经写完。`;
@@ -112,6 +148,7 @@ const runSimulation = async (total: number) => {
 };
 
 const reset = () => {
+  lastCount = undefined;
   setBusy(false);
   if (results) results.hidden = true;
   if (wealthStatus) wealthStatus.textContent = "等待你签下这份契约";
@@ -119,6 +156,16 @@ const reset = () => {
 };
 
 actionButtons.forEach((button) => button.addEventListener("click", () => runSimulation(Number(button.dataset.count))));
+customForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const count = parseCustomCount();
+  if (count !== undefined) void runSimulation(count);
+});
+customInput?.addEventListener("input", () => parseCustomCount());
+rerollButton?.addEventListener("click", () => {
+  if (lastCount !== undefined) void runSimulation(lastCount);
+});
 resetButton?.addEventListener("click", reset);
+setBusy(false);
 
 export {};
