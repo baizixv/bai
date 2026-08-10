@@ -27,6 +27,7 @@ const setupSite = () => {
 
   // 桌面端：点“联系我”/邮箱按钮弹出联系方式弹窗；移动端保持 mailto。
   const contactModal = document.querySelector<HTMLDivElement>("#contact-modal");
+  const closeButton = document.querySelector<HTMLButtonElement>("#contact-close");
   const isDesktop = () => window.matchMedia("(min-width: 901px)").matches;
   const openContactModal = () => {
     contactModal?.removeAttribute("hidden");
@@ -48,9 +49,11 @@ const setupSite = () => {
     if (event.target === contactModal) closeContactModal();
   };
   const onCopyClick = async (event: MouseEvent) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>(".contact-copy");
-    if (!button) return;
-    const value = button.dataset.copy ?? "";
+    const target = event.target as HTMLElement;
+    const button = target.closest<HTMLButtonElement>(".contact-copy");
+    const valueEl = button ? null : target.closest<HTMLElement>(".contact-value[data-copy]");
+    if (!button && !valueEl) return;
+    const value = (button ?? valueEl)?.dataset.copy ?? "";
     try {
       await navigator.clipboard.writeText(value);
     } catch {
@@ -61,18 +64,28 @@ const setupSite = () => {
       document.execCommand("copy");
       textarea.remove();
     }
-    button.textContent = "已复制";
-    button.classList.add("copied");
-    window.setTimeout(() => {
-      button.textContent = "复制";
-      button.classList.remove("copied");
-    }, 1600);
+    if (button) {
+      const original = button.textContent ?? "";
+      button.textContent = "已复制";
+      button.classList.add("copied");
+      window.setTimeout(() => {
+        button.textContent = original;
+        button.classList.remove("copied");
+      }, 1600);
+    } else if (valueEl) {
+      const original = valueEl.textContent ?? "";
+      valueEl.textContent = "已复制";
+      window.setTimeout(() => {
+        valueEl.textContent = original;
+      }, 1600);
+    }
   };
   const onModalKeyDown = (event: KeyboardEvent) => {
     if (event.key === "Escape") closeContactModal();
   };
   contactModal?.addEventListener("click", onModalClick);
   contactModal?.addEventListener("click", onCopyClick);
+  closeButton?.addEventListener("click", closeContactModal);
   document.addEventListener("click", onMailtoClick);
   document.addEventListener("keydown", onModalKeyDown);
 
@@ -104,6 +117,7 @@ const setupSite = () => {
     cleanupSearch();
     contactModal?.removeEventListener("click", onModalClick);
     contactModal?.removeEventListener("click", onCopyClick);
+    closeButton?.removeEventListener("click", closeContactModal);
     document.removeEventListener("click", onMailtoClick);
     document.removeEventListener("keydown", onModalKeyDown);
     body.classList.remove("modal-open");

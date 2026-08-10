@@ -1,4 +1,4 @@
-import { readStorage, writeStorage } from "../lib/storage";
+import { readStorage, writeStorage } from "../../lib/storage";
 
 type Word = {
   id: string;

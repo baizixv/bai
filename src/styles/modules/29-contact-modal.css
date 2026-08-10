@@ -51,6 +51,12 @@ body.modal-open {
   flex: 1;
   word-break: break-all;
 }
+.contact-value[data-copy] {
+  cursor: pointer;
+}
+.contact-value[data-copy]:hover {
+  color: var(--blue);
+}
 .contact-copy {
   border: 1px solid var(--line);
   background: transparent;

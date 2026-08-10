@@ -108,18 +108,19 @@
   opacity: 0.75;
 }
 
-/* 移动端：点击搜索框后整行展开为固定顶栏，浮层固定全宽，避免撑开页面宽度。 */
+/* 移动端：点击搜索框后在顶栏下方展开全宽搜索条，浮层固定全宽，避免撑开页面宽度。 */
 @media (max-width: 900px) {
   .search-box.expanded {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 82px;
-    padding: 0 22px;
+    top: 82px;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    height: 44px;
+    padding: 0 14px;
     background: var(--paper);
-    border: 0;
-    border-bottom: 1px solid var(--line);
+    border: 1px solid var(--line);
+    box-shadow: 0 8px 24px #0002;
     z-index: 70;
   }
   .search-box.expanded input {
@@ -128,18 +129,18 @@
   }
   .search-panel {
     position: fixed;
-    top: 90px;
+    top: 134px;
     left: 16px;
     right: 16px;
     width: auto;
-    max-height: calc(100vh - 110px);
+    max-height: calc(100vh - 150px);
   }
 }
 @media (max-width: 560px) {
   .search-box.expanded {
-    height: 68px;
+    top: 68px;
   }
   .search-panel {
-    top: 76px;
+    top: 120px;
   }
 }

@@ -12,7 +12,7 @@ import { about } from '@/data/about';
     <p class="contact-note">{about.availability}</p>
     <div class="contact-row">
       <span class="contact-label">邮箱</span>
-      <code class="contact-value">{about.email}</code>
+      <code class="contact-value" data-copy={about.email}>{about.email}</code>
       <button class="contact-copy" type="button" data-copy={about.email}>复制</button>
     </div>
     <div class="contact-row">

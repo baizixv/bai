@@ -27,22 +27,24 @@ npm run preview           # 预览构建产物
 - `src/pages/games/`：游戏项目列表、游戏详情页和自托管人类基准测试。
 
 - `src/pages/tools/`：Tiny Tools 集合、在线工具目录和独立工具页面。
-- `src/scripts/tiny-tools.ts`：Tiny Tools 的时间戳、Base64、MD5、颜色值和 JSON 工具逻辑。
+- `src/scripts/pages/tiny-tools.ts`：Tiny Tools 的时间戳、Base64、MD5、颜色值和 JSON 工具逻辑。
 - `src/data/benchmark.ts`：人类基准测试的测试项配置。
-- `src/scripts/benchmark.ts`：人类基准测试状态、页面控制和成绩逻辑。
-- `src/scripts/benchmark/`：按记忆、速度和逻辑分组的人类基准测试实现。
+- `src/scripts/pages/benchmark.ts`：人类基准测试状态、页面控制和成绩逻辑。
+- `src/scripts/pages/benchmark/`：按记忆、速度和逻辑分组的人类基准测试实现。
 - `src/types/`：跨模块共享的 TypeScript 类型。
 - `src/data/about.ts`：作者介绍、开发进度和版本说明的集中数据。
 - `src/content/config.ts`：统一定义 frontmatter 字段和类型校验。
 
-- `src/components/`：首页各内容区块。
+- `src/components/sections/`：首页各内容区块。
+- `src/components/shared/`：跨页面复用的通用组件（Footer、联系我弹窗）。
+- `src/scripts/`：全局交互脚本（site 主题/弹窗、search 站内搜索、pwa 安装）。
+- `src/scripts/pages/`：绑定具体页面的工具/游戏脚本。
 - `src/pages/`：首页、文章列表、项目列表、游戏列表、关于页和详情页路由。
 - `src/styles/global.css`：全局样式入口，只负责按顺序导入 CSS 模块。
 
-- `src/styles/modules/`：按基础层、首页区块、独立工具、游戏和响应式规则拆分的 CSS 模块；每个文件不超过 300 行。
+- `src/styles/modules/`：按基础层、首页区块、独立工具、游戏、响应式覆盖层和全局 UI 拆分的 CSS 模块；文件名前缀数字即导入顺序（层叠顺序），每个文件不超过 300 行。
 - `src/lib/`：跨功能复用的浏览器工具，例如防御性 localStorage 读写。
 - `scripts/check-file-limits.mjs`：构建前执行的源文件行数检查。
-- `src/scripts/site.ts`：搜索、主题切换和滚动导航交互。
 - `public/assets/`：本地 Logo、favicon、首页插画和项目封面。
 - `scripts/generate_assets.py`：使用 Pillow 重新生成整套网站图形资源。
 

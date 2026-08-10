@@ -1,7 +1,7 @@
-import { benchmarkTests } from "../data/benchmark";
-import { readStorage, writeStorage } from "../lib/storage";
+import { benchmarkTests } from "../../data/benchmark";
+import { readStorage, writeStorage } from "../../lib/storage";
 import { createBenchmarkStarters as createMemoryStarters } from "./benchmark/01-memory";
-import type { BenchmarkTestContext } from "../types/benchmark";
+import type { BenchmarkTestContext } from "../../types/benchmark";
 import { createBenchmarkStarters as createSpeedStarters } from "./benchmark/02-speed";
 import { createBenchmarkStarters as createLogicStarters } from "./benchmark/03-logic";
 const tests = benchmarkTests.filter((test) => test.playable);

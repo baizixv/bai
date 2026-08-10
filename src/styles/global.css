@@ -1,8 +1,14 @@
 /*
- * Global stylesheet entrypoint.
- * Keep page-specific rules in ./modules and import them in visual order.
+ * 全局样式入口。
+ * 只负责按顺序导入 CSS 模块——导入顺序即层叠顺序，后面的规则覆盖前面的同权重规则，
+ * 因此不要在单个模块里补救顺序问题，需要覆盖就放在更靠后的模块。
+ * 页面级规则保持在 ./modules，按下面的分组维护。
  */
+
+/* 基础与全局组件（变量、topbar、按钮、pwa toast） */
 @import './modules/01-foundations.css';
+
+/* 首页各区域（hero、内容区、项目、收藏、工具、游戏、媒体、写作、想法、关于） */
 @import './modules/02-home-hero.css';
 @import './modules/03-home-content.css';
 @import './modules/04-projects.css';
@@ -15,19 +21,29 @@
 @import './modules/11-ogden-practice.css';
 @import './modules/12-media-library.css';
 @import './modules/13-chicken-legs.css';
+
+/* 工具/游戏独立页（基准测试、Ogden、财富代价） */
 @import './modules/14-benchmark-shell.css';
 @import './modules/15-benchmark-play.css';
-@import './modules/15-benchmark-result.css';
-@import './modules/16-about-preview.css';
-@import './modules/17-about-page.css';
-@import './modules/18-responsive-core.css';
-@import './modules/19-responsive-detail.css';
-@import './modules/20-responsive-sections.css';
-@import './modules/21-responsive-mobile.css';
-@import './modules/22-media-status.css';
-@import './modules/23-ideas.css';
-@import './modules/24-visual-refresh.css';
-@import './modules/25-section-surfaces.css';
-@import './modules/26-wealth-cost.css';
-@import './modules/27-search.css';
-@import './modules/28-contact-modal.css';
+@import './modules/16-benchmark-result.css';
+
+/* 关于页 */
+@import './modules/17-about-preview.css';
+@import './modules/18-about-page.css';
+
+/* 响应式覆盖层（900px / 560px，保持在此分组内维护） */
+@import './modules/19-responsive-core.css';
+@import './modules/20-responsive-detail.css';
+@import './modules/21-responsive-sections.css';
+@import './modules/22-responsive-mobile.css';
+
+/* 页面级覆盖层（媒体状态、想法、视觉刷新、区块表面、财富代价） */
+@import './modules/23-media-status.css';
+@import './modules/24-ideas.css';
+@import './modules/25-visual-refresh.css';
+@import './modules/26-section-surfaces.css';
+@import './modules/27-wealth-cost.css';
+
+/* 全局 UI（必须在响应式覆盖层之后，内含移动端规则） */
+@import './modules/28-search.css';
+@import './modules/29-contact-modal.css';

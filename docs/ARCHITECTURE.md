@@ -14,19 +14,25 @@
 
 ```text
 src/
-├── components/       首页和可复用的 Astro 展示组件
+├── components/
+│   ├── sections/     首页各内容区块（Hero、文章、项目、工具、游戏、媒体、想法、关于）
+│   └── shared/       跨页面复用的通用组件（Footer、联系我弹窗）
 ├── content/entries/  文章、项目、工具、游戏、书签和媒体 Markdown
 ├── data/             稳定的静态配置与测试参考数据
 ├── lib/              跨功能复用的纯工具，如 storage
 ├── layouts/          页面骨架、全局导航和 meta
 ├── pages/            路由入口；尽量只做数据查询和组件编排
-├── scripts/          绑定具体页面 DOM 的浏览器交互
-│   └── benchmark/    按测试类型拆分的人类基准测试实现
-├── styles/           global.css 入口和按区域拆分的 CSS modules
+├── scripts/          全局交互脚本（site 主题/弹窗、search 站内搜索、pwa 安装）
+│   └── pages/        绑定具体页面的工具/游戏脚本（benchmark、tiny-tools、ogden850 等）
+├── styles/
+│   ├── global.css    入口：按分组、按顺序导入 modules
+│   └── modules/      01-29 按层叠顺序编号：基础 → 首页区块 → 独立工具页 → 关于 → 响应式 → 覆盖层 → 全局 UI
 └── types/            多个功能共享的 TypeScript 类型
 ```
 
 `public/` 只放需要原样发布的资源，例如图片、favicon 和 Ogden 词库 JSON；它不是业务逻辑目录。
+
+CSS 模块的编号即导入顺序（层叠顺序），需要覆盖已有规则时，把规则放到更靠后的模块；响应式规则集中在 19-22，全局 UI（搜索、弹窗）固定在 28-29。
 
 ## 3. 模块化原则
 

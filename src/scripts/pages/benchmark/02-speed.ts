@@ -1,4 +1,4 @@
-import type { BenchmarkTestContext } from "../../types/benchmark";
+import type { BenchmarkTestContext } from "../../../types/benchmark";
 
 export const createBenchmarkStarters = (context: BenchmarkTestContext) => {
   const startReaction = () => {
