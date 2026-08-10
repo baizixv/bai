@@ -17,7 +17,7 @@ const num = new Intl.NumberFormat("zh-CN");
 const q = <T extends HTMLElement>(id: string) => document.querySelector<T>(id);
 const startAgeInput = q<HTMLInputElement>("#lottery-start-age");
 const endAgeInput = q<HTMLInputElement>("#lottery-end-age");
-const frequencyInput = q<HTMLInputElement>("#lottery-frequency");
+const frequencyButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-frequency]")];
 const ticketsInput = q<HTMLInputElement>("#lottery-tickets");
 const worldsInput = q<HTMLInputElement>("#lottery-worlds");
 const presetButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-worlds]")];
@@ -66,7 +66,7 @@ const fmtMoney = (value: number): string => {
 const readSettings = (): { startAge: number; endAge: number; frequency: number; tickets: number; worlds: number } | null => {
   const startAge = Number(startAgeInput?.value ?? 30);
   const endAge = Number(endAgeInput?.value ?? 50);
-  const frequency = Number(frequencyInput?.value ?? 3);
+  const frequency = Number(frequencyButtons.find((b) => b.classList.contains("active"))?.dataset.frequency ?? 1);
   const tickets = Number(ticketsInput?.value ?? 1);
   const worlds = Number(worldsInput?.value ?? 100);
   if (!(startAge >= 1 && endAge <= 120 && startAge < endAge)) {
@@ -254,6 +254,13 @@ const execute = async () => {
   if (winners.length > 0) showWin(winners, invested, won);
 };
 
+frequencyButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    frequencyButtons.forEach((b) => b.classList.toggle("active", b === button));
+    const settings = readSettings();
+    if (settings) renderPlan(settings);
+  });
+});
 presetButtons.forEach((button) => {
   button.addEventListener("click", () => {
     if (worldsInput) worldsInput.value = button.dataset.worlds ?? "100";
@@ -264,7 +271,7 @@ form?.addEventListener("submit", (event) => {
   event.preventDefault();
   void execute();
 });
-[startAgeInput, endAgeInput, frequencyInput, ticketsInput, worldsInput].forEach((input) => {
+[startAgeInput, endAgeInput, ticketsInput, worldsInput].forEach((input) => {
   input?.addEventListener("input", () => {
     const settings = readSettings();
     if (settings) renderPlan(settings);

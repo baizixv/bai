@@ -26,8 +26,12 @@ import Layout from '@/layouts/Layout.astro';
 
           <div class="lottery-field">
             <span class="lottery-label">每周购买次数</span>
-            <input id="lottery-frequency" type="number" min="1" max="3" value="3" inputmode="numeric" />
-            <small>大乐透每周开奖 3 期，可以只买其中 1—3 次</small>
+            <div class="lottery-frequency" id="lottery-frequency-group" role="group" aria-label="每周购买次数">
+              <button type="button" data-frequency="1" class="active">1 次</button>
+              <button type="button" data-frequency="2">2 次</button>
+              <button type="button" data-frequency="3">3 次</button>
+            </div>
+            <small>大乐透每周开奖 3 期，选择每周买几次</small>
           </div>
 
           <div class="lottery-field">
@@ -104,7 +108,7 @@ import Layout from '@/layouts/Layout.astro';
 
       <section class="lottery-explanation">
         <div><p class="eyebrow">THE MATH</p><h2>小概率，<br /><em>经不起无限重复。</em></h2></div>
-        <div><p>以默认计划（30—50 岁、每周买 3 次、每次 1 注）计算：一辈子买 3,120 次、3,120 注，投入 <strong>6,240 元</strong>；一辈子不中头奖的概率约 <strong>99.9854%</strong>。</p><p>单看期望：每世投入 6,240 元，头奖固定 1,000 万，期望收益约 1,456 元，长期回收率约 23%——<strong>依然会亏掉七成以上</strong>。平行世界越多，结果越接近这个数学期望。</p><p>模拟对每一注独立判定，不做近似。平行世界数支持 1—100,000，大数量分块执行并实时显示进度。</p></div>
+        <div><p>以默认计划（30—50 岁、每周买 1 次、每次 1 注）计算：一辈子买 1,040 次、1,040 注，投入 <strong>2,080 元</strong>；一辈子不中头奖的概率约 <strong>99.9951%</strong>。</p><p>单看期望：每世投入 2,080 元，头奖固定 1,000 万，期望收益约 485 元，长期回收率约 23%——<strong>依然会亏掉七成以上</strong>。平行世界越多，结果越接近这个数学期望。</p><p>模拟对每一注独立判定，不做近似。平行世界数支持 1—100,000，大数量分块执行并实时显示进度。</p></div>
       </section>
     </div>
 
