@@ -25,15 +25,15 @@ import Layout from '@/layouts/Layout.astro';
           </div>
 
           <div class="lottery-field">
-            <span class="lottery-label">每期注数</span>
-            <input id="lottery-base-tickets" type="number" min="0" max="20" value="1" inputmode="numeric" />
-            <small>每周 3 期（周一/三/六）各买几注 · 每注 2 元</small>
+            <span class="lottery-label">每周购买次数</span>
+            <input id="lottery-frequency" type="number" min="1" max="3" value="3" inputmode="numeric" />
+            <small>大乐透每周开奖 3 期，可以只买其中 1—3 次</small>
           </div>
 
           <div class="lottery-field">
-            <span class="lottery-label">周六加注</span>
-            <input id="lottery-saturday-extra" type="number" min="0" max="20" value="1" inputmode="numeric" />
-            <small>周六额外多买几注（大乐透周六开奖奖池通常更高）</small>
+            <span class="lottery-label">每次购买注数</span>
+            <input id="lottery-tickets" type="number" min="1" max="20" value="1" inputmode="numeric" />
+            <small>每次买几注 · 每注 2 元</small>
           </div>
 
           <div class="lottery-field">
@@ -61,7 +61,7 @@ import Layout from '@/layouts/Layout.astro';
           <div class="lottery-plan">
             <p class="eyebrow">ONE LIFETIME</p>
             <dl>
-              <div><dt>购买期数</dt><dd id="plan-draws">—</dd></div>
+              <div><dt>购买次数</dt><dd id="plan-purchases">—</dd></div>
               <div><dt>购买注数</dt><dd id="plan-tickets">—</dd></div>
               <div><dt>一生投入</dt><dd id="plan-cost">—</dd></div>
             </dl>
@@ -104,7 +104,7 @@ import Layout from '@/layouts/Layout.astro';
 
       <section class="lottery-explanation">
         <div><p class="eyebrow">THE MATH</p><h2>小概率，<br /><em>经不起无限重复。</em></h2></div>
-        <div><p>以默认计划（30—50 岁、每期 1 注、周六加 1 注）计算：一辈子买 3,120 期、4,160 注，投入 <strong>8,320 元</strong>；一辈子不中头奖的概率约 <strong>99.9806%</strong>。</p><p>单看期望：每世投入 8,320 元，头奖期望收益约 1,941 元，长期回收率只有两成出头。平行世界越多，结果越接近这个数学期望——<strong>投入越多、活得越久，亏得越多</strong>。</p><p>模拟对每一注独立判定，不做近似。平行世界数支持 1—100,000，大数量分块执行并实时显示进度。</p></div>
+        <div><p>以默认计划（30—50 岁、每周买 3 次、每次 1 注）计算：一辈子买 3,120 次、3,120 注，投入 <strong>6,240 元</strong>；一辈子不中头奖的概率约 <strong>99.9854%</strong>。</p><p>单看期望：每世投入 6,240 元，头奖期望收益约 1,456 元，长期回收率只有两成出头。平行世界越多，结果越接近这个数学期望——<strong>投入越多、活得越久，亏得越多</strong>。</p><p>模拟对每一注独立判定，不做近似。平行世界数支持 1—100,000，大数量分块执行并实时显示进度。</p></div>
       </section>
     </div>
 

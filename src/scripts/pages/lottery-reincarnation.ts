@@ -3,7 +3,6 @@ import { initLotteryFx } from "./lottery-fx";
 
 const ODDS = 21_425_712; // 大乐透头奖概率
 const PRICE = 2; // 每注 2 元
-const DRAWS_PER_WEEK = 3; // 每周 3 期（周一/三/六）
 const KEY = "bai-lottery-reincarnation-v2";
 const RUN_LIMIT = 8;
 
@@ -17,8 +16,8 @@ const num = new Intl.NumberFormat("zh-CN");
 const q = <T extends HTMLElement>(id: string) => document.querySelector<T>(id);
 const startAgeInput = q<HTMLInputElement>("#lottery-start-age");
 const endAgeInput = q<HTMLInputElement>("#lottery-end-age");
-const baseTicketsInput = q<HTMLInputElement>("#lottery-base-tickets");
-const saturdayExtraInput = q<HTMLInputElement>("#lottery-saturday-extra");
+const frequencyInput = q<HTMLInputElement>("#lottery-frequency");
+const ticketsInput = q<HTMLInputElement>("#lottery-tickets");
 const jackpotInput = q<HTMLInputElement>("#lottery-jackpot");
 const worldsInput = q<HTMLInputElement>("#lottery-worlds");
 const presetButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-worlds]")];
@@ -29,7 +28,7 @@ const statusOutput = q<HTMLElement>("#lottery-status");
 const progressLabel = q<HTMLElement>("#lottery-progress-label");
 const progressValue = q<HTMLElement>("#lottery-progress-value");
 const progressBar = q<HTMLElement>("#lottery-progress-bar");
-const planDraws = q<HTMLElement>("#plan-draws");
+const planPurchases = q<HTMLElement>("#plan-purchases");
 const planTickets = q<HTMLElement>("#plan-tickets");
 const planCost = q<HTMLElement>("#plan-cost");
 const results = q<HTMLElement>("#lottery-results");
@@ -62,19 +61,23 @@ const fmtMoney = (value: number): string => {
   return `${sign}${Math.round(v)} 元`;
 };
 
-const readSettings = (): { startAge: number; endAge: number; baseTickets: number; saturdayExtra: number; jackpot: number; worlds: number } | null => {
+const readSettings = (): { startAge: number; endAge: number; frequency: number; tickets: number; jackpot: number; worlds: number } | null => {
   const startAge = Number(startAgeInput?.value ?? 30);
   const endAge = Number(endAgeInput?.value ?? 50);
-  const baseTickets = Number(baseTicketsInput?.value ?? 1);
-  const saturdayExtra = Number(saturdayExtraInput?.value ?? 1);
+  const frequency = Number(frequencyInput?.value ?? 3);
+  const tickets = Number(ticketsInput?.value ?? 1);
   const jackpot = Number(jackpotInput?.value ?? 10_000_000);
   const worlds = Number(worldsInput?.value ?? 100);
   if (!(startAge >= 1 && endAge <= 120 && startAge < endAge)) {
     if (statusOutput) statusOutput.textContent = "年龄区间无效：开始年龄需小于结束年龄（1—120 岁）。";
     return null;
   }
-  if (!(baseTickets >= 0 && baseTickets <= 20 && saturdayExtra >= 0 && saturdayExtra <= 20)) {
-    if (statusOutput) statusOutput.textContent = "注数无效：每期与周六加注需在 0—20 注之间。";
+  if (!(frequency >= 1 && frequency <= 3)) {
+    if (statusOutput) statusOutput.textContent = "每周购买次数无效：支持 1—3 次。";
+    return null;
+  }
+  if (!(tickets >= 1 && tickets <= 20)) {
+    if (statusOutput) statusOutput.textContent = "注数无效：每次购买需在 1—20 注之间。";
     return null;
   }
   if (!(jackpot >= 10_000)) {
@@ -85,18 +88,20 @@ const readSettings = (): { startAge: number; endAge: number; baseTickets: number
     if (statusOutput) statusOutput.textContent = "平行世界数无效：支持 1—100,000。";
     return null;
   }
-  return { startAge, endAge, baseTickets, saturdayExtra, jackpot, worlds };
+  return { startAge, endAge, frequency, tickets, jackpot, worlds };
 };
 
-const computePlan = (s: { startAge: number; endAge: number; baseTickets: number; saturdayExtra: number }) => {
+const computePlan = (s: { startAge: number; endAge: number; frequency: number; tickets: number }) => {
   const weeks = (s.endAge - s.startAge) * 52;
-  const ticketsPerWeek = DRAWS_PER_WEEK * s.baseTickets + s.saturdayExtra;
-  return { weeks, draws: weeks * DRAWS_PER_WEEK, tickets: weeks * ticketsPerWeek, ticketsPerWeek, cost: weeks * ticketsPerWeek * PRICE };
+  const purchases = weeks * s.frequency;
+  const tickets = purchases * s.tickets;
+  const ticketsPerWeek = s.frequency * s.tickets;
+  return { weeks, purchases, tickets, ticketsPerWeek, cost: tickets * PRICE };
 };
 
-const renderPlan = (s: { startAge: number; endAge: number; baseTickets: number; saturdayExtra: number; jackpot: number; worlds: number }) => {
+const renderPlan = (s: { startAge: number; endAge: number; frequency: number; tickets: number; jackpot: number; worlds: number }) => {
   const plan = computePlan(s);
-  if (planDraws) planDraws.textContent = `${num.format(plan.draws)} 期`;
+  if (planPurchases) planPurchases.textContent = `${num.format(plan.purchases)} 次`;
   if (planTickets) planTickets.textContent = `${num.format(plan.tickets)} 注`;
   if (planCost) planCost.textContent = fmtMoney(plan.cost);
   if (runButton) runButton.textContent = `开始模拟 ${num.format(s.worlds)} 个平行世界`;
@@ -150,7 +155,7 @@ const setProgress = (ratio: number) => {
   if (progressValue) progressValue.textContent = `${(ratio * 100).toFixed(0)}%`;
 };
 
-const renderResult = (worlds: number, plan: { draws: number; tickets: number; cost: number }, jackpot: number, winners: WinRecord[], invested: number, won: number) => {
+const renderResult = (worlds: number, plan: { purchases: number; tickets: number; cost: number }, jackpot: number, winners: WinRecord[], invested: number, won: number) => {
   if (results) results.hidden = false;
   if (resultWorlds) resultWorlds.textContent = num.format(worlds);
   if (resultInvested) resultInvested.textContent = fmtMoney(invested);
@@ -162,7 +167,7 @@ const renderResult = (worlds: number, plan: { draws: number; tickets: number; co
     resultNet.classList.toggle("lottery-net-positive", won - invested > 0);
   }
   if (resultRate) resultRate.textContent = invested > 0 ? `${((won / invested) * 100).toFixed(1)}%` : "—";
-  if (resultSummary) resultSummary.textContent = `每世 ${num.format(plan.draws)} 期 · ${num.format(plan.tickets)} 注 · ${fmtMoney(plan.cost)} · 头奖 ${fmtMoney(jackpot)}`;
+  if (resultSummary) resultSummary.textContent = `每世 ${num.format(plan.purchases)} 次购买 · ${num.format(plan.tickets)} 注 · ${fmtMoney(plan.cost)} · 头奖 ${fmtMoney(jackpot)}`;
   if (!winnersBlock || !winnersText) return;
   winnersBlock.hidden = winners.length === 0;
   winnersText.textContent = winners.length > 0 ? `中奖世界：${winners.slice(0, 8).map((w) => `#${num.format(w.world)} 号 · 约 ${fmtAge(w.age)} 岁`).join("、")}${winners.length > 8 ? ` 等 ${winners.length} 个` : ""}` : "";
@@ -233,7 +238,7 @@ form?.addEventListener("submit", (event) => {
   event.preventDefault();
   void execute();
 });
-[startAgeInput, endAgeInput, baseTicketsInput, saturdayExtraInput, jackpotInput, worldsInput].forEach((input) => {
+[startAgeInput, endAgeInput, frequencyInput, ticketsInput, jackpotInput, worldsInput].forEach((input) => {
   input?.addEventListener("input", () => {
     const settings = readSettings();
     if (settings) renderPlan(settings);
