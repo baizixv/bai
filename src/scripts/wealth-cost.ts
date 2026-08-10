@@ -26,7 +26,14 @@ const moneyOutput = document.querySelector<HTMLElement>("#wealth-money");
 const survivorOutput = document.querySelector<HTMLElement>("#wealth-survivors");
 const verdictOutput = document.querySelector<HTMLElement>("#wealth-verdict-text");
 const barRows = [...document.querySelectorAll<HTMLElement>("[data-bin]")];
-let lastCount: number | undefined;
+const simulationState: {
+  lastCount?: number;
+  isRunning: boolean;
+  hasResults: boolean;
+} = {
+  isRunning: false,
+  hasResults: false,
+};
 
 const numberFormat = new Intl.NumberFormat("zh-CN");
 const sampleLifetime = () =>
@@ -70,7 +77,7 @@ const setBusy = (busy: boolean, activeCount?: number) => {
   if (customInput) customInput.disabled = busy;
   if (customForm?.querySelector("button")) customForm.querySelector<HTMLButtonElement>("button")!.disabled = busy;
   if (resetButton) resetButton.disabled = busy;
-  if (rerollButton) rerollButton.disabled = busy || lastCount === undefined;
+  if (rerollButton) rerollButton.disabled = busy || simulationState.lastCount === undefined;
 };
 
 const parseCustomCount = () => {
@@ -101,11 +108,14 @@ const updateDistribution = (bins: number[], total: number) => {
 };
 
 const runSimulation = async (total: number) => {
-  lastCount = total;
+  if (simulationState.isRunning) return;
+  const shouldRevealResults = !simulationState.hasResults;
+  simulationState.lastCount = total;
+  simulationState.isRunning = true;
   setBusy(true, total);
   if (wealthStatus) wealthStatus.textContent = `正在展开 ${numberFormat.format(total)} 个平行世界…`;
   if (stageTitle) stageTitle.textContent = "命运正在进行一亿分之一的判定。";
-  if (results) results.hidden = true;
+  // 重新模拟时保留上一份报告，待新数据完整计算后再一次性更新，避免结果区闪烁。
   await new Promise<void>((resolve) => window.setTimeout(resolve, 0));
 
   const bins = new Array<number>(7).fill(0);
@@ -142,13 +152,17 @@ const runSimulation = async (total: number) => {
     : `${numberFormat.format(unlucky)} 人没能撑过第一天，${numberFormat.format(overTenYears)} 人活过了十年。本次平均值为 ${formatTime(average)}。`;
   if (wealthStatus) wealthStatus.textContent = "判定完成 · 契约已经结算";
   if (stageTitle) stageTitle.textContent = `${numberFormat.format(total)} 段命运已经写完。`;
-  if (results) results.hidden = false;
+  if (results && shouldRevealResults) results.hidden = false;
+  simulationState.hasResults = true;
+  simulationState.isRunning = false;
   setBusy(false, total);
-  results?.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (shouldRevealResults) results?.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
 const reset = () => {
-  lastCount = undefined;
+  simulationState.lastCount = undefined;
+  simulationState.isRunning = false;
+  simulationState.hasResults = false;
   setBusy(false);
   if (results) results.hidden = true;
   if (wealthStatus) wealthStatus.textContent = "等待你签下这份契约";
@@ -163,7 +177,7 @@ customForm?.addEventListener("submit", (event) => {
 });
 customInput?.addEventListener("input", () => parseCustomCount());
 rerollButton?.addEventListener("click", () => {
-  if (lastCount !== undefined) void runSimulation(lastCount);
+  if (simulationState.lastCount !== undefined) void runSimulation(simulationState.lastCount);
 });
 resetButton?.addEventListener("click", reset);
 setBusy(false);
