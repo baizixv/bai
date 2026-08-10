@@ -11,7 +11,6 @@ const entries = defineCollection({
     tag: z.string().optional(),
     color: z.enum(["blue", "yellow", "pink", "green"]).optional(),
     featured: z.boolean().default(false),
-    now: z.boolean().default(false),
     progress: z.number().min(0).max(100).optional(),
     status: z.string().optional(),
     version: z.string().optional(),

@@ -20,8 +20,11 @@ const tools = entries.filter((entry) => entry.data.kind === 'tool').sort((a, b) 
 const games = entries.filter((entry) => entry.data.kind === 'game').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const bookmarks = entries.filter((entry) => entry.data.kind === 'bookmark').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const media = entries.filter((entry) => entry.data.kind === 'media').sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const latestEntry = [...entries].sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
-const currentEntry = entries.find((entry) => entry.data.now) ?? latestEntry;
+const latestEntry = entries
+  .filter((entry) => entry.data.kind !== 'idea-version')
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
+// “最近在做”自动跟随最新条目，不再需要手动标记。
+const currentEntry = latestEntry;
 const buildDate = new Date();
 const formatShortDate = (date: Date) => `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
 const stats = { articles: articles.length, projects: projects.length, tools: tools.length, lastUpdated: formatShortDate(buildDate) };
