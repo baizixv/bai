@@ -186,3 +186,6 @@ kbd {
 .icon-button svg {
   width: 17px;
 }
+.icon-button[hidden] {
+  display: none;
+}
