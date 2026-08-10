@@ -205,10 +205,7 @@ const collectAll = async () => {
   if (running) return;
   const settings = readSettings();
   if (!settings) return;
-  if (isComplete()) {
-    set(statusOutput, "幸运号码已集齐，重置后可重新收集。");
-    return;
-  }
+  if (isComplete()) { set(statusOutput, "幸运号码已集齐，重置后可重新收集。"); return; }
   collecting = true;
   const plan = computePlan(settings);
   if (collectButton) collectButton.textContent = "停止连抽";
@@ -218,7 +215,9 @@ const collectAll = async () => {
   if (runningBlock) runningBlock.hidden = false;
   renderBalls(q("#lottery-balls"), randomDraw());
   progressBar?.classList.add("lottery-running-bar");
-  const source = await fetchDrawSource();
+  set(statusOutput, "幸运号码连抽中…正在获取区块随机源");
+  const sourcePromise = fetchDrawSource();
+  let source: { hash: string; height: string } | null = null;
   const session = { worlds: 0, invested: 0, wins: 0, won: 0 };
   while (collecting && !isComplete()) {
     const found = runWorlds(CHUNK, plan.tickets, plan.ticketsPerWeek, settings.startAge);
@@ -226,6 +225,7 @@ const collectAll = async () => {
     session.invested += CHUNK * plan.cost;
     session.wins += found.length;
     session.won += found.length * JACKPOT;
+    if (!source) source = await sourcePromise;
     for (const w of found) {
       const n = await deriveOneNumber(source, w.world, w.ticket);
       const r = addCollectedNumber(state.collected.front, state.collected.back, n);

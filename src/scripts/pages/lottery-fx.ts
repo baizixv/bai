@@ -117,7 +117,7 @@ export const fetchDrawSource = async (): Promise<DrawSource | null> => {
   cachedSource = null;
   try {
     const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), 5000);
+    const timer = window.setTimeout(() => controller.abort(), 2500);
     const [hashRes, heightRes] = await Promise.all([
       fetch("https://mempool.space/api/blocks/tip/hash", { signal: controller.signal }),
       fetch("https://mempool.space/api/blocks/tip/height", { signal: controller.signal }),
