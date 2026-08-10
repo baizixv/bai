@@ -90,7 +90,8 @@ const readSettings = (): { startAge: number; endAge: number; baseTickets: number
 
 const computePlan = (s: { startAge: number; endAge: number; baseTickets: number; saturdayExtra: number }) => {
   const weeks = (s.endAge - s.startAge) * 52;
-  return { weeks, draws: weeks * DRAWS_PER_WEEK, tickets: weeks * (DRAWS_PER_WEEK * s.baseTickets + s.saturdayExtra), cost: weeks * (DRAWS_PER_WEEK * s.baseTickets + s.saturdayExtra) * PRICE };
+  const ticketsPerWeek = DRAWS_PER_WEEK * s.baseTickets + s.saturdayExtra;
+  return { weeks, draws: weeks * DRAWS_PER_WEEK, tickets: weeks * ticketsPerWeek, ticketsPerWeek, cost: weeks * ticketsPerWeek * PRICE };
 };
 
 const renderPlan = (s: { startAge: number; endAge: number; baseTickets: number; saturdayExtra: number; jackpot: number; worlds: number }) => {
@@ -128,12 +129,15 @@ const renderTotals = () => {
   });
 };
 
-const runWorlds = (n: number, ticketsPerLife: number): number[] => {
-  const winners: number[] = [];
+const fmtAge = (age: number) => age.toFixed(1).replace(/\.0$/, "");
+
+type WinRecord = { world: number; age: number };
+const runWorlds = (n: number, ticketsPerLife: number, ticketsPerWeek: number, startAge: number): WinRecord[] => {
+  const winners: WinRecord[] = [];
   for (let w = 0; w < n; w++) {
     for (let t = 0; t < ticketsPerLife; t++) {
       if (Math.floor(Math.random() * ODDS) + 1 === 1) {
-        winners.push(w + 1);
+        winners.push({ world: w + 1, age: startAge + Math.floor(t / ticketsPerWeek) / 52 });
         break;
       }
     }
@@ -146,7 +150,7 @@ const setProgress = (ratio: number) => {
   if (progressValue) progressValue.textContent = `${(ratio * 100).toFixed(0)}%`;
 };
 
-const renderResult = (worlds: number, plan: { draws: number; tickets: number; cost: number }, jackpot: number, winners: number[], invested: number, won: number) => {
+const renderResult = (worlds: number, plan: { draws: number; tickets: number; cost: number }, jackpot: number, winners: WinRecord[], invested: number, won: number) => {
   if (results) results.hidden = false;
   if (resultWorlds) resultWorlds.textContent = num.format(worlds);
   if (resultInvested) resultInvested.textContent = fmtMoney(invested);
@@ -161,12 +165,18 @@ const renderResult = (worlds: number, plan: { draws: number; tickets: number; co
   if (resultSummary) resultSummary.textContent = `每世 ${num.format(plan.draws)} 期 · ${num.format(plan.tickets)} 注 · ${fmtMoney(plan.cost)} · 头奖 ${fmtMoney(jackpot)}`;
   if (!winnersBlock || !winnersText) return;
   winnersBlock.hidden = winners.length === 0;
-  winnersText.textContent = winners.length > 0 ? `中奖世界编号：${winners.slice(0, 12).map((w) => `#${num.format(w)}`).join("、")}${winners.length > 12 ? ` 等 ${winners.length} 个` : ""}` : "";
+  winnersText.textContent = winners.length > 0 ? `中奖世界：${winners.slice(0, 8).map((w) => `#${num.format(w.world)} 号 · 约 ${fmtAge(w.age)} 岁`).join("、")}${winners.length > 8 ? ` 等 ${winners.length} 个` : ""}` : "";
 };
 
-const showWin = (winners: number[], settings: { jackpot: number }, invested: number, won: number) => {
+const showWin = (winners: WinRecord[], settings: { jackpot: number }, invested: number, won: number) => {
   if (!winOverlay) return;
-  if (winTitle) winTitle.innerHTML = winners.length === 1 ? `第 <span>${num.format(winners[0])}</span> 号世界中了头奖！` : `<span>${winners.length}</span> 个平行世界中奖！`;
+  const first = winners[0];
+  if (winTitle) {
+    winTitle.innerHTML =
+      winners.length === 1
+        ? `第 <span>${num.format(first.world)}</span> 号世界在约 <span>${fmtAge(first.age)}</span> 岁中了头奖！`
+        : `<span>${winners.length}</span> 个平行世界中奖！最早约 ${fmtAge(first.age)} 岁`;
+  }
   if (winMeta) winMeta.textContent = `投入 ${fmtMoney(invested)} · 奖金 ${fmtMoney(won)} · 头奖 ${fmtMoney(settings.jackpot)}`;
   winOverlay.hidden = false;
   fx.launchFireworks();
@@ -183,13 +193,13 @@ const execute = async () => {
   if (results) results.hidden = true;
   if (statusOutput) statusOutput.textContent = `正在模拟 ${num.format(settings.worlds)} 个平行世界…`;
   setProgress(0);
-  const winners: number[] = [];
+  const winners: WinRecord[] = [];
   const CHUNK = 5000;
   let done = 0;
   while (done < settings.worlds) {
     const batch = Math.min(CHUNK, settings.worlds - done);
-    const found = runWorlds(batch, plan.tickets);
-    winners.push(...found.map((w) => w + done));
+    const found = runWorlds(batch, plan.tickets, plan.ticketsPerWeek, settings.startAge);
+    winners.push(...found.map((w) => ({ world: w.world + done, age: w.age })));
     done += batch;
     setProgress(done / settings.worlds);
     if (progressLabel) progressLabel.textContent = `模拟中… 世界 ${num.format(done)} / ${num.format(settings.worlds)}`;
