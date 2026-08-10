@@ -62,7 +62,7 @@ def logo():
     draw = ImageDraw.Draw(image)
     draw.ellipse((18 * SCALE, 18 * SCALE, 494 * SCALE, 494 * SCALE), fill=COLORS["ink"])
     draw.ellipse((51 * SCALE, 51 * SCALE, 461 * SCALE, 461 * SCALE), outline=COLORS["blue"], width=12 * SCALE)
-    draw_text(draw, (256, 235), "白", 218, COLORS["paper"], bold=True, cjk=True, anchor="mm")
+    draw_text(draw, (256, 238), "bzx", 132, COLORS["paper"], bold=True, anchor="mm")
     line(draw, [(145, 361), (367, 361)], COLORS["yellow"], 10)
     draw.ellipse((385 * SCALE, 346 * SCALE, 405 * SCALE, 366 * SCALE), fill=COLORS["yellow"])
     final = image.resize((512, 512), Image.Resampling.LANCZOS)
