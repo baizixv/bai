@@ -3,13 +3,14 @@ import { addCollectedNumber, countUp, deriveOneNumber, fetchDrawSource, fmtAge, 
 const PRICE = 2; // 每注 2 元
 const JACKPOT = 10_000_000; // 头奖固定值：1,000 万（大乐透基本投注头奖口径）
 const KEY = "bai-lottery-reincarnation-v2";
-const RUN_LIMIT = 8;
-const CHUNK = 5000;
+const RUN_LIMIT = 8, CHUNK = 5000;
 type RunRecord = { worlds: number; invested: number; winners: number; won: number };
 type Collected = { front: number[]; back: number[] };
 type GameState = { totalWorlds: number; totalInvested: number; totalWins: number; totalWon: number; collected: Collected; runs: RunRecord[] };
 const initialState: GameState = { totalWorlds: 0, totalInvested: 0, totalWins: 0, totalWon: 0, collected: { front: [], back: [] }, runs: [] };
-let state: GameState = readStorage(KEY, initialState);
+// 迁移旧版本本地状态：新字段缺失时用默认值补齐，避免旧数据直接崩溃。
+const stored = readStorage<Partial<GameState>>(KEY, {});
+let state: GameState = { ...initialState, ...stored, collected: stored.collected ?? initialState.collected };
 let running = false;
 let collecting = false;
 const num = new Intl.NumberFormat("zh-CN");
