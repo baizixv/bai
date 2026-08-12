@@ -159,13 +159,14 @@ content?.addEventListener("click", (event) => {
   const answer = target.closest<HTMLElement>("[data-answer]");
   if (answer) {
     const feedback = document.querySelector<HTMLElement>("#ogden-feedback");
-    const correct = answer.dataset.answer === current()?.id;
-    if (feedback)
-      feedback.textContent = correct
-        ? "正确。"
-        : `再想想，${current()?.chinese}`;
-    if (correct) progress.add(current().id);
-    save();
+    if (answer.dataset.answer === current()?.id) {
+      progress.add(current().id);
+      save();
+      selected = (selected + 1) % filtered.length;
+      render();
+    } else if (feedback) {
+      feedback.textContent = `再想想，${current()?.chinese}`;
+    }
   }
   if (target.id === "practice-reveal") {
     if (showAnswer) {
@@ -195,12 +196,15 @@ content?.addEventListener("click", (event) => {
     const value = document
       .querySelector<HTMLTextAreaElement>("#expression-input")
       ?.value.trim();
-    const feedback = document.querySelector<HTMLElement>("#ogden-feedback");
     if (value) {
       progress.add(current().id);
-      if (feedback) feedback.textContent = "完成。继续用下一个词表达。";
       save();
-    } else if (feedback) feedback.textContent = "先写下一句，再完成练习。";
+      selected = (selected + 1) % filtered.length;
+      render();
+    } else {
+      const feedback = document.querySelector<HTMLElement>("#ogden-feedback");
+      if (feedback) feedback.textContent = "先写下一句，再完成练习。";
+    }
   }
 });
 
